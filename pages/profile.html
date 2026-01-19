@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil | Lumiastore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/payment.css">
+</head>
+<body class="antialiased relative min-h-screen">
+  <div class="blob blob-1 rounded-full"></div>
+  <div class="blob blob-2 rounded-full"></div>
+  <nav class="fixed w-full z-50 glass-nav py-4">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+      <a href="../index.html" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+      <div class="flex space-x-4 items-center">
+        <a href="../index.html" class="text-sm font-medium text-gray-300 hover:text-white transition">Beranda</a>
+        <div id="nav-profile" class="relative">
+          <button id="profile-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center select-none">
+            <span id="profile-letter">U</span>
+          </button>
+          <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 glass rounded-xl overflow-hidden border border-white/10">
+            <div class="px-4 py-3 text-sm text-gray-300">
+              <div class="font-bold text-white">Akun</div>
+              <div id="profile-email" class="truncate"></div>
+            </div>
+            <div class="border-t border-white/10">
+              <a href="./topup.html" class="block px-4 py-2 text-sm hover:bg-white/10">Top Up</a>
+              <a href="./faq.html" class="block px-4 py-2 text-sm hover:bg-white/10">FAQ</a>
+              <button id="logout-btn" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10">Keluar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container mx-auto px-6 pt-28 pb-10 max-w-xl">
+    <div class="glass p-6 rounded-2xl">
+      <h1 class="text-2xl font-bold mb-4">Profil Saya</h1>
+      <div class="space-y-3 text-gray-300">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-white/10 text-white font-bold flex items-center justify-center">
+            <span id="pf-letter">U</span>
+          </div>
+          <div>
+            <div class="text-white font-semibold" id="pf-email">-</div>
+            <div class="text-xs" id="pf-id">-</div>
+          </div>
+        </div>
+        <div class="mt-6">
+          <button id="pf-logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Keluar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('lumi_token');
+        if (!t) { window.location.href = './login.html'; return; }
+        var u = JSON.parse(localStorage.getItem('lumi_user') || '{}');
+        if (u && u.email) {
+          document.getElementById('pf-email').textContent = u.email;
+          document.getElementById('pf-id').textContent = 'ID: ' + (u.id || '-');
+          document.getElementById('pf-letter').textContent = String(u.email).trim().charAt(0).toUpperCase() || 'U';
+        }
+      } catch (_) {}
+      var logout = document.getElementById('pf-logout');
+      if (logout) logout.addEventListener('click', function(){
+        localStorage.removeItem('lumi_token');
+        localStorage.removeItem('lumi_user');
+        window.location.href = '../index.html';
+      });
+    })();
+  </script>
+</body>
+</html>

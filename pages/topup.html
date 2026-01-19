@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Up Game | Lumiastore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/payment.css">
+    <noscript>
+        <style>
+            /* If JS fails or is disabled, show real content and hide skeleton */
+            #skeleton-loader { display: none !important; }
+            #real-content { display: block !important; }
+            #buy-widget { transform: none !important; visibility: visible !important; }
+        </style>
+    </noscript>
+</head>
+<body class="antialiased relative min-h-screen">
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-nav py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="../index.html" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+            <div class="flex space-x-4 items-center">
+                <button id="search-toggle" class="md:hidden text-gray-300 hover:text-white p-2 rounded-full" aria-label="Open search">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+                <a href="../index.html" class="text-sm font-medium text-gray-300 hover:text-white transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back
+                </a>
+                <div id="nav-auth" class="hidden md:flex space-x-4 items-center">
+                    <button class="text-sm font-medium text-gray-300 hover:text-white transition" onclick="window.location.href='./login.html'">Log In</button>
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full text-sm font-bold transition" onclick="window.location.href='./register.html'">Sign Up</button>
+                </div>
+                <div id="nav-profile" class="relative hidden">
+                    <button id="profile-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center select-none">
+                        <span id="profile-letter">U</span>
+                    </button>
+                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 glass rounded-xl overflow-hidden border border-white/10">
+                        <div class="px-4 py-3 text-sm text-gray-300">
+                            <div class="font-bold text-white">Akun</div>
+                            <div id="profile-email" class="truncate"></div>
+                        </div>
+                        <div class="border-t border-white/10">
+                            <a href="./profile.html" class="block px-4 py-2 text-sm hover:bg-white/10">Profil</a>
+                            <a href="./topup.html" class="block px-4 py-2 text-sm hover:bg-white/10">Top Up</a>
+                            <a href="./faq.html" class="block px-4 py-2 text-sm hover:bg-white/10">FAQ</a>
+                            <button id="logout-btn" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10">Keluar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="mobile-search" class="fixed top-20 left-0 right-0 px-6 py-3 bg-black/60 backdrop-blur z-50 hidden md:hidden">
+        <div class="relative max-w-md mx-auto">
+            <input id="mobile-search-input" type="text" placeholder="Search games..." class="w-full bg-white/10 border border-white/10 rounded-full py-2 px-5 text-sm focus:outline-none focus:bg-white/20 transition text-white placeholder-gray-400" autocomplete="off" data-testid="search-input">
+            <div id="mobile-search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-black/80 text-white rounded-lg shadow-lg overflow-hidden z-50"></div>
+            <button id="mobile-search-close" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition" aria-label="Close search">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pt-28 pb-10 max-w-5xl">
+        <div id="debug-banner" class="hidden rounded p-3 mb-4 text-sm font-medium"></div>
+        <!-- SKELETON LOADER (Muncul Awal) -->
+        <div id="skeleton-loader" class="space-y-8 transition-opacity duration-500">
+            <!-- Header Skeleton -->
+            <div class="flex items-center space-x-6">
+                <div class="w-24 h-24 skeleton rounded-2xl"></div>
+                <div class="space-y-3">
+                    <div class="h-8 w-64 skeleton"></div>
+                    <div class="h-4 w-40 skeleton"></div>
+                </div>
+            </div>
+            <!-- Section 1 Skeleton -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="h-6 w-48 skeleton"></div>
+                <div class="flex gap-4">
+                    <div class="h-12 w-3/4 skeleton"></div>
+                    <div class="h-12 w-1/4 skeleton"></div>
+                </div>
+            </div>
+            <!-- Section 2 Skeleton -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="h-6 w-48 skeleton"></div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REAL CONTENT (Muncul setelah loading) -->
+        <div id="real-content" class="hidden space-y-8">
+            <!-- Header -->
+            <div class="flex items-center space-x-6" data-aos="fade-down">
+                <div class="w-24 h-24 rounded-2xl overflow-hidden shadow-lg border border-white/10 relative group">
+                    <div class="absolute inset-0 bg-yellow-500/20 group-hover:bg-transparent transition"></div>
+                    <div class="w-full h-full bg-gradient-to-br from-blue-900 to-black flex items-center justify-center text-4xl" id="game-icon">⚔️</div>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold" id="game-title">Mobile Legends: Bang Bang</h1>
+                    <p class="text-blue-400 flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Instant Delivery</p>
+                </div>
+            </div>
+
+            <!-- Step 1: Input ID -->
+            <div class="glass p-6 rounded-2xl relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">1</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Masukkan User ID</h2>
+                <div class="flex gap-4 flex-col md:flex-row">
+                    <div class="relative w-full md:w-3/4">
+                        <input id="userId" type="tel" name="userId" minlength="6" placeholder="Masukkan User ID" autocomplete="on" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition text-white">
+                    </div>
+                    <div class="relative w-full md:w-1/4">
+                        <input id="zoneId" type="tel" name="zoneId" minlength="3" placeholder="Zone ID" autocomplete="on" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition text-white">
+                    </div>
+                </div>
+                <div class="mt-3 flex items-center gap-3">
+                    <button id="check-id" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">Cek ID</button>
+                    <div id="user-id-status" class="hidden items-center gap-3 text-sm">
+                        <span id="welcome-text" class="text-green-500 font-semibold">Selamat Datang</span>
+                        <span id="profile-name" class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded font-medium">&nbsp;</span>
+                    </div>
+                    <div id="user-id-error" class="text-red-400 text-sm hidden"></div>
+                    <div id="profile-suggest" class="text-gray-300 italic text-sm hidden ml-2"></div>
+
+                <!-- Admin modal for editing nickname overrides -->
+                <div id="nickname-admin" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50">
+                    <div class="bg-[#0b1220] rounded-lg p-4 w-full max-w-sm">
+                        <h3 class="text-white font-bold mb-2">Edit Nickname Override</h3>
+                        <p class="text-xs text-gray-400 mb-2">Override nickname for the entered User ID (saved in browser).</p>
+                        <input id="admin-nickname-input" type="text" placeholder="Enter nickname" class="w-full rounded px-3 py-2 mb-3 bg-black/10 text-white">
+                        <div class="flex justify-end gap-2">
+                            <button id="cancel-nickname-btn" class="px-3 py-1 rounded bg-gray-700 text-white">Cancel</button>
+                            <button id="save-nickname-btn" class="px-3 py-1 rounded bg-green-500 text-white">Save</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3 ml-1 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Klik menu profil di kiri atas layar utama game untuk melihat ID Anda.
+                </p>
+            </div>
+
+            <!-- Step 2: Nominal -->
+            <div class="glass p-6 rounded-2xl relative" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">2</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Pilih Nominal Top Up</h2>
+                <div id="nominal-options" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Options will be loaded here via JS -->
+                </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="glass p-6 rounded-2xl relative" data-aos="fade-up" data-aos-delay="300">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">3</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Pilih Pembayaran</h2>
+                
+                <!-- E-Wallet & QRIS -->
+                <h3 class="text-sm text-gray-400 mb-3 ml-1 font-semibold">E-Wallet & QRIS</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/GO_PAY_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">GoPay</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/DANA_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">DANA</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/OVO_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">OVO</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/SHOPEE_PAY_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">ShopeePay</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/QRIS_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">QRIS</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/LINKAJA_ID_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">LinkAja</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/KREDIVO_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Kredivo</p></div>
+                    </div>
+                </div>
+
+                <!-- Virtual Account & Retail -->
+                <h3 class="text-sm text-gray-400 mb-3 ml-1 font-semibold">Bank & Retail</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/DOKU_ATM_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Bank Transfer</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/Indomaret_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Indomaret</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/DOKU_OTC_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Alfamart</p></div>
+                    </div>
+                </div>
+
+                <!-- Pulsa -->
+                <h3 class="text-sm text-gray-400 mb-3 ml-1 font-semibold">Pulsa (Mobile)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/TELKOMSEL_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Telkomsel</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/INDOSAT_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Indosat</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/XL_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">XL / Axis</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Gateway Mount Point (for Midtrans integration) -->
+            <div id="payment-gateway" class="hidden" aria-hidden="true"><!-- Midtrans scripts/components will be mounted here --></div>
+
+            <!-- Buy Widget (Bottom Bar) -->
+            <div id="buy-widget" class="fixed bottom-0 left-0 w-full z-50 transform translate-y-full transition-transform duration-300">
+                <div class="glass-nav border-t border-white/10 shadow-[0_-4px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl bg-[#0f172a]/95">
+                    <div class="container mx-auto px-4 py-3">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <!-- Left: Info Summary -->
+                            <div class="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto">
+                                <div class="flex items-center gap-2 text-sm md:text-base mb-1 flex-wrap justify-center md:justify-start">
+                                    <span id="widget-item-name" class="font-bold text-white text-lg"></span>
+                                    <span id="widget-item-bonus" class="text-gray-400 text-sm"></span>
+                                    <span class="w-1.5 h-1.5 bg-gray-600 rounded-full hidden md:block"></span>
+                                    <span id="widget-payment-method" class="font-bold text-orange-500 hidden md:block"></span>
+                                </div>
+                                <div class="md:hidden text-xs text-orange-500 font-bold mb-1" id="widget-payment-method-mobile"></div>
+                            </div>
+
+                            <!-- Right: Price & Button -->
+                            <div class="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
+                                <div class="flex flex-col items-end">
+                                    <div id="widget-discount-section" class="flex items-center gap-2 text-xs mb-0.5 hidden">
+                                        <span id="widget-old-price" class="text-gray-500 line-through decoration-red-500"></span>
+                                        <span id="widget-saved-amount" class="text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded font-bold"></span>
+                                    </div>
+                                    <div id="widget-final-price" class="text-xl md:text-2xl font-bold text-white leading-none"></div>
+                                    <span class="text-[10px] text-gray-500 mt-1">Pajak akan dikenakan saat checkout</span>
+                                </div>
+                                <button id="buy-now" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 md:px-10 rounded-xl shadow-lg shadow-orange-500/20 transition transform hover:scale-105 flex items-center gap-2 whitespace-nowrap">
+                        <span>Beli Sekarang</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-32"></div> <!-- Spacer for bottom widget -->
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 bg-black/20 pt-10 pb-6 mt-10">
+        <div class="container mx-auto px-6 text-center"><p class="text-gray-500 text-sm">&copy; 2024 Lumiastore Clone. All rights reserved.</p></div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../assets/js/payment.js"></script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

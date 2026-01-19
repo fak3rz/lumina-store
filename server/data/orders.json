@@ -1,0 +1,39 @@
+{
+  "ord_mk9gtan3_phie5": {
+    "id": "ord_mk9gtan3_phie5",
+    "status": "fulfilled",
+    "createdAt": "2026-01-11T08:21:33.088Z",
+    "updatedAt": "2026-01-11T08:28:33.122Z",
+    "fulfillment": {
+      "status": "fulfilled",
+      "vendorResp": {
+        "mock": "ok"
+      },
+      "vendorTxId": "vendor_1768120113111"
+    },
+    "userId": "1037720261",
+    "zoneId": "13160",
+    "sku": "5 Diamonds",
+    "amount": "5",
+    "price": "Rp 1.423",
+    "paymentMethod": "GoPay",
+    "paymentUrl": "/api/mock/pay?orderId=ord_mk9gtan3_phie5",
+    "providerTxId": null,
+    "fulfilledAt": "2026-01-11T08:28:33.121Z"
+  },
+  "ord_mkem1bm5_r6tu0": {
+    "id": "ord_mkem1bm5_r6tu0",
+    "status": "paid",
+    "createdAt": "2026-01-14T22:46:36.557Z",
+    "updatedAt": "2026-01-14T22:46:42.816Z",
+    "fulfillment": {
+      "status": "pending"
+    },
+    "userId": "1037720261",
+    "zoneId": "13160",
+    "sku": "5 Diamonds",
+    "price": "Rp 1.423",
+    "paymentMethod": "DANA",
+    "paymentUrl": "/api/mock/pay?orderId=ord_mkem1bm5_r6tu0"
+  }
+}

@@ -1,0 +1,190 @@
+async function postJSON(url, body) {
+  const resp = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const j = await resp.json().catch(()=>({}));
+  if (!resp.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + resp.status));
+  return j;
+}
+
+let recaptchaWidgetId = null;
+let recaptchaSiteKey = '';
+let mathCaptchaActive = false;
+let mathInputEl = null;
+function debounce(fn, wait) { let t = null; return function(...args){ clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), wait); }; }
+function renderRecaptcha() {
+  const el = document.getElementById('recaptcha');
+  if (!el || !window.grecaptcha || !recaptchaSiteKey) return;
+  if (recaptchaWidgetId !== null) return;
+  if (!document.body.contains(el)) return;
+  try {
+  const w = el.offsetWidth || window.innerWidth;
+  const size = w < 330 ? 'compact' : 'normal';
+  recaptchaWidgetId = window.grecaptcha.render('recaptcha', { sitekey: recaptchaSiteKey, size });
+  } catch (_) { /* ignore render errors */ }
+}
+async function enableMathCaptcha() {
+  try {
+    const r = await fetch('/api/captcha/new');
+    const j = await r.json().catch(()=>({}));
+    const wrap = document.getElementById('recaptcha');
+    if (!wrap) return;
+    const box = document.createElement('div');
+    box.className = 'mt-2';
+    const label = document.createElement('div');
+    label.className = 'text-sm text-gray-300 mb-1';
+    label.textContent = j && j.challenge ? j.challenge : 'Captcha';
+    mathInputEl = document.createElement('input');
+    mathInputEl.type = 'text';
+    mathInputEl.placeholder = 'Jawaban';
+    mathInputEl.className = 'w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500';
+    box.appendChild(label);
+    box.appendChild(mathInputEl);
+    wrap.innerHTML = '';
+    wrap.appendChild(box);
+    mathCaptchaActive = true;
+  } catch (_) { mathCaptchaActive = false; }
+}
+async function initRecaptcha() {
+  try {
+    const r = await fetch('/api/captcha/sitekey');
+    const j = await r.json().catch(()=>({}));
+    recaptchaSiteKey = j && j.siteKey ? j.siteKey : '';
+    const ready = () => renderRecaptcha();
+    if (window.grecaptcha && window.grecaptcha.render) ready();
+    else window.grecaptcha.ready(ready);
+    // Fallback if recaptcha gagal dalam 2500ms
+    setTimeout(() => { if (recaptchaWidgetId === null) enableMathCaptcha(); }, 2500);
+  } catch (_) { enableMathCaptcha(); }
+}
+
+function bindLogin() {
+  const form = document.getElementById('login-form');
+  const email = document.getElementById('login-email');
+  const password = document.getElementById('login-password');
+  const err = document.getElementById('login-error');
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    try {
+      const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
+      const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
+      if (!recaptcha && !captchaVal) {
+        if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
+        const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      const j = await postJSON('/api/auth/login', { email: email.value.trim(), password: password.value, recaptcha, captcha: captchaVal });
+      localStorage.setItem('lumi_token', j.token);
+      try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) {}
+      location.href = '/index.html';
+    } catch (e2) {
+      if (err) {
+        const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
+        err.textContent = msg.includes('captcha') ? 'Harap selesaikan verifikasi captcha' : (e2.message || 'Login gagal');
+        err.classList.remove('hidden');
+      }
+      try {
+        const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
+        if (msg.includes('belum terverifikasi')) {
+          const em = email.value.trim();
+          localStorage.setItem('pending_email', em);
+          await postJSON('/api/auth/request-otp', { email: em, purpose: 'verify' });
+          location.href = '/pages/verify-otp.html';
+        }
+      } catch (_) {}
+    }
+  });
+}
+
+function bindRegister() {
+  const form = document.getElementById('register-form');
+  const email = document.getElementById('register-email');
+  const password = document.getElementById('register-password');
+  const err = document.getElementById('register-error');
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    try {
+      const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
+      const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
+      if (!recaptcha && !captchaVal) {
+        if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
+        const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      await postJSON('/api/auth/register', { email: email.value.trim(), password: password.value, recaptcha, captcha: captchaVal });
+      localStorage.setItem('pending_email', email.value.trim());
+      location.href = '/pages/verify-otp.html';
+    } catch (e2) {
+      if (err) {
+        const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
+        err.textContent = msg.includes('captcha') ? 'Harap selesaikan verifikasi captcha' : (e2.message || 'Registrasi gagal');
+        err.classList.remove('hidden');
+      }
+    }
+  });
+}
+
+function bindForgot() {
+  const form = document.getElementById('forgot-form');
+  const email = document.getElementById('forgot-email');
+  const err = document.getElementById('forgot-error');
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    try {
+      const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
+      const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
+      if (!recaptcha && !captchaVal) {
+        if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
+        const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      await postJSON('/api/auth/request-otp', { email: email.value.trim(), purpose: 'reset', recaptcha, captcha: captchaVal });
+      localStorage.setItem('pending_email', email.value.trim());
+      location.href = '/pages/verify-otp.html?mode=reset';
+    } catch (e2) {
+      if (err) {
+        const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
+        err.textContent = msg.includes('captcha') ? 'Harap selesaikan verifikasi captcha' : (e2.message || 'Permintaan OTP gagal');
+        err.classList.remove('hidden');
+      }
+    }
+  });
+}
+
+function bindVerifyOtp() {
+  const form = document.getElementById('otp-form');
+  const emailEl = document.getElementById('otp-email');
+  const codeEl = document.getElementById('otp-code');
+  const err = document.getElementById('otp-error');
+  const mode = new URLSearchParams(location.search).get('mode') || 'verify';
+  const storedEmail = localStorage.getItem('pending_email') || '';
+  if (emailEl && !emailEl.value) emailEl.value = storedEmail;
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    const email = emailEl.value.trim();
+    const code = codeEl.value.trim();
+    try {
+      if (mode === 'reset') {
+        const pwd = document.getElementById('new-password').value;
+        await postJSON('/api/auth/reset-password', { email, code, password: pwd });
+        location.href = '/pages/login.html';
+      } else {
+        await postJSON('/api/auth/verify-otp', { email, code });
+        location.href = '/pages/login.html';
+      }
+    } catch (e2) {
+      if (err) { err.textContent = e2.message || 'Verifikasi gagal'; err.classList.remove('hidden'); }
+    }
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initRecaptcha();
+  bindLogin(); bindRegister(); bindForgot(); bindVerifyOtp();
+});

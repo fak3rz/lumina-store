@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=pages/topup.html">
+  <script>location.replace('pages/topup.html' + window.location.search);</script>
+  <title>Redirecting…</title>
+  <meta name="robots" content="noindex">
+</head>
+<body>
+  <p style="font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding:1rem;">Redirecting to <a href="pages/topup.html">pages/topup.html</a>…</p>
+</body>
+</html>
+<!-- This file is intentionally a simple redirect to the real page in /pages/topup.html -->
+    <nav class="fixed w-full z-50 glass-nav py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+            <div class="flex space-x-4 items-center">
+                <a href="index.html" class="text-sm font-medium text-gray-300 hover:text-white transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 pt-28 pb-10 max-w-5xl">
+        
+        <!-- SKELETON LOADER (Muncul Awal) -->
+        <div id="skeleton-loader" class="space-y-8 transition-opacity duration-500">
+            <!-- Header Skeleton -->
+            <div class="flex items-center space-x-6">
+                <div class="w-24 h-24 skeleton rounded-2xl"></div>
+                <div class="space-y-3">
+                    <div class="h-8 w-64 skeleton"></div>
+                    <div class="h-4 w-40 skeleton"></div>
+                </div>
+            </div>
+            <!-- Section 1 Skeleton -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="h-6 w-48 skeleton"></div>
+                <div class="flex gap-4">
+                    <div class="h-12 w-3/4 skeleton"></div>
+                    <div class="h-12 w-1/4 skeleton"></div>
+                </div>
+            </div>
+            <!-- Section 2 Skeleton -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="h-6 w-48 skeleton"></div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REAL CONTENT (Muncul setelah loading) -->
+        <div id="real-content" class="hidden space-y-8">
+            <!-- Header -->
+            <div class="flex items-center space-x-6" data-aos="fade-down">
+                <div class="w-24 h-24 rounded-2xl overflow-hidden shadow-lg border border-white/10 relative group">
+                    <div class="absolute inset-0 bg-yellow-500/20 group-hover:bg-transparent transition"></div>
+                    <div class="w-full h-full bg-gradient-to-br from-blue-900 to-black flex items-center justify-center text-4xl" id="game-icon">⚔️</div>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold" id="game-title">Mobile Legends: Bang Bang</h1>
+                    <p class="text-blue-400 flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Instant Delivery</p>
+                </div>
+            </div>
+
+            <!-- Step 1: Input ID -->
+            <div class="glass p-6 rounded-2xl relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">1</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Masukkan User ID</h2>
+                <div class="flex gap-4 flex-col md:flex-row">
+                    <div class="relative w-full md:w-3/4">
+                        <input type="text" placeholder="User ID" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition text-white">
+                    </div>
+                    <div class="relative w-full md:w-1/4">
+                        <input type="text" placeholder="(Zone ID)" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition text-white">
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3 ml-1 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Klik menu profil di kiri atas layar utama game untuk melihat ID Anda.
+                </p>
+            </div>
+
+            <!-- Step 2: Nominal -->
+            <div class="glass p-6 rounded-2xl relative" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">2</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Pilih Nominal Top Up</h2>
+                <div id="nominal-options" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Options will be loaded here via JS -->
+                </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="glass p-6 rounded-2xl relative" data-aos="fade-up" data-aos-delay="300">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">3</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Pilih Pembayaran</h2>
+                
+                <!-- E-Wallet & QRIS -->
+                <h3 class="text-sm text-gray-400 mb-3 ml-1 font-semibold">E-Wallet & QRIS</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/GO_PAY_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">GoPay</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/DANA_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">DANA</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/OVO_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">OVO</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/SHOPEE_PAY_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">ShopeePay</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/QRIS_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">QRIS</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/LINKAJA_ID_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">LinkAja</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/KREDIVO_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Kredivo</p></div>
+                    </div>
+                </div>
+
+                <!-- Virtual Account & Retail -->
+                <h3 class="text-sm text-gray-400 mb-3 ml-1 font-semibold">Bank & Retail</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/DOKU_ATM_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Bank Transfer</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/Indomaret_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Indomaret</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/DOKU_OTC_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Alfamart</p></div>
+                    </div>
+                </div>
+
+                <!-- Pulsa -->
+                <h3 class="text-sm text-gray-400 mb-3 ml-1 font-semibold">Pulsa (Mobile)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/TELKOMSEL_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Telkomsel</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/INDOSAT_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">Indosat</p></div>
+                    </div>
+                    <div class="glass p-3 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition border border-transparent payment-card group" onclick="selectPayment(this)">
+                        <img src="https://cdn1.codashop.com/S/content/common/images/mno/XL_ID_CHNL_LOGO.webp" class="h-6 object-contain">
+                        <div class="text-center"><p class="font-bold text-xs">XL / Axis</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buy Widget (Bottom Bar) -->
+            <div id="buy-widget" class="fixed bottom-0 left-0 w-full z-50 transform translate-y-full transition-transform duration-300">
+                <div class="glass-nav border-t border-white/10 shadow-[0_-4px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl bg-[#0f172a]/95">
+                    <div class="container mx-auto px-4 py-3">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <!-- Left: Info Summary -->
+                            <div class="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto">
+                                <div class="flex items-center gap-2 text-sm md:text-base mb-1 flex-wrap justify-center md:justify-start">
+                                    <span id="widget-item-name" class="font-bold text-white text-lg"></span>
+                                    <span id="widget-item-bonus" class="text-gray-400 text-sm"></span>
+                                    <span class="w-1.5 h-1.5 bg-gray-600 rounded-full hidden md:block"></span>
+                                    <span id="widget-payment-method" class="font-bold text-orange-500 hidden md:block"></span>
+                                </div>
+                                <div class="md:hidden text-xs text-orange-500 font-bold mb-1" id="widget-payment-method-mobile"></div>
+                            </div>
+
+                            <!-- Right: Price & Button -->
+                            <div class="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
+                                <div class="flex flex-col items-end">
+                                    <div id="widget-discount-section" class="flex items-center gap-2 text-xs mb-0.5 hidden">
+                                        <span id="widget-old-price" class="text-gray-500 line-through decoration-red-500"></span>
+                                        <span id="widget-saved-amount" class="text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded font-bold"></span>
+                                    </div>
+                                    <div id="widget-final-price" class="text-xl md:text-2xl font-bold text-white leading-none"></div>
+                                    <span class="text-[10px] text-gray-500 mt-1">Pajak akan dikenakan saat checkout</span>
+                                </div>
+                                <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 md:px-10 rounded-xl shadow-lg shadow-orange-500/20 transition transform hover:scale-105 flex items-center gap-2 whitespace-nowrap">
+                        <span>Beli Sekarang</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-32"></div> <!-- Spacer for bottom widget -->
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 bg-black/20 pt-10 pb-6 mt-10">
+        <div class="container mx-auto px-6 text-center"><p class="text-gray-500 text-sm">&copy; 2024 Lumiastore Clone. All rights reserved.</p></div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50, duration: 800 });
+
+        // State Variables
+        let selectedItemData = null;
+        let selectedPaymentMethod = null;
+
+        // Data Game
+        const games = {
+            'mlbb': { 
+                name: 'Mobile Legends: Bang Bang', icon: '⚔️', currency: 'Diamonds',
+                options: [
+                    { name: 'Weekly Diamond Pass', amount: '', bonus: 'Misi Harian', price: 'Rp 27.550', oldPrice: 'Rp 30.450', discount: '-10%', bestSeller: true, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760334656140_193e31c0-9b16-4a9a-8df0-325d1c1db8de.png' },
+                    { name: 'Twilight Pass', amount: '', bonus: 'Benefit Season', price: 'Rp 150.000', oldPrice: 'Rp 214.300', discount: '-30%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335038245_3d8b7393-b796-4ba7-be61-0bccdeb678a6.png' },
+                    { name: '5 Diamonds', amount: '5', bonus: '', price: 'Rp 1.423', oldPrice: 'Rp 1.575', discount: '-10%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335243336_d27fd29a-179a-4ee6-b175-5cc2b362ee71.png' },
+                    { name: '12 Diamonds', amount: '12', bonus: '(11 + 1 Bonus)', price: 'Rp 3.323', oldPrice: 'Rp 5.000', discount: '-34%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335243055_bae436c2-e45c-42d9-b5c6-1d524656679e.png' },
+                    { name: '28 Diamonds', amount: '28', bonus: '(25 + 3 Bonus)', price: 'Rp 7.600', oldPrice: 'Rp 11.450', discount: '-34%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335257146_885db790-4ace-4d8c-9623-e86a4fbe1b45.png' },
+                    { name: '59 Diamonds', amount: '59', bonus: '(53 + 6 Bonus)', price: 'Rp 15.200', oldPrice: 'Rp 22.900', discount: '-34%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335251289_024e5af6-1940-4b03-a58c-e2cebd87f53a.png' },
+                    { name: '85 Diamonds', amount: '85', bonus: '(77 + 8 Bonus)', price: 'Rp 21.850', oldPrice: 'Rp 32.900', discount: '-34%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335250982_614292cd-53b6-4fa4-a788-dfd7a536a01a.png' },
+                    { name: '170 Diamonds', amount: '170', bonus: '(154 + 16 Bonus)', price: 'Rp 43.700', oldPrice: 'Rp 65.800', discount: '-34%', bestSeller: false, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335250700_36de8ce9-3097-4744-b88a-cda2977a143f.png' },
+                    { name: '296 Diamonds', amount: '296', bonus: '(256 + 40 Bonus)', price: 'Rp 76.000', oldPrice: 'Rp 114.300', discount: '-34%', bestSeller: true, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335250416_094389b1-65ae-47ac-bf91-44284a7f0cd0.png' },
+                    { name: '408 Diamonds', amount: '408', bonus: '(367 + 41 Bonus)', price: 'Rp 104.500', oldPrice: 'Rp 115.500', discount: '-10%', bestSeller: true, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760335250134_f16754c9-d0f3-42c0-83f8-6fc6e30e1d22.png' },
+                ]
+            },
+            'freefire': { 
+                name: 'Free Fire', icon: '🔥', currency: 'Diamonds',
+                options: [
+                    { amount: '5', bonus: '', price: 'Rp 1.000', oldPrice: '', discount: '', bestSeller: false },
+                    { amount: '12', bonus: '', price: 'Rp 2.000', oldPrice: '', discount: '', bestSeller: false },
+                    { amount: '70', bonus: '', price: 'Rp 10.000', oldPrice: 'Rp 12.000', discount: '-17%', bestSeller: true },
+                    { amount: '140', bonus: '', price: 'Rp 20.000', oldPrice: '', discount: '', bestSeller: false },
+                    { amount: '355', bonus: '', price: 'Rp 50.000', oldPrice: 'Rp 55.000', discount: '-10%', bestSeller: true },
+                    { amount: '720', bonus: '', price: 'Rp 100.000', oldPrice: '', discount: '', bestSeller: false },
+                ]
+            },
+            'genshin': { 
+                name: 'Genshin Impact', icon: '✨', currency: 'Crystals',
+                options: [
+                    { amount: '60', bonus: '', price: 'Rp 16.000', oldPrice: '', discount: '', bestSeller: false },
+                    { amount: '330', bonus: '(300 + 30)', price: 'Rp 79.000', oldPrice: 'Rp 85.000', discount: '-7%', bestSeller: true },
+                    { amount: '1090', bonus: '(980 + 110)', price: 'Rp 249.000', oldPrice: '', discount: '', bestSeller: false },
+                    { amount: '2240', bonus: '(1980 + 260)', price: 'Rp 479.000', oldPrice: 'Rp 500.000', discount: '-4%', bestSeller: true },
+                ]
+            },
+            'pubg': { name: 'PUBG Mobile', icon: '🔫', currency: 'UC' },
+            'valorant': { name: 'Valorant', icon: '🎯', currency: 'Points' },
+            'codm': { name: 'Call of Duty: Mobile', icon: '🎖️', currency: 'CP' },
+            'lol': { name: 'League of Legends: Wild Rift', icon: '⚔️', currency: 'Wild Cores' },
+            'steam': { name: 'Steam Wallet', icon: '🎮', currency: 'IDR' },
+            'roblox': { name: 'Roblox', icon: '🟥', currency: 'Robux' },
+            'gplay': { name: 'Google Play', icon: '▶️', currency: 'IDR' }
+        };
+
+        // Logic untuk mengubah konten berdasarkan URL
+        const params = new URLSearchParams(window.location.search);
+        const gameId = params.get('game') || 'mlbb'; // Default ke MLBB jika tidak ada
+        const data = games[gameId];
+
+        if (data) {
+            document.title = `Top Up ${data.name} | Lumiastore`;
+            document.getElementById('game-title').textContent = data.name;
+            document.getElementById('game-icon').textContent = data.icon;
+            document.querySelectorAll('.currency-name').forEach(el => el.textContent = data.currency);
+            
+            // Render Options
+            const container = document.getElementById('nominal-options');
+            container.innerHTML = '';
+            
+            // Default options if not specified
+            const options = data.options || [
+                { amount: '10', bonus: '', price: 'Rp 10.000', oldPrice: '', discount: '', bestSeller: false },
+                { amount: '50', bonus: '', price: 'Rp 50.000', oldPrice: 'Rp 55.000', discount: '-10%', bestSeller: true },
+                { amount: '100', bonus: '', price: 'Rp 100.000', oldPrice: '', discount: '', bestSeller: false },
+                { amount: '500', bonus: '', price: 'Rp 500.000', oldPrice: 'Rp 550.000', discount: '-10%', bestSeller: true },
+            ];
+
+            options.forEach(opt => {
+                const isBestSeller = opt.bestSeller ? `
+                    <div class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl rounded-tr-lg z-10 shadow-sm flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M10 14.3917L15.15 17.5L13.7834 11.6417L18.3334 7.70002L12.3417 7.19169L10 1.66669L7.65835 7.19169L1.66669 7.70002L6.21669 11.6417L4.85002 17.5L10 14.3917Z"/></svg>
+                        BEST SELLER
+                    </div>` : '';
+                
+                const discountInfo = opt.discount ? `
+                    <div class="flex items-center justify-end gap-2 mb-0.5">
+                        <span class="text-[10px] bg-white/10 text-white px-1.5 py-0.5 rounded font-bold border border-white/10">${opt.discount}</span>
+                        <span class="text-xs text-gray-400 line-through decoration-red-500/50">${opt.oldPrice}</span>
+                    </div>` : '<div class="h-5 mb-0.5"></div>';
+                
+                const bonusText = opt.bonus ? `<div class="text-xs text-gray-400">${opt.bonus}</div>` : '<div class="h-4"></div>';
+                const displayName = opt.name || `${opt.amount} ${data.currency}`;
+                const displayImg = opt.img ? `<img src="${opt.img}" class="w-10 h-10 object-contain" alt="${displayName}">` : `<span class="text-3xl">${data.icon}</span>`;
+
+                const card = `
+                <button class="glass p-3 rounded-xl option-card transition text-left group relative flex flex-col justify-between h-full hover:bg-white/10 overflow-visible" 
+                    onclick="selectOption(this)"
+                    data-name="${displayName}"
+                    data-bonus="${opt.bonus}"
+                    data-price="${opt.price}"
+                    data-old-price="${opt.oldPrice || ''}"
+                >
+                    ${isBestSeller}
+                    <div class="mb-2 flex items-start justify-between">
+                        <div class="flex-1 pr-2">
+                            <span class="font-bold text-sm md:text-base leading-tight block mb-1">${displayName}</span>
+                            ${bonusText}
+                        </div>
+                        <div class="flex-shrink-0">
+                            ${displayImg}
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-white/5 text-right">
+                        <span class="text-[10px] text-gray-400 block mb-0.5">Dari</span>
+                        <p class="text-sm md:text-base font-bold text-white group-hover:text-orange-400 transition-colors">${opt.price}</p>
+                        ${discountInfo}
+                    </div>
+                </button>`;
+                container.innerHTML += card;
+            });
+        }
+
+        // Skeleton Loading Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const skeleton = document.getElementById('skeleton-loader');
+                const content = document.getElementById('real-content');
+                
+                skeleton.style.opacity = '0'; 
+                setTimeout(() => {
+                    skeleton.classList.add('hidden');
+                    content.classList.remove('hidden');
+                    AOS.refresh(); 
+                }, 500);
+            }, 2000); 
+        });
+
+        function selectOption(element) {
+            document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Capture Data
+            selectedItemData = {
+                name: element.getAttribute('data-name'),
+                bonus: element.getAttribute('data-bonus'),
+                price: element.getAttribute('data-price'),
+                oldPrice: element.getAttribute('data-old-price')
+            };
+            updateBuyWidget();
+        }
+
+        function selectPayment(element) {
+            document.querySelectorAll('.payment-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Capture Payment Name (from the <p> tag inside)
+            selectedPaymentMethod = element.querySelector('p').innerText;
+            updateBuyWidget();
+        }
+
+        function updateBuyWidget() {
+            const widget = document.getElementById('buy-widget');
+            
+            if (selectedItemData && selectedPaymentMethod) {
+                // Populate Data
+                document.getElementById('widget-item-name').textContent = selectedItemData.name;
+                document.getElementById('widget-item-bonus').textContent = selectedItemData.bonus;
+                document.getElementById('widget-payment-method').textContent = selectedPaymentMethod;
+                document.getElementById('widget-payment-method-mobile').textContent = selectedPaymentMethod;
+                document.getElementById('widget-final-price').textContent = selectedItemData.price;
+
+                // Handle Discount/Savings Logic
+                const discountSection = document.getElementById('widget-discount-section');
+                if (selectedItemData.oldPrice) {
+                    discountSection.classList.remove('hidden');
+                    document.getElementById('widget-old-price').textContent = selectedItemData.oldPrice;
+                    
+                    // Simple parsing to calculate savings (removing non-digits)
+                    const priceNum = parseInt(selectedItemData.price.replace(/[^0-9]/g, ''));
+                    const oldPriceNum = parseInt(selectedItemData.oldPrice.replace(/[^0-9]/g, ''));
+                    const saved = oldPriceNum - priceNum;
+                    document.getElementById('widget-saved-amount').textContent = `Hemat Rp ${saved.toLocaleString('id-ID')}`;
+                } else {
+                    discountSection.classList.add('hidden');
+                }
+
+                // Show Widget
+                widget.classList.remove('translate-y-full');
+            }
+        }
+    </script>
+</body>
+</html>

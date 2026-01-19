@@ -1,0 +1,26 @@
+{
+  "name": "lumina-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:security": "node server/tests/security.test.js",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "node-fetch": "^2.7.0"
+  }
+}

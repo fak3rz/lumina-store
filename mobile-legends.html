@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=pages/mlbb.html">
+  <script>location.replace('pages/mlbb.html' + window.location.search);</script>
+  <title>Redirecting…</title>
+  <meta name="robots" content="noindex">
+</head>
+<body>
+  <p style="font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding:1rem;">Redirecting to <a href="pages/mlbb.html">pages/mlbb.html</a>…</p>
+</body>
+</html>
+<!-- This file is intentionally a simple redirect to the real page in /pages/mlbb.html -->
+    <nav class="fixed w-full z-50 glass-nav py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+            <div class="flex space-x-4 items-center">
+                <a href="index.html" class="text-sm font-medium text-gray-300 hover:text-white transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 pt-28 pb-10 max-w-5xl">
+        
+        <!-- SKELETON LOADER (Muncul Awal) -->
+        <div id="skeleton-loader" class="space-y-8 transition-opacity duration-500">
+            <!-- Header Skeleton -->
+            <div class="flex items-center space-x-6">
+                <div class="w-24 h-24 skeleton rounded-2xl"></div>
+                <div class="space-y-3">
+                    <div class="h-8 w-64 skeleton"></div>
+                    <div class="h-4 w-40 skeleton"></div>
+                </div>
+            </div>
+            <!-- Section 1 Skeleton -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="h-6 w-48 skeleton"></div>
+                <div class="flex gap-4">
+                    <div class="h-12 w-3/4 skeleton"></div>
+                    <div class="h-12 w-1/4 skeleton"></div>
+                </div>
+            </div>
+            <!-- Section 2 Skeleton -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="h-6 w-48 skeleton"></div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                    <div class="h-24 skeleton"></div><div class="h-24 skeleton"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REAL CONTENT (Muncul setelah loading) -->
+        <div id="real-content" class="hidden space-y-8">
+            <!-- Header -->
+            <div class="flex items-center space-x-6" data-aos="fade-down">
+                <div class="w-24 h-24 rounded-2xl overflow-hidden shadow-lg border border-white/10 relative group">
+                    <div class="absolute inset-0 bg-yellow-500/20 group-hover:bg-transparent transition"></div>
+                    <div class="w-full h-full bg-gradient-to-br from-blue-900 to-black flex items-center justify-center text-4xl">⚔️</div>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold">Mobile Legends: Bang Bang</h1>
+                    <p class="text-blue-400 flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Instant Delivery</p>
+                </div>
+            </div>
+
+            <!-- Step 1: Input ID -->
+            <div class="glass p-6 rounded-2xl relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">1</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Masukkan User ID</h2>
+                <div class="flex gap-4 flex-col md:flex-row">
+                    <div class="relative w-full md:w-3/4">
+                        <input type="text" placeholder="User ID" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition text-white">
+                    </div>
+                    <div class="relative w-full md:w-1/4">
+                        <input type="text" placeholder="(Zone ID)" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition text-white">
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3 ml-1 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Klik menu profil di kiri atas layar utama game untuk melihat ID Anda.
+                </p>
+            </div>
+
+            <!-- Step 2: Nominal -->
+            <div class="glass p-6 rounded-2xl relative" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">2</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Pilih Nominal Top Up</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <button class="glass p-4 rounded-xl option-card transition text-left group" onclick="selectOption(this)">
+                        <div class="flex items-center justify-between mb-2"><span class="font-bold text-lg">5 Diamonds</span><span class="text-2xl">💎</span></div>
+                        <p class="text-sm text-gray-400 group-hover:text-orange-400">Rp 1.500</p>
+                    </button>
+                    <button class="glass p-4 rounded-xl option-card transition text-left group" onclick="selectOption(this)">
+                        <div class="flex items-center justify-between mb-2"><span class="font-bold text-lg">12 Diamonds</span><span class="text-2xl">💎</span></div>
+                        <p class="text-sm text-gray-400 group-hover:text-orange-400">Rp 3.800</p>
+                    </button>
+                    <button class="glass p-4 rounded-xl option-card transition text-left group selected" onclick="selectOption(this)">
+                        <div class="flex items-center justify-between mb-2"><span class="font-bold text-lg">86 Diamonds</span><span class="text-2xl">💎</span></div>
+                        <p class="text-sm text-gray-400 group-hover:text-orange-400">Rp 23.000</p>
+                    </button>
+                    <button class="glass p-4 rounded-xl option-card transition text-left group" onclick="selectOption(this)">
+                        <div class="flex items-center justify-between mb-2"><span class="font-bold text-lg">172 Diamonds</span><span class="text-2xl">💎</span></div>
+                        <p class="text-sm text-gray-400 group-hover:text-orange-400">Rp 46.000</p>
+                    </button>
+                    <button class="glass p-4 rounded-xl option-card transition text-left group" onclick="selectOption(this)">
+                        <div class="flex items-center justify-between mb-2"><span class="font-bold text-lg">257 Diamonds</span><span class="text-2xl">💎</span></div>
+                        <p class="text-sm text-gray-400 group-hover:text-orange-400">Rp 68.000</p>
+                    </button>
+                    <button class="glass p-4 rounded-xl option-card transition text-left group" onclick="selectOption(this)">
+                        <div class="flex items-center justify-between mb-2"><span class="font-bold text-lg">706 Diamonds</span><span class="text-2xl">💎</span></div>
+                        <p class="text-sm text-gray-400 group-hover:text-orange-400">Rp 185.000</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="glass p-6 rounded-2xl relative" data-aos="fade-up" data-aos-delay="300">
+                <div class="absolute top-0 left-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">3</div>
+                <h2 class="text-xl font-bold mb-4 ml-4">Pilih Pembayaran</h2>
+                <div class="space-y-3">
+                    <div class="glass p-4 rounded-xl flex items-center justify-between hover:bg-white/5 cursor-pointer transition border border-transparent hover:border-orange-500">
+                        <div class="flex items-center gap-4"><div class="w-12 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-xs">DANA</div><div><p class="font-bold">DANA</p><p class="text-xs text-gray-400">Potongan otomatis</p></div></div><span class="font-bold text-orange-400">Rp 23.000</span>
+                    </div>
+                    <div class="glass p-4 rounded-xl flex items-center justify-between hover:bg-white/5 cursor-pointer transition border border-transparent hover:border-orange-500">
+                        <div class="flex items-center gap-4"><div class="w-12 h-8 bg-green-600 rounded flex items-center justify-center font-bold text-xs">GOPAY</div><div><p class="font-bold">GoPay</p><p class="text-xs text-gray-400">Scan QR</p></div></div><span class="font-bold text-orange-400">Rp 23.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Buy Button -->
+            <div class="fixed bottom-0 left-0 w-full glass-nav p-4 z-40 md:relative md:bg-transparent md:border-none md:p-0 md:glass-none" data-aos="fade-up" data-aos-delay="400">
+                <div class="container mx-auto flex md:justify-end">
+                    <button class="w-full md:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-orange-500/30 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                        <span>Beli Sekarang</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="h-20 md:hidden"></div>
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 bg-black/20 pt-10 pb-6 mt-10">
+        <div class="container mx-auto px-6 text-center"><p class="text-gray-500 text-sm">&copy; 2024 Lumiastore Clone. All rights reserved.</p></div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50, duration: 800 });
+
+        // Skeleton Loading Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const skeleton = document.getElementById('skeleton-loader');
+                const content = document.getElementById('real-content');
+                
+                skeleton.style.opacity = '0'; // Fade out skeleton
+                setTimeout(() => {
+                    skeleton.classList.add('hidden');
+                    content.classList.remove('hidden');
+                    AOS.refresh(); // Refresh animasi scroll
+                }, 500);
+            }, 2000); // Loading selama 2 detik
+        });
+
+        function selectOption(element) {
+            document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+    </script>
+</body>
+</html>

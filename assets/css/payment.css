@@ -1,0 +1,20 @@
+/* Styles specific for payment pages */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+body { font-family: 'Inter', sans-serif; }
+/* Skeleton */
+.skeleton { background: rgba(255,255,255,0.06); position: relative; overflow: hidden; border-radius: 0.75rem; }
+.skeleton::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; transform: translateX(-100%); background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.12) 60%, rgba(255, 255, 255, 0)); animation: shimmer 1.8s infinite; }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+.option-card { transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; background: rgba(255,255,255,0.02); }
+.option-card:hover { border-color: #f97316; background: rgba(249, 115, 22, 0.08); transform: translateY(-2px); }
+.option-card.selected { border-color: #f97316; background: rgba(249, 115, 22, 0.16); position: relative; }
+.option-card.selected::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: #f97316; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 20; }
+
+.payment-card { transition: all 0.25s ease; border-radius: 0.75rem; background: rgba(255,255,255,0.02); }
+.payment-card:hover { border-color: #f97316; background: rgba(249, 115, 22, 0.08); transform: translateY(-2px); }
+.payment-card.selected { border-color: #f97316; background: rgba(249, 115, 22, 0.16); position: relative; }
+.payment-card.selected::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: #f97316; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+
+.best-seller-flag { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10px 50%); }
+```

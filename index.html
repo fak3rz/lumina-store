@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumiastore Clone | Game Top-up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="antialiased relative">
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+            <div class="flex flex-1 mx-10 justify-center">
+                <div class="relative w-full max-w-md block">
+                    <input id="desktop-search-input" type="text" placeholder="Search games..." class="w-full bg-white/10 border border-white/10 rounded-full py-2 px-5 text-sm focus:outline-none focus:bg-white/20 transition text-white placeholder-gray-400" autocomplete="off" data-testid="search-input">
+                    <div id="search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-black/80 text-white rounded-lg shadow-lg overflow-hidden z-50"></div>
+                    <svg class="w-4 h-4 absolute right-4 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </div>
+            <div class="flex space-x-4 items-center">
+                <!-- Mobile search toggle -->
+                <button id="search-toggle" class="md:hidden text-gray-300 hover:text-white p-2 rounded-full" aria-label="Open search">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+                <!-- Desktop search icon -->
+                <button id="search-toggle-desktop" class="hidden md:inline-flex text-gray-300 hover:text-white p-2 rounded-full" aria-label="Focus search">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+                <div id="nav-auth" class="flex space-x-4 items-center">
+                    <button class="text-sm font-medium text-gray-300 hover:text-white transition" onclick="window.location.href='pages/login.html'">Log In</button>
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full text-sm font-bold transition" onclick="window.location.href='pages/register.html'">Sign Up</button>
+                </div>
+                <div id="nav-profile" class="relative hidden">
+                    <button id="profile-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center select-none">
+                        <span id="profile-letter">U</span>
+                    </button>
+                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 glass rounded-xl overflow-hidden border border-white/10">
+                        <div class="px-4 py-3 text-sm text-gray-300">
+                            <div class="font-bold text-white">Akun</div>
+                            <div id="profile-email" class="truncate"></div>
+                        </div>
+                        <div class="border-t border-white/10">
+                            <a href="pages/profile.html" class="block px-4 py-2 text-sm hover:bg-white/10">Profil</a>
+                            <a href="pages/topup.html" class="block px-4 py-2 text-sm hover:bg-white/10">Top Up</a>
+                            <a href="pages/faq.html" class="block px-4 py-2 text-sm hover:bg-white/10">FAQ</a>
+                            <button id="logout-btn" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10">Keluar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile search overlay -->
+    <div id="mobile-search" class="fixed top-20 left-0 right-0 px-6 py-3 bg-black/60 backdrop-blur z-50 hidden md:hidden">
+        <div class="relative max-w-md mx-auto">
+            <input id="mobile-search-input" type="text" placeholder="Search games..." class="w-full bg-white/10 border border-white/10 rounded-full py-2 px-5 text-sm focus:outline-none focus:bg-white/20 transition text-white placeholder-gray-400" autocomplete="off" data-testid="search-input">
+            <div id="mobile-search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-black/80 text-white rounded-lg shadow-lg overflow-hidden z-50"></div>
+            <button id="mobile-search-close" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition" aria-label="Close search">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Hero / Banner Section -->
+    <section id="home" class="pt-32 pb-10 relative overflow-hidden">
+        <div class="blob blob-3 rounded-full"></div>
+        <div class="container mx-auto px-6 z-10 relative">
+            <div class="glass rounded-2xl p-1 overflow-hidden relative" data-aos="fade-up">
+                <!-- Slider Track -->
+                <div id="slider-track" class="flex transition-transform duration-500 ease-out h-64 md:h-80 rounded-xl">
+                    <!-- Slide 1 -->
+                    <div class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-purple-900 to-blue-900 overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-40"></div>
+                        <div class="relative z-10 text-center">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4">Top Up Games Instantly</h2>
+                            <p class="text-xl text-gray-200">Fast, Safe, and Secure payment options.</p>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-red-900 to-orange-900 overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-40"></div>
+                        <div class="relative z-10 text-center">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4">Exclusive Promos</h2>
+                            <p class="text-xl text-gray-200">Get up to 50% bonus diamonds today!</p>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-green-900 to-teal-900 overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-40"></div>
+                        <div class="relative z-10 text-center">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4">New Games Added</h2>
+                            <p class="text-xl text-gray-200">Explore the latest titles in our catalog.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation Bullets -->
+            <div class="vueperslides__bullets vueperslides__bullets--outside flex justify-center mt-4" role="tablist" aria-label="Slideshow navigation">
+                <button class="vueperslides__bullet vueperslides__bullet--active" type="button" role="tab" aria-label="Slide 1" onclick="goToSlide(0)">
+                    <div class="default"><span>1</span></div>
+                </button>
+                <button class="vueperslides__bullet" type="button" role="tab" aria-label="Slide 2" onclick="goToSlide(1)">
+                    <div class="default"><span>2</span></div>
+                </button>
+                <button class="vueperslides__bullet" type="button" role="tab" aria-label="Slide 3" onclick="goToSlide(2)">
+                    <div class="default"><span>3</span></div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Grid Section -->
+    <section id="products" class="py-10 relative">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-end mb-12" data-aos="fade-right">
+                <div><h2 class="text-3xl font-bold mb-2">Popular Games</h2><p class="text-gray-400">Select a game to top up.</p></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                <!-- Game 1 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="mlbb" data-aos="fade-up" data-aos-delay="100" onclick="window.location.href='pages/topup.html?game=mlbb'">
+                    <div class="aspect-square bg-yellow-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">⚔️</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Mobile Legends</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Direct Top-up</p>
+                </div>
+                <!-- Game 2 -->
+                    <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="freefire" data-aos="fade-up" data-aos-delay="200" onclick="window.location.href='pages/topup.html?game=freefire'">
+                    <div class="absolute top-2 right-2 bg-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full z-10">PROMO</div>
+                    <div class="aspect-square bg-orange-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">🔥</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Free Fire</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Direct Top-up</p>
+                </div>
+                <!-- Game 3 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="genshin" data-aos="fade-up" data-aos-delay="300" onclick="window.location.href='pages/topup.html?game=genshin'">
+                    <div class="aspect-square bg-purple-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">✨</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Genshin Impact</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Crystals</p>
+                </div>
+                <!-- Game 4 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="pubg" data-aos="fade-up" data-aos-delay="400" onclick="window.location.href='pages/topup.html?game=pubg'">
+                    <div class="aspect-square bg-green-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">🔫</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">PUBG Mobile</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">UC Top-up</p>
+                </div>
+                <!-- Game 5 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="valorant" data-aos="fade-up" data-aos-delay="500" onclick="window.location.href='pages/topup.html?game=valorant'">
+                    <div class="aspect-square bg-red-600/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">🎯</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Valorant</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Points</p>
+                </div>
+                <!-- Game 6 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="codm" data-aos="fade-up" data-aos-delay="600" onclick="window.location.href='pages/topup.html?game=codm'">
+                    <div class="aspect-square bg-gray-700/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">🎖️</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Call of Duty</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">CP Top-up</p>
+                </div>
+                <!-- Game 7 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="lol" data-aos="fade-up" data-aos-delay="700" onclick="window.location.href='pages/topup.html?game=lol'">
+                    <div class="aspect-square bg-blue-600/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">⚔️</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">League of Legends</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Wild Cores</p>
+                </div>
+                <!-- Game 8 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="steam" data-aos="fade-up" data-aos-delay="800" onclick="window.location.href='pages/topup.html?game=steam'">
+                    <div class="aspect-square bg-blue-900/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">🎮</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Steam Wallet</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Voucher Code</p>
+                </div>
+                <!-- Game 9 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="roblox" data-aos="fade-up" data-aos-delay="900" onclick="window.location.href='pages/topup.html?game=roblox'">
+                    <div class="aspect-square bg-red-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">🟥</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Roblox</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Robux</p>
+                </div>
+                <!-- Game 10 -->
+                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="gplay" data-aos="fade-up" data-aos-delay="1000" onclick="window.location.href='pages/topup.html?game=gplay'">
+                    <div class="aspect-square bg-green-400/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="text-4xl">▶️</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center">Google Play</h3>
+                    <p class="text-xs text-center text-blue-400 mt-1">Gift Card</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="py-10 relative border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="glass rounded-2xl p-8 md:p-12" data-aos="fade-up">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-orange-500">Lumiastore: Website Top-up Game & Voucher Terpercaya</h2>
+                <div class="space-y-4 text-gray-300 leading-relaxed">
+                    <p>Jutaan gamer menggunakan Lumiastore setiap bulannya untuk melakukan pembelian kredit game secara lancar: tanpa registrasi ataupun log-in, dan kredit permainan akan ditambahkan secara instan. Top-up Mobile Legends, Free Fire, Ragnarok M, dan berbagai game lainnya!</p>
+                    <div class="grid md:grid-cols-3 gap-6 mt-8">
+                        <div>
+                            <h3 class="text-white font-bold text-lg mb-2">Bayar dalam hitungan detik</h3>
+                            <p class="text-sm">Hanya dibutuhkan beberapa detik saja untuk menyelesaikan pembayaran di Lumiastore karena situs kami berfungsi dengan baik dan mudah untuk digunakan.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-lg mb-2">Pengiriman Instan</h3>
+                            <p class="text-sm">Ketika Anda melakukan top-up di Lumiastore, item atau barang yang Anda beli akan selalu dikirim ke akun Anda secara instan dan cepat.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-lg mb-2">Metode Pembayaran Terbaik</h3>
+                            <p class="text-sm">Kami menawarkan begitu banyak pilihan pembayaran mulai dari potong pulsa, E-Wallet, Transfer Bank, dan pembayaran di mini market terdekat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="border-t border-white/10 bg-black/20 pt-10 pb-6 mt-10">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-500 text-sm">&copy; 2024 Lumiastore Clone. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
