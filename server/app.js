@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Static files: serve existing static from project root
-app.use(express.static(path.join(__dirname, '..')));
+app.use(express.static(path.join(__dirname, '..', 'legacy_static_site')));
 
 // SPA build: serve React auth pages on website routes
 const distDir = path.join(__dirname, '..', 'frontend', 'dist');

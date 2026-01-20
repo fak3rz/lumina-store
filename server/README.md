@@ -65,7 +65,7 @@ server/
 │   ├── OrderRepository.js
 │   ├── OtpRepository.js
 │   └── README.md       # Dokumentasi pola repository
-├── middleware/         # Middleware Express
+├── middlewares/        # Middleware Express
 │   └── captcha.js
 ├── routes/             # Definisi rute API
 │   └── index.js

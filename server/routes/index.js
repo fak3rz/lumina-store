@@ -7,7 +7,7 @@ const paymentController = require('../controllers/paymentController');
 const apiGamesController = require('../controllers/apiGamesController');
 const authController = require('../controllers/authController');
 const captchaController = require('../controllers/captchaController');
-const { captchaGuard } = require('../middleware/captcha');
+const { captchaGuard } = require('../middlewares/captcha');
 const config = require('../config');
 
 // MLBB
