@@ -11,7 +11,31 @@ class JsonFileRepository extends BaseRepository {
     super();
     this.dataDir = dataDir;
     this.filePath = path.join(dataDir, fileName);
-    this._ensureDataFile();
+    this._cache = {};
+    this._loadFromDisk();
+  }
+
+  /**
+   * Load data from disk into cache
+   * @private
+   */
+  _loadFromDisk() {
+    try {
+      if (fs.existsSync(this.filePath)) {
+        const content = fs.readFileSync(this.filePath, 'utf8');
+        this._cache = content ? JSON.parse(content) : {};
+      } else {
+        // Try to create file, but don't crash if we can't (read-only)
+        try {
+          this._ensureDataFile();
+        } catch (e) {
+          console.warn(`[Storage] Could not create file ${this.filePath} (likely read-only environment). Using in-memory storage.`);
+        }
+      }
+    } catch (error) {
+      console.error(`[Storage] Error reading file ${this.filePath}:`, error);
+      this._cache = {};
+    }
   }
 
   /**
@@ -28,33 +52,35 @@ class JsonFileRepository extends BaseRepository {
   }
 
   /**
-   * Read all data from file
+   * Read all data from memory (primary) or file
    * @returns {Object} Data object
    * @protected
    */
   _readAll() {
-    this._ensureDataFile();
-    try {
-      const content = fs.readFileSync(this.filePath, 'utf8');
-      return content ? JSON.parse(content) : {};
-    } catch (error) {
-      console.error(`Error reading file ${this.filePath}:`, error);
-      return {};
-    }
+    return this._cache;
   }
 
   /**
-   * Write data to file
+   * Write data to memory and try to persist to file
    * @param {Object} data - Data to write
    * @protected
    */
   _writeAll(data) {
-    this._ensureDataFile();
+    // 1. Update in-memory cache immediately
+    this._cache = data;
+
+    // 2. Try to persist to disk (best effort)
     try {
+      this._ensureDataFile();
       fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2));
     } catch (error) {
-      console.error(`Error writing file ${this.filePath}:`, error);
-      throw error;
+      // If read-only file system, just log and continue (data lives in memory)
+      if (error.code === 'EROFS' || error.syscall === 'open' || error.syscall === 'write') {
+        console.warn(`[Storage] Write failed (Read-Only File System). Data is held in memory only.`);
+      } else {
+        console.error(`Error writing file ${this.filePath}:`, error);
+        // Don't throw, so the app keeps working even if persistence fails
+      }
     }
   }
 
@@ -78,7 +104,7 @@ class JsonFileRepository extends BaseRepository {
   }
 
   // Default implementations (can be overridden by child classes)
-  
+
   async findById(id) {
     const data = this._readAll();
     return data[id] || null;
@@ -87,7 +113,7 @@ class JsonFileRepository extends BaseRepository {
   async findAll(filter = {}) {
     const data = this._readAll();
     const entities = Object.values(data);
-    
+
     // Simple filtering (can be extended)
     if (Object.keys(filter).length === 0) {
       return entities;
@@ -103,14 +129,14 @@ class JsonFileRepository extends BaseRepository {
   async create(entityData) {
     const data = this._readAll();
     const id = entityData.id || this._generateId();
-    
+
     const entity = {
       id,
       createdAt: this._getTimestamp(),
       updatedAt: this._getTimestamp(),
       ...entityData
     };
-    
+
     data[id] = entity;
     this._writeAll(data);
     return entity;
@@ -121,13 +147,13 @@ class JsonFileRepository extends BaseRepository {
     if (!data[id]) {
       return null;
     }
-    
+
     data[id] = {
       ...data[id],
       ...updates,
       updatedAt: this._getTimestamp()
     };
-    
+
     this._writeAll(data);
     return data[id];
   }
@@ -137,7 +163,7 @@ class JsonFileRepository extends BaseRepository {
     if (!data[id]) {
       return false;
     }
-    
+
     delete data[id];
     this._writeAll(data);
     return true;

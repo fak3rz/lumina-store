@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,44 +10,67 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../assets/css/payment.css">
 </head>
+
 <body class="antialiased relative min-h-screen">
   <div class="blob blob-1 rounded-full"></div>
   <div class="blob blob-2 rounded-full"></div>
   <nav class="fixed w-full z-50 glass-nav py-4">
     <div class="container mx-auto px-6 flex justify-between items-center">
-      <a href="../index.html" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
-      <a href="../index.html" class="text-sm font-medium text-gray-300 hover:text-white transition flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      <a href="../index.html" class="text-2xl font-bold tracking-tighter text-white"><span
+          class="text-orange-500">Lumia</span>store</a>
+      <a href="../index.html"
+        class="text-sm font-medium text-gray-300 hover:text-white transition flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
         Kembali ke Menu
       </a>
     </div>
   </nav>
-  <div class="fixed top-0 right-0 bottom-0 auth-card w-full md:w-[420px] px-6 md:px-8 py-8 pt-24 md:pt-28 overflow-auto">
-      <h1 class="auth-title mb-2">Masuk</h1>
-      <p class="auth-sub mb-6">Masukkan detail akun Anda.</p>
-      <form id="login-form" class="space-y-4">
+  <div
+    class="fixed top-0 right-0 bottom-0 auth-card w-full md:w-[420px] px-6 md:px-8 py-8 pt-24 md:pt-28 overflow-auto">
+    <h1 class="auth-title mb-2">Masuk</h1>
+    <p class="auth-sub mb-6">Masukkan detail akun Anda.</p>
+    <form id="login-form" class="space-y-4">
+      <div id="login-credentials" class="space-y-4">
         <div>
           <label class="text-sm text-gray-300">Email</label>
-          <input id="login-email" type="email" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500" required>
+          <input id="login-email" type="email"
+            class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500"
+            required>
         </div>
         <div>
           <div class="flex items-center justify-between">
             <label class="text-sm text-gray-300">Password</label>
             <a href="./forgot.html" class="text-xs text-blue-400 hover:text-blue-200">Lupa?</a>
           </div>
-          <input id="login-password" type="password" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500" required>
+          <input id="login-password" type="password"
+            class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500"
+            required>
         </div>
         <div>
           <label class="text-sm text-gray-300">Captcha</label>
           <div id="recaptcha" class="mt-2"></div>
         </div>
-        <div id="login-error" class="hidden text-red-400 text-sm"></div>
-        <button class="auth-btn text-white px-4 py-2 rounded-lg w-full font-semibold">Masuk</button>
-      </form>
-      <div class="mt-6 text-sm text-gray-300">
-        Belum punya akun? <a class="text-blue-400 hover:text-blue-200" href="./register.html">Daftar</a>
       </div>
+
+      <div id="login-otp-section" class="hidden space-y-4">
+        <div>
+          <label class="text-sm text-gray-300">Kode OTP (Cek Email)</label>
+          <input id="login-otp" type="text" placeholder="Masukkan 6 digit kode"
+            class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 text-center tracking-widest text-xl">
+          <p class="text-xs text-gray-400 mt-2">Kode dikirim ke email anda.</p>
+        </div>
+      </div>
+
+      <div id="login-error" class="hidden text-red-400 text-sm"></div>
+      <button id="login-btn" class="auth-btn text-white px-4 py-2 rounded-lg w-full font-semibold">Masuk</button>
+    </form>
+    <div class="mt-6 text-sm text-gray-300">
+      Belum punya akun? <a class="text-blue-400 hover:text-blue-200" href="./register.html">Daftar</a>
+    </div>
   </div>
   <script src="../assets/js/auth.js"></script>
 </body>
+
 </html>

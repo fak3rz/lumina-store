@@ -1,6 +1,6 @@
 async function postJSON(url, body) {
   const resp = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
-  const j = await resp.json().catch(()=>({}));
+  const j = await resp.json().catch(() => ({}));
   if (!resp.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + resp.status));
   return j;
 }
@@ -9,22 +9,22 @@ let recaptchaWidgetId = null;
 let recaptchaSiteKey = '';
 let mathCaptchaActive = false;
 let mathInputEl = null;
-function debounce(fn, wait) { let t = null; return function(...args){ clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), wait); }; }
+function debounce(fn, wait) { let t = null; return function (...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); }; }
 function renderRecaptcha() {
   const el = document.getElementById('recaptcha');
   if (!el || !window.grecaptcha || !recaptchaSiteKey) return;
   if (recaptchaWidgetId !== null) return;
   if (!document.body.contains(el)) return;
   try {
-  const w = el.offsetWidth || window.innerWidth;
-  const size = w < 330 ? 'compact' : 'normal';
-  recaptchaWidgetId = window.grecaptcha.render('recaptcha', { sitekey: recaptchaSiteKey, size });
+    const w = el.offsetWidth || window.innerWidth;
+    const size = w < 330 ? 'compact' : 'normal';
+    recaptchaWidgetId = window.grecaptcha.render('recaptcha', { sitekey: recaptchaSiteKey, size });
   } catch (_) { /* ignore render errors */ }
 }
 async function enableMathCaptcha() {
   try {
     const r = await fetch('/api/captcha/new');
-    const j = await r.json().catch(()=>({}));
+    const j = await r.json().catch(() => ({}));
     const wrap = document.getElementById('recaptcha');
     if (!wrap) return;
     const box = document.createElement('div');
@@ -46,7 +46,7 @@ async function enableMathCaptcha() {
 async function initRecaptcha() {
   try {
     const r = await fetch('/api/captcha/sitekey');
-    const j = await r.json().catch(()=>({}));
+    const j = await r.json().catch(() => ({}));
     recaptchaSiteKey = j && j.siteKey ? j.siteKey : '';
     const ready = () => renderRecaptcha();
     if (window.grecaptcha && window.grecaptcha.render) ready();
@@ -61,37 +61,92 @@ function bindLogin() {
   const email = document.getElementById('login-email');
   const password = document.getElementById('login-password');
   const err = document.getElementById('login-error');
+
+  // New elements for OTP flow
+  const credentialsDiv = document.getElementById('login-credentials');
+  const otpDiv = document.getElementById('login-otp-section');
+  const otpInput = document.getElementById('login-otp');
+  const loginBtn = document.getElementById('login-btn');
+
+  let isOtpMode = false;
+  let cachedEmail = '';
+
   if (!form) return;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     err && (err.textContent = '');
+    err && err.classList.add('hidden');
+
     try {
-      const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
-      const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
-      if (!recaptcha && !captchaVal) {
-        if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
-        const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+      if (!isOtpMode) {
+        // Step 1: Normal Login (Password)
+        const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
+        const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
+
+        if (!recaptcha && !captchaVal) {
+          if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
+          const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        const j = await postJSON('/api/auth/login', {
+          email: email.value.trim(),
+          password: password.value,
+          recaptcha,
+          captcha: captchaVal
+        });
+
+        if (j.otp_required) {
+          // Switch to OTP mode
+          isOtpMode = true;
+          cachedEmail = j.email; // Use email from response
+
+          credentialsDiv.classList.add('hidden');
+          otpDiv.classList.remove('hidden');
+          loginBtn.textContent = 'Verifikasi Masuk';
+          otpInput.focus();
+
+          // Show message from server (e.g., "OTP Sent") via error/info box mechanism or internal alert?
+          // For now, let's just proceed. The UI says "Cek Email".
+        } else {
+          // Direct login (should not happen with new logic, but handled)
+          localStorage.setItem('lumi_token', j.token);
+          try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) { }
+          location.href = '/index.html';
+        }
+      } else {
+        // Step 2: Verify OTP
+        const code = otpInput.value.trim();
+        if (!code) throw new Error('Silakan masukkan kode OTP');
+
+        const j = await postJSON('/api/auth/login/verify', {
+          email: cachedEmail,
+          code
+        });
+
+        localStorage.setItem('lumi_token', j.token);
+        try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) { }
+        location.href = '/index.html';
       }
-      const j = await postJSON('/api/auth/login', { email: email.value.trim(), password: password.value, recaptcha, captcha: captchaVal });
-      localStorage.setItem('lumi_token', j.token);
-      try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) {}
-      location.href = '/index.html';
     } catch (e2) {
       if (err) {
         const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
         err.textContent = msg.includes('captcha') ? 'Harap selesaikan verifikasi captcha' : (e2.message || 'Login gagal');
         err.classList.remove('hidden');
       }
-      try {
-        const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
-        if (msg.includes('belum terverifikasi')) {
-          const em = email.value.trim();
-          localStorage.setItem('pending_email', em);
-          await postJSON('/api/auth/request-otp', { email: em, purpose: 'verify' });
-          location.href = '/pages/verify-otp.html';
-        }
-      } catch (_) {}
+
+      // Handle "Unverified Account" special case (only relevant during Step 1)
+      if (!isOtpMode) {
+        try {
+          const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
+          if (msg.includes('belum terverifikasi')) {
+            const em = email.value.trim();
+            localStorage.setItem('pending_email', em);
+            await postJSON('/api/auth/request-otp', { email: em, purpose: 'verify' });
+            location.href = '/pages/verify-otp.html';
+          }
+        } catch (_) { }
+      }
     }
   });
 }

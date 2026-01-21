@@ -24,6 +24,7 @@ router.get('/captcha/sitekey', (req, res) => captchaController.sitekey(req, res)
 // Auth
 router.post('/auth/register', captchaGuard, (req, res) => authController.register(req, res));
 router.post('/auth/login', captchaGuard, (req, res) => authController.login(req, res));
+router.post('/auth/login/verify', captchaGuard, (req, res) => authController.verifyLogin(req, res));
 router.post('/auth/request-otp', captchaGuard, (req, res) => authController.requestOtp(req, res));
 router.post('/auth/verify-otp', captchaGuard, (req, res) => authController.verifyOtp(req, res));
 router.post('/auth/reset-password', captchaGuard, (req, res) => authController.resetPassword(req, res));
