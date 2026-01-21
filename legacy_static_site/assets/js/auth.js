@@ -43,6 +43,49 @@ async function enableMathCaptcha() {
     mathCaptchaActive = true;
   } catch (_) { mathCaptchaActive = false; }
 }
+
+// OTP Input Helper Functions
+function setupOtpInput(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const inputs = container.querySelectorAll('input[type="text"]');
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      const value = e.target.value;
+      if (value.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !e.target.value && index > 0) {
+        inputs[index - 1].focus();
+      }
+    });
+
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const pastedData = e.clipboardData.getData('text').slice(0, 6);
+      pastedData.split('').forEach((char, i) => {
+        if (inputs[index + i]) {
+          inputs[index + i].value = char;
+        }
+      });
+      const lastFilledIndex = Math.min(index + pastedData.length - 1, inputs.length - 1);
+      inputs[lastFilledIndex].focus();
+    });
+  });
+}
+
+function getOtpValue(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return '';
+
+  const inputs = container.querySelectorAll('input[type="text"]');
+  return Array.from(inputs).map(input => input.value).join('');
+}
+
 async function initRecaptcha() {
   try {
     const r = await fetch('/api/captcha/sitekey');
@@ -62,15 +105,6 @@ function bindLogin() {
   const password = document.getElementById('login-password');
   const err = document.getElementById('login-error');
 
-  // New elements for OTP flow
-  const credentialsDiv = document.getElementById('login-credentials');
-  const otpDiv = document.getElementById('login-otp-section');
-  const otpInput = document.getElementById('login-otp');
-  const loginBtn = document.getElementById('login-btn');
-
-  let isOtpMode = false;
-  let cachedEmail = '';
-
   if (!form) return;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -78,56 +112,30 @@ function bindLogin() {
     err && err.classList.add('hidden');
 
     try {
-      if (!isOtpMode) {
-        // Step 1: Normal Login (Password)
-        const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
-        const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
+      // Verify credentials and request OTP
+      const recaptcha = recaptchaWidgetId !== null && window.grecaptcha ? window.grecaptcha.getResponse(recaptchaWidgetId) : '';
+      const captchaVal = mathCaptchaActive && mathInputEl ? mathInputEl.value.trim() : '';
 
-        if (!recaptcha && !captchaVal) {
-          if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
-          const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        const j = await postJSON('/api/auth/login', {
-          email: email.value.trim(),
-          password: password.value,
-          recaptcha,
-          captcha: captchaVal
-        });
-
-        if (j.otp_required) {
-          // Switch to OTP mode
-          isOtpMode = true;
-          cachedEmail = j.email; // Use email from response
-
-          credentialsDiv.classList.add('hidden');
-          otpDiv.classList.remove('hidden');
-          loginBtn.textContent = 'Verifikasi Masuk';
-          otpInput.focus();
-
-          // Show message from server (e.g., "OTP Sent") via error/info box mechanism or internal alert?
-          // For now, let's just proceed. The UI says "Cek Email".
-        } else {
-          // Direct login (should not happen with new logic, but handled)
-          localStorage.setItem('lumi_token', j.token);
-          try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) { }
-          location.href = '/index.html';
-        }
-      } else {
-        // Step 2: Verify OTP
-        const code = getOtpValue('login-otp-inputs');
-        if (code.length < 6) throw new Error('Silakan masukkan 6 digit kode OTP');
-
-        const j = await postJSON('/api/auth/login/verify', {
-          email: cachedEmail,
-          code
-        });
-
-        localStorage.setItem('lumi_token', j.token);
-        try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) { }
-        location.href = '/index.html';
+      if (!recaptcha && !captchaVal) {
+        if (err) { err.textContent = 'Harap selesaikan verifikasi captcha'; err.classList.remove('hidden'); }
+        const el = document.getElementById('recaptcha'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
       }
+
+      // Request login OTP
+      const j = await postJSON('/api/auth/request-login-otp', {
+        email: email.value.trim(),
+        password: password.value,
+        recaptcha,
+        captcha: captchaVal
+      });
+
+      // Store email for OTP verification page
+      localStorage.setItem('login_email', email.value.trim());
+
+      // Redirect to login OTP page
+      location.href = '/pages/login-otp.html';
+
     } catch (e2) {
       if (err) {
         const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
@@ -135,18 +143,16 @@ function bindLogin() {
         err.classList.remove('hidden');
       }
 
-      // Handle "Unverified Account" special case (only relevant during Step 1)
-      if (!isOtpMode) {
-        try {
-          const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
-          if (msg.includes('belum terverifikasi')) {
-            const em = email.value.trim();
-            localStorage.setItem('pending_email', em);
-            await postJSON('/api/auth/request-otp', { email: em, purpose: 'verify' });
-            location.href = '/pages/verify-otp.html';
-          }
-        } catch (_) { }
-      }
+      // Handle "Unverified Account" special case
+      try {
+        const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
+        if (msg.includes('belum terverifikasi')) {
+          const em = email.value.trim();
+          localStorage.setItem('pending_email', em);
+          await postJSON('/api/auth/request-otp', { email: em, purpose: 'verify' });
+          location.href = '/pages/verify-otp.html';
+        }
+      } catch (_) { }
     }
   });
 }
@@ -198,8 +204,8 @@ function bindForgot() {
         return;
       }
       await postJSON('/api/auth/request-otp', { email: email.value.trim(), purpose: 'reset', recaptcha, captcha: captchaVal });
-      localStorage.setItem('pending_email', email.value.trim());
-      location.href = '/pages/verify-otp.html?mode=reset';
+      localStorage.setItem('forgot_email', email.value.trim());
+      location.href = '/pages/forgot-otp.html';
     } catch (e2) {
       if (err) {
         const msg = (e2 && e2.message ? e2.message : '').toLowerCase();
@@ -248,6 +254,85 @@ function bindVerifyOtp() {
 }
 
 
+function bindLoginOtp() {
+  const form = document.getElementById('login-otp-form');
+  const emailEl = document.getElementById('login-otp-email');
+  const err = document.getElementById('login-otp-error');
+  const storedEmail = localStorage.getItem('login_email') || '';
+
+  if (emailEl && !emailEl.value) emailEl.value = storedEmail;
+  if (!form) return;
+
+  // Setup OTP inputs
+  setupOtpInput('login-otp-inputs');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    err && err.classList.add('hidden');
+
+    const email = emailEl.value.trim();
+    const code = getOtpValue('login-otp-inputs');
+
+    try {
+      if (code.length < 6) throw new Error('Silakan masukkan 6 digit kode OTP');
+
+      const j = await postJSON('/api/auth/verify-login-otp', { email, code });
+
+      // Store token and redirect
+      localStorage.setItem('lumi_token', j.token);
+      try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) { }
+      localStorage.removeItem('login_email');
+      location.href = '/index.html';
+    } catch (e2) {
+      if (err) {
+        err.textContent = e2.message || 'Verifikasi gagal';
+        err.classList.remove('hidden');
+      }
+    }
+  });
+}
+
+function bindForgotOtp() {
+  const form = document.getElementById('forgot-otp-form');
+  const emailEl = document.getElementById('forgot-otp-email');
+  const passwordEl = document.getElementById('forgot-new-password');
+  const err = document.getElementById('forgot-otp-error');
+  const storedEmail = localStorage.getItem('forgot_email') || '';
+
+  if (emailEl && !emailEl.value) emailEl.value = storedEmail;
+  if (!form) return;
+
+  // Setup OTP inputs
+  setupOtpInput('forgot-otp-inputs');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    err && err.classList.add('hidden');
+
+    const email = emailEl.value.trim();
+    const code = getOtpValue('forgot-otp-inputs');
+    const password = passwordEl.value;
+
+    try {
+      if (code.length < 6) throw new Error('Silakan masukkan 6 digit kode OTP');
+      if (!password) throw new Error('Password baru harus diisi');
+
+      await postJSON('/api/auth/reset-password', { email, code, password });
+
+      localStorage.removeItem('forgot_email');
+      alert('Password berhasil direset! Silakan login dengan password baru Anda.');
+      location.href = '/pages/login.html';
+    } catch (e2) {
+      if (err) {
+        err.textContent = e2.message || 'Reset password gagal';
+        err.classList.remove('hidden');
+      }
+    }
+  });
+}
+
 function startCooldown(btnId, duration = 60) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
@@ -273,28 +358,27 @@ function startCooldown(btnId, duration = 60) {
   }, 1000);
 }
 
-async function resendOtp(email, btnId) {
+async function resendOtp(email, btnId, purpose) {
   if (!email) return alert('Email tidak ditemukan');
   try {
     startCooldown(btnId);
-    // Determine purpose based on current page/mode
-    const isReset = location.href.includes('mode=reset') || location.href.includes('forgot');
-    const purpose = isReset ? 'reset' : 'login'; // 'login' is safe default for re-auth
 
-    // Check if we are in verify-otp.html (registration verification uses 'verify')
-    // Or login page (uses 'login')
-    // We can infer purpose or just try 'verify' if 'login' fails, but keeping it simple:
-    // If we are on verify-otp.html, we likely need 'verify' unless it's reset.
-    // If we are on login.html, we need 'login'.
-
+    // Determine the correct endpoint and purpose
+    let endpoint = '/api/auth/request-otp';
     let actualPurpose = purpose;
-    if (location.pathname.includes('verify-otp')) {
-      actualPurpose = isReset ? 'reset' : 'verify';
-    } else if (location.pathname.includes('login')) {
+
+    if (location.pathname.includes('login-otp')) {
+      // For login OTP, we need to use the special login OTP endpoint
+      endpoint = '/api/auth/request-login-otp';
       actualPurpose = 'login';
+    } else if (location.pathname.includes('forgot-otp')) {
+      actualPurpose = 'reset';
+    } else if (location.pathname.includes('verify-otp')) {
+      const isReset = location.href.includes('mode=reset');
+      actualPurpose = isReset ? 'reset' : 'verify';
     }
 
-    await postJSON('/api/auth/request-otp', { email, purpose: actualPurpose });
+    await postJSON(endpoint, { email, purpose: actualPurpose });
     alert('Kode OTP baru telah dikirim ke email Anda');
   } catch (e) {
     alert(e.message || 'Gagal mengirim ulang OTP');
@@ -309,7 +393,7 @@ async function resendOtp(email, btnId) {
 }
 
 function bindResend() {
-  // For verify-otp.html
+  // For verify-otp.html (registration)
   const resendBtn = document.getElementById('resend-btn');
   if (resendBtn) {
     resendBtn.addEventListener('click', (e) => {
@@ -319,20 +403,34 @@ function bindResend() {
     });
   }
 
-  // For login.html (dynamic)
-  const loginResendBtn = document.getElementById('login-resend-btn');
-  if (loginResendBtn) {
-    loginResendBtn.addEventListener('click', (e) => {
+  // For login-otp.html
+  const loginOtpResendBtn = document.getElementById('login-otp-resend-btn');
+  if (loginOtpResendBtn) {
+    loginOtpResendBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      // Logic handled inside bindLogin context usually, but here we need global access or event
-      // We can grab email from input
-      const email = document.getElementById('login-email').value;
-      resendOtp(email, 'login-resend-btn');
+      const email = document.getElementById('login-otp-email').value || localStorage.getItem('login_email');
+      resendOtp(email, 'login-otp-resend-btn', 'login');
+    });
+  }
+
+  // For forgot-otp.html
+  const forgotOtpResendBtn = document.getElementById('forgot-otp-resend-btn');
+  if (forgotOtpResendBtn) {
+    forgotOtpResendBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('forgot-otp-email').value || localStorage.getItem('forgot_email');
+      resendOtp(email, 'forgot-otp-resend-btn', 'reset');
     });
   }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   initRecaptcha();
-  bindLogin(); bindRegister(); bindForgot(); bindVerifyOtp(); bindResend();
+  bindLogin();
+  bindRegister();
+  bindForgot();
+  bindVerifyOtp();
+  bindLoginOtp();
+  bindForgotOtp();
+  bindResend();
 });

@@ -13,23 +13,38 @@ class AuthController {
     try {
       const { email, password } = req.body || {};
       if (!email || !password) return res.status(400).json({ ok: false, error: 'email & password required' });
-      const result = await authService.login(email, password);
 
-      // If OTP required (standard flow now), return instruction
-      if (result.otp_required) {
-        return res.json({
-          ok: true,
-          otp_required: true,
-          email: result.email,
-          message: result.message,
-          debug_otp: result.debug_otp
-        });
-      }
+      // Just validate credentials, don't send OTP yet
+      const result = await authService.validateCredentials(email, password);
+      res.json({ ok: true, message: 'Credentials valid' });
+    } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
+  }
 
-      // Fallback for legacy/testing (shouldn't happen with current service logic)
+  async requestLoginOtp(req, res) {
+    try {
+      const { email, password } = req.body || {};
+      if (!email || !password) return res.status(400).json({ ok: false, error: 'email & password required' });
+
+      // Validate credentials and send OTP
+      const result = await authService.requestLoginOtp(email, password);
+      res.json({
+        ok: true,
+        otp_sent: result.sent,
+        message: 'OTP sent to your email',
+        debug_otp: result.debug_otp
+      });
+    } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
+  }
+
+  async verifyLoginOtp(req, res) {
+    try {
+      const { email, code } = req.body || {};
+      if (!email || !code) return res.status(400).json({ ok: false, error: 'email & code required' });
+      const result = await authService.verifyLoginOtp(email, code);
       res.json({ ok: true, token: result.token, user: result.user });
     } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
   }
+
   async verifyLogin(req, res) {
     try {
       const { email, code } = req.body || {};

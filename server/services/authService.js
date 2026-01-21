@@ -18,6 +18,35 @@ class AuthService {
     return { user, sent: true };
   }
 
+  async validateCredentials(email, password) {
+    const user = await userModel.findByEmail(email);
+    if (!user) throw new Error('Email tidak ditemukan');
+
+    // Verify password
+    const ok = userModel.verifyPassword(user, password);
+    if (!ok) throw new Error('Password salah');
+
+    // Check if account is verified
+    if (!user.verified) throw new Error('Akun belum terverifikasi. Silakan cek email untuk kode verifikasi pendaftaran.');
+
+    return { valid: true };
+  }
+
+  async requestLoginOtp(email, password) {
+    // Validate credentials first
+    await this.validateCredentials(email, password);
+
+    // Generate and send OTP for Login
+    const code = genOtp();
+    await otpModel.create(email, code, 'login', 10);
+    const emailResult = await emailService.sendOtp(email, code, 'login');
+
+    return {
+      sent: true,
+      debug_otp: emailResult.sent ? undefined : code // Only for dev if email fails
+    };
+  }
+
   async login(email, password) {
     const user = await userModel.findByEmail(email);
     if (!user) throw new Error('Email tidak ditemukan');
