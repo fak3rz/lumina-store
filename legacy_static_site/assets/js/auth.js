@@ -239,7 +239,93 @@ function bindVerifyOtp() {
   });
 }
 
+let resendTimer = null;
+
+function startCooldown(btnId, duration = 60) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+
+  const originalText = btn.dataset.originalText || btn.textContent;
+  btn.dataset.originalText = originalText;
+  btn.disabled = true;
+  btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+  let left = duration;
+  btn.textContent = `Kirim Ulang (${left}s)`;
+
+  clearInterval(resendTimer);
+  resendTimer = setInterval(() => {
+    left--;
+    btn.textContent = `Kirim Ulang (${left}s)`;
+    if (left <= 0) {
+      clearInterval(resendTimer);
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  }, 1000);
+}
+
+async function resendOtp(email, btnId) {
+  if (!email) return alert('Email tidak ditemukan');
+  try {
+    startCooldown(btnId);
+    // Determine purpose based on current page/mode
+    const isReset = location.href.includes('mode=reset') || location.href.includes('forgot');
+    const purpose = isReset ? 'reset' : 'login'; // 'login' is safe default for re-auth
+
+    // Check if we are in verify-otp.html (registration verification uses 'verify')
+    // Or login page (uses 'login')
+    // We can infer purpose or just try 'verify' if 'login' fails, but keeping it simple:
+    // If we are on verify-otp.html, we likely need 'verify' unless it's reset.
+    // If we are on login.html, we need 'login'.
+
+    let actualPurpose = purpose;
+    if (location.pathname.includes('verify-otp')) {
+      actualPurpose = isReset ? 'reset' : 'verify';
+    } else if (location.pathname.includes('login')) {
+      actualPurpose = 'login';
+    }
+
+    await postJSON('/api/auth/request-otp', { email, purpose: actualPurpose });
+    alert('Kode OTP baru telah dikirim ke email Anda');
+  } catch (e) {
+    alert(e.message || 'Gagal mengirim ulang OTP');
+    clearInterval(resendTimer);
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.textContent = btn.dataset.originalText;
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  }
+}
+
+function bindResend() {
+  // For verify-otp.html
+  const resendBtn = document.getElementById('resend-btn');
+  if (resendBtn) {
+    resendBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('otp-email').value || localStorage.getItem('pending_email');
+      resendOtp(email, 'resend-btn');
+    });
+  }
+
+  // For login.html (dynamic)
+  const loginResendBtn = document.getElementById('login-resend-btn');
+  if (loginResendBtn) {
+    loginResendBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Logic handled inside bindLogin context usually, but here we need global access or event
+      // We can grab email from input
+      const email = document.getElementById('login-email').value;
+      resendOtp(email, 'login-resend-btn');
+    });
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   initRecaptcha();
-  bindLogin(); bindRegister(); bindForgot(); bindVerifyOtp();
+  bindLogin(); bindRegister(); bindForgot(); bindVerifyOtp(); bindResend();
 });
