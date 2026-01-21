@@ -116,8 +116,8 @@ function bindLogin() {
         }
       } else {
         // Step 2: Verify OTP
-        const code = otpInput.value.trim();
-        if (!code) throw new Error('Silakan masukkan kode OTP');
+        const code = getOtpValue('login-otp-inputs');
+        if (code.length < 6) throw new Error('Silakan masukkan 6 digit kode OTP');
 
         const j = await postJSON('/api/auth/login/verify', {
           email: cachedEmail,
@@ -212,7 +212,41 @@ function bindForgot() {
 
 
 
-let resendTimer = null;
+
+function bindVerifyOtp() {
+  const form = document.getElementById('otp-form');
+  const emailEl = document.getElementById('otp-email');
+  const err = document.getElementById('otp-error');
+  const mode = new URLSearchParams(location.search).get('mode') || 'verify';
+  const storedEmail = localStorage.getItem('pending_email') || '';
+  if (emailEl && !emailEl.value) emailEl.value = storedEmail;
+  if (!form) return;
+
+  // Setup inputs
+  setupOtpInput('otp-inputs');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err && (err.textContent = '');
+    const email = emailEl.value.trim();
+    const code = getOtpValue('otp-inputs');
+    try {
+      if (code.length < 6) throw new Error('Silakan masukkan 6 digit kode OTP');
+
+      if (mode === 'reset') {
+        const pwd = document.getElementById('new-password').value;
+        await postJSON('/api/auth/reset-password', { email, code, password: pwd });
+        location.href = '/pages/login.html';
+      } else {
+        await postJSON('/api/auth/verify-otp', { email, code });
+        location.href = '/pages/login.html';
+      }
+    } catch (e2) {
+      if (err) { err.textContent = e2.message || 'Verifikasi gagal'; err.classList.remove('hidden'); }
+    }
+  });
+}
+
 
 function startCooldown(btnId, duration = 60) {
   const btn = document.getElementById(btnId);
