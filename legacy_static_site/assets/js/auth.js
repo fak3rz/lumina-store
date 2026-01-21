@@ -210,34 +210,7 @@ function bindForgot() {
   });
 }
 
-function bindVerifyOtp() {
-  const form = document.getElementById('otp-form');
-  const emailEl = document.getElementById('otp-email');
-  const codeEl = document.getElementById('otp-code');
-  const err = document.getElementById('otp-error');
-  const mode = new URLSearchParams(location.search).get('mode') || 'verify';
-  const storedEmail = localStorage.getItem('pending_email') || '';
-  if (emailEl && !emailEl.value) emailEl.value = storedEmail;
-  if (!form) return;
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    err && (err.textContent = '');
-    const email = emailEl.value.trim();
-    const code = codeEl.value.trim();
-    try {
-      if (mode === 'reset') {
-        const pwd = document.getElementById('new-password').value;
-        await postJSON('/api/auth/reset-password', { email, code, password: pwd });
-        location.href = '/pages/login.html';
-      } else {
-        await postJSON('/api/auth/verify-otp', { email, code });
-        location.href = '/pages/login.html';
-      }
-    } catch (e2) {
-      if (err) { err.textContent = e2.message || 'Verifikasi gagal'; err.classList.remove('hidden'); }
-    }
-  });
-}
+
 
 let resendTimer = null;
 
