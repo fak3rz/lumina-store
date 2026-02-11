@@ -23,20 +23,9 @@ app.use('/assets', express.static(path.join(distDir, 'assets')));
 // API Routes
 app.use('/api', routes);
 
-// Serve legacy HTML pages for auth routes
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'legacy_static_site', 'pages', 'login.html'));
+// SPA fallback for client-side routing on website paths
+app.get(/^\/(login|register|forgot)(\/.*)?$/, (req, res) => {
+  res.sendFile(path.join(distDir, 'index.html'));
 });
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'legacy_static_site', 'pages', 'register.html'));
-});
-app.get('/forgot', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'legacy_static_site', 'pages', 'forgot.html'));
-});
-
-// SPA fallback (optional, can be removed if not using React router for other paths)
-// app.get(/^\/(login|register|forgot)(\/.*)?$/, (req, res) => {
-//   res.sendFile(path.join(distDir, 'index.html'));
-// });
 
 module.exports = app;
