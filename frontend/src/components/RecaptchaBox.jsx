@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 // Hardcoded for zero-latency loading (Public Site Key)
 const SITE_KEY = '6Lete2gsAAAAAN9lpnamn2feLC9TrotZg7G-7dxO';
@@ -8,30 +8,63 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
   const [mode, setMode] = useState('loading'); // 'recaptcha' | 'math' | 'loading'
   const widgetIdRef = useRef(null);
   const [challenge, setChallenge] = useState('');
+  const mountedRef = useRef(true);
 
+  // Fallback function
+  const initMath = useCallback(async () => {
+    if (!mountedRef.current) return;
+    try {
+      const r = await fetch('/api/captcha/new');
+      const j = await r.json().catch(() => ({}));
+      if (!mountedRef.current) return;
+      setChallenge(j.challenge || '12 + 3 =');
+      setMode('math');
+      if (typeof onFallbackReady === 'function') onFallbackReady(true);
+    } catch {
+      if (!mountedRef.current) return;
+      setMode('math');
+      setChallenge('12 + 3 =');
+      if (typeof onFallbackReady === 'function') onFallbackReady(true);
+    }
+  }, [onFallbackReady]);
+
+  // Global Safety Timeout (5 seconds)
   useEffect(() => {
-    let mounted = true;
+    mountedRef.current = true;
+    const timer = setTimeout(() => {
+      // If still loading after 5 seconds, FORCE fallback
+      if (mode === 'loading') {
+        console.warn('Global Recaptcha timeout (5s) -> Forcing Fallback');
+        initMath();
+      }
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      mountedRef.current = false;
+    };
+  }, [mode, initMath]);
+
+  // Main Init Logic
+  useEffect(() => {
     const POLLING_INTERVAL = 100;
-    const MAX_POLLING_TIME = 10000;
+    const MAX_POLLING_TIME = 8000;
 
     async function init() {
       try {
-        // Method 1: grecaptcha already exists
         if (window.grecaptcha && window.grecaptcha.render) {
           renderWidget();
           return;
         }
 
-        // Method 2: Script tag exists but grecaptcha not ready (Downloading)
         if (document.getElementById('recaptcha-lib')) {
           waitForGrecaptcha();
           return;
         }
 
-        // Method 3: Clean start, load script
         const callbackName = 'onRecaptchaLoad_' + Math.random().toString(36).substring(7);
         window[callbackName] = () => {
-          if (!mounted) return;
+          if (!mountedRef.current) return;
           renderWidget();
         };
 
@@ -46,24 +79,16 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
         };
         document.head.appendChild(s);
 
-        // Fallback safety if network hangs
-        setTimeout(() => {
-          if (mounted && mode === 'loading') {
-            console.warn('Recaptcha initial load timeout');
-            initMath();
-          }
-        }, 10000);
-
       } catch (e) {
         console.error('Recaptcha init error:', e);
-        await initMath();
+        initMath();
       }
     }
 
     function waitForGrecaptcha() {
       const startTime = Date.now();
       const interval = setInterval(() => {
-        if (!mounted) {
+        if (!mountedRef.current) {
           clearInterval(interval);
           return;
         }
@@ -72,8 +97,6 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
           renderWidget();
         } else if (Date.now() - startTime > MAX_POLLING_TIME) {
           clearInterval(interval);
-          console.warn('Recaptcha polling timeout');
-          initMath();
         }
       }, POLLING_INTERVAL);
     }
@@ -83,9 +106,8 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
 
       try {
         window.grecaptcha.ready(() => {
-          if (!mounted) return;
+          if (!mountedRef.current) return;
           if (containerRef.current && containerRef.current.innerHTML === '') {
-            setMode('recaptcha');
             try {
               widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
                 sitekey: SITE_KEY,
@@ -97,10 +119,11 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
                   initMath();
                 }
               });
+              // Set mode to recaptcha to clear the global timeout
+              setMode('recaptcha');
             } catch (renderErr) {
               console.error('Render call error:', renderErr);
-              // If render fails (e.g. duplicate), checking innerHTML usually prevents this,
-              // but as a fallback, we allow silent fail or math.
+              initMath();
             }
           }
         });
@@ -110,26 +133,8 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
       }
     }
 
-    async function initMath() {
-      try {
-        if (!mounted) return;
-        const r = await fetch('/api/captcha/new');
-        const j = await r.json().catch(() => ({}));
-        if (!mounted) return;
-        setChallenge(j.challenge || '12 + 3 =');
-        setMode('math');
-        if (typeof onFallbackReady === 'function') onFallbackReady(true);
-      } catch {
-        if (!mounted) return;
-        setMode('math');
-        setChallenge('12 + 3 =');
-        if (typeof onFallbackReady === 'function') onFallbackReady(true);
-      }
-    }
-
     init();
-    return () => { mounted = false; };
-  }, [onToken, onFallbackReady]);
+  }, [onToken, initMath]);
 
   if (mode === 'loading') return <div className="mt-4 text-sm text-slate-400">Memuat captcha...</div>;
   if (mode === 'recaptcha') return <div className="mt-4 flex justify-center"><div ref={containerRef} /></div>;
