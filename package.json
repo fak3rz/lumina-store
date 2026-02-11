@@ -13,7 +13,7 @@
     "test:security": "node server/tests/security.test.js",
     "audit": "npm audit",
     "audit:fix": "npm audit fix",
-    "postinstall": "cd frontend && npm install && npm run build"
+    "postinstall": "cd frontend && npm install --legacy-peer-deps && npm run build"
   },
   "keywords": [],
   "author": "",
