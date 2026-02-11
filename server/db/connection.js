@@ -1,38 +1,60 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 
-let isConnected = false;
+// Global cache to prevent multiple connections in Serverless environment
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
 
 /**
- * Connect to MongoDB Atlas
- * Handles connection events and retry logic
+ * Connect to MongoDB Atlas (Serverless Optimized)
  */
 async function connectDB() {
-    if (isConnected) return;
+    // If we have a connection and it's ready, return it.
+    if (cached.conn) {
+        return cached.conn;
+    }
 
     const uri = config.mongodb.uri;
     if (!uri) {
         console.warn('[MongoDB] MONGODB_URI not set — skipping database connection');
-        return;
+        // Return null instead of void to signal no connection
+        return null;
+    }
+
+    // If no promise yet, create one
+    if (!cached.promise) {
+        const opts = {
+            bufferCommands: true, // Allow buffering, but we await connection usually
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
+        };
+
+        console.log('[MongoDB] Connecting to MongoDB Atlas...');
+        cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
+            console.log('[MongoDB] ✅ Connected to MongoDB Atlas');
+            return mongoose;
+        }).catch((err) => {
+            console.error('[MongoDB] ❌ Connection error:', err.message);
+            throw err; // Re-throw to handle in caller
+        });
     }
 
     try {
-        await mongoose.connect(uri, {
-            // Mongoose 7+ uses these defaults, but being explicit
-            serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 45000,
-        });
-        isConnected = true;
-        console.log('[MongoDB] ✅ Connected to MongoDB Atlas');
-    } catch (error) {
-        console.error('[MongoDB] ❌ Connection failed:', error.message);
-        // Don't crash the app — allow fallback to JSON storage if needed
+        cached.conn = await cached.promise;
+    } catch (e) {
+        cached.promise = null; // Reset promise on failure so we can retry
+        console.error('[MongoDB] Failed to await connection:', e.message);
+        throw e;
     }
+
+    return cached.conn;
 }
 
-// Connection event listeners
+// Event listeners intact for logging (optional in serverless but good for debugging)
 mongoose.connection.on('disconnected', () => {
-    isConnected = false;
     console.warn('[MongoDB] Disconnected');
 });
 
