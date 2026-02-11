@@ -12,7 +12,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:security": "node server/tests/security.test.js",
     "audit": "npm audit",
-    "audit:fix": "npm audit fix"
+    "audit:fix": "npm audit fix",
+    "postinstall": "cd frontend && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
