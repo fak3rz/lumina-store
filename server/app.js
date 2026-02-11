@@ -13,6 +13,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Debug endpoint to verify deployment
+app.get('/api/version', (req, res) => {
+  res.json({
+    version: '1.0.1',
+    description: 'React Auth Switch',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Static files: serve existing static from project root
 app.use(express.static(path.join(__dirname, '..', 'legacy_static_site')));
 
