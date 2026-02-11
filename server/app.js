@@ -41,6 +41,27 @@ app.get('/api/version', (req, res) => {
   });
 });
 
+// TEMPORARY DEBUG: Check file structure on Vercel
+app.get('/debug-paths', (req, res) => {
+  const fs = require('fs');
+  const root = path.join(__dirname, '..');
+
+  let layout = {};
+  try {
+    layout['root'] = fs.readdirSync(root);
+    layout['legacy'] = fs.readdirSync(path.join(root, 'legacy_static_site'));
+  } catch (e) {
+    layout['error'] = e.message;
+  }
+
+  res.json({
+    __dirname,
+    cwd: process.cwd(),
+    resolvedStatic: path.join(__dirname, '..', 'legacy_static_site'),
+    layout
+  });
+});
+
 // API Routes
 app.use('/api', routes);
 
