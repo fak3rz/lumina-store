@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori Game | Lumiastore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .category-tab {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #ede9fe;
+            background: #fff;
+            color: #64748b;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+
+        .category-tab:hover {
+            border-color: #c4b5fd;
+            color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.08);
+        }
+
+        .category-tab.active {
+            background: #7c3aed;
+            color: #fff;
+            border-color: #7c3aed;
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+        }
+
+        .game-card {
+            background: #fff;
+            border: 1px solid #ede9fe;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Shine sweep */
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    transparent 0%,
+                    rgba(124, 58, 237, 0.04) 40%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    rgba(124, 58, 237, 0.04) 60%,
+                    transparent 100%);
+            transition: left 0.6s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .game-card:hover::after {
+            left: 130%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(124, 58, 237, 0.15),
+                0 0 0 1px rgba(124, 58, 237, 0.1);
+            border-color: #a78bfa;
+        }
+
+        .game-card:active {
+            transform: translateY(-2px) scale(0.98);
+            transition-duration: 0.1s;
+        }
+
+        .game-card .game-img {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 0.75rem;
+            object-fit: cover;
+            margin-bottom: 0.75rem;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .game-card:hover .game-img {
+            transform: scale(1.08);
+        }
+
+        .game-card h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+            transition: color 0.25s ease;
+        }
+
+        .game-card:hover h3 {
+            color: #7c3aed;
+        }
+
+        .game-card .publisher {
+            font-size: 0.75rem;
+            color: #a78bfa;
+            transition: color 0.25s ease;
+        }
+
+        .game-card:hover .publisher {
+            color: #7c3aed;
+        }
+
+        .game-card .currency-tag {
+            margin-top: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #7c3aed;
+            background: #f5f3ff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            transition: background 0.25s ease, letter-spacing 0.25s ease;
+        }
+
+        .game-card:hover .currency-tag {
+            background: #ede9fe;
+            letter-spacing: 0.1em;
+        }
+
+        .search-box {
+            background: #f5f3ff;
+            border: 1px solid #ede9fe;
+            border-radius: 9999px;
+            padding: 0.6rem 1.25rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+            max-width: 400px;
+            font-family: inherit;
+        }
+
+        .search-box:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .search-box::placeholder {
+            color: #a78bfa;
+        }
+
+        .count-badge {
+            font-size: 0.7rem;
+            background: #ede9fe;
+            color: #7c3aed;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #ede9fe;
+        }
+
+        .category-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .category-header .cat-icon {
+            font-size: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #a78bfa;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body class="antialiased relative" style="background:#fff;">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 py-4 glass-nav">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="../index.html" class="text-2xl font-bold tracking-tighter text-slate-800"><span
+                    class="text-purple-600">Lumia</span>store</a>
+            <div class="flex space-x-6 items-center">
+                <a href="../index.html"
+                    class="text-sm font-medium text-purple-400 hover:text-purple-600 transition">Home</a>
+                <a href="./category.html"
+                    class="text-sm font-medium text-purple-600 transition border-b-2 border-purple-600 pb-0.5">Kategori</a>
+                <div id="nav-auth" class="flex space-x-4 items-center">
+                    <button class="text-sm font-medium text-purple-600 hover:text-purple-800 transition"
+                        onclick="window.location.href='login.html'">Log In</button>
+                    <button
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-sm"
+                        onclick="window.location.href='register.html'">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <div class="container mx-auto px-6">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-slate-800 mb-2">Kategori Game & Produk</h1>
+                <p class="text-purple-400 mb-6">Pilih game atau produk favorit Anda untuk top-up</p>
+
+                <!-- Search + Tabs -->
+                <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+                    <input type="text" id="search-input" class="search-box" placeholder="🔍 Cari game atau produk...">
+                    <div class="flex gap-2 overflow-x-auto pb-1" id="category-tabs">
+                        <button class="category-tab active" data-cat="all">Semua</button>
+                        <!-- Tabs will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Grid -->
+            <div id="games-container">
+                <div class="flex items-center justify-center py-16">
+                    <div class="animate-pulse text-purple-400">Memuat data game...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="pt-8 pb-6" style="background:#faf8ff;">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-purple-300 text-sm">&copy; 2024 Lumiastore. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let allCategories = [];
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        async function loadGames() {
+            try {
+                const resp = await fetch('/api/games');
+                const json = await resp.json();
+                if (json.status === 1) {
+                    allCategories = json.data.categories;
+                    buildTabs();
+                    renderGames();
+                }
+            } catch (e) {
+                document.getElementById('games-container').innerHTML =
+                    '<div class="empty-state"><div class="icon">😕</div><p>Gagal memuat data game</p></div>';
+            }
+        }
+
+        function buildTabs() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = '<button class="category-tab active" data-cat="all">Semua</button>';
+            allCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-tab';
+                btn.dataset.cat = cat.id;
+                btn.textContent = cat.icon + ' ' + cat.name;
+                container.appendChild(btn);
+            });
+            container.querySelectorAll('.category-tab').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    container.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.dataset.cat;
+                    renderGames();
+                });
+            });
+        }
+
+        function renderGames() {
+            const container = document.getElementById('games-container');
+            const q = searchQuery.toLowerCase().trim();
+
+            let cats = activeCategory === 'all' ? allCategories : allCategories.filter(c => c.id === activeCategory);
+
+            let html = '';
+            let totalCount = 0;
+
+            cats.forEach(cat => {
+                let games = cat.games;
+                if (q) {
+                    games = games.filter(g =>
+                        g.name.toLowerCase().includes(q) ||
+                        g.publisher.toLowerCase().includes(q) ||
+                        g.currency.toLowerCase().includes(q) ||
+                        g.code.toLowerCase().includes(q)
+                    );
+                }
+                if (games.length === 0) return;
+                totalCount += games.length;
+
+                html += `
+                <div class="mb-10">
+                    <div class="category-header">
+                        <span class="cat-icon">${cat.icon}</span>
+                        <h2>${cat.name}</h2>
+                        <span class="count-badge">${games.length} produk</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            `;
+
+                games.forEach(g => {
+                    html += `
+                    <div class="game-card" onclick="window.location.href='topup.html?game=${g.code}'">
+                        <img class="game-img" src="${g.image}" alt="${g.name}" loading="lazy" onerror="this.style.display='none'">
+                        <h3>${g.name}</h3>
+                        <div class="publisher">${g.publisher}</div>
+                        <div class="currency-tag">${g.currency}</div>
+                    </div>
+                `;
+                });
+
+                html += '</div></div>';
+            });
+
+            if (totalCount === 0) {
+                html = `
+                <div class="empty-state">
+                    <div class="icon">🔍</div>
+                    <p class="text-lg font-medium mb-1">Tidak ditemukan</p>
+                    <p class="text-sm">Coba dengan kata kunci lain</p>
+                </div>
+            `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Search
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderGames();
+        });
+
+        loadGames().then(() => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && allCategories.some(c => c.id === hash)) {
+                activeCategory = hash;
+                const tabs = document.querySelectorAll('.category-tab');
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                    if (t.dataset.cat === hash) t.classList.add('active');
+                });
+                renderGames();
+            }
+        });
+    </script>
+</body>
+
+</html>

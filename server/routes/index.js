@@ -13,6 +13,17 @@ const config = require('../config');
 // MLBB
 router.get('/mlbb/lookup', (req, res) => gameController.lookup(req, res));
 
+// Games Catalog
+const gamesData = require('../data/games.json');
+router.get('/games', (req, res) => {
+  res.json({ status: 1, data: gamesData });
+});
+router.get('/games/:categoryId', (req, res) => {
+  const cat = gamesData.categories.find(c => c.id === req.params.categoryId);
+  if (!cat) return res.status(404).json({ status: 0, message: 'Category not found' });
+  res.json({ status: 1, data: cat });
+});
+
 // APIGames Integration
 router.get('/apigames/account', (req, res) => apiGamesController.getAccountInfo(req, res));
 router.get('/apigames/check-username', (req, res) => apiGamesController.checkUsername(req, res));

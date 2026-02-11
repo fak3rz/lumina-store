@@ -1,7 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { connectDB } = require('./db/connection');
 const routes = require('./routes');
+
+// Connect to MongoDB Atlas
+connectDB();
 
 const app = express();
 

@@ -1,0 +1,361 @@
+{
+    "categories": [
+        {
+            "id": "mobile-games",
+            "name": "Mobile Games",
+            "icon": "📱",
+            "games": [
+                {
+                    "code": "mobilelegend",
+                    "name": "Mobile Legends",
+                    "image": "/assets/img/games/mobilelegend.png",
+                    "publisher": "Moonton",
+                    "currency": "Diamonds"
+                },
+                {
+                    "code": "freefire",
+                    "name": "Free Fire",
+                    "image": "/assets/img/games/freefire.png",
+                    "publisher": "Garena",
+                    "currency": "Diamonds"
+                },
+                {
+                    "code": "genshin",
+                    "name": "Genshin Impact",
+                    "image": "/assets/img/games/genshin.png",
+                    "publisher": "miHoYo",
+                    "currency": "Genesis Crystal"
+                },
+                {
+                    "code": "pubgm",
+                    "name": "PUBG Mobile",
+                    "image": "/assets/img/games/pubgm.png",
+                    "publisher": "Tencent",
+                    "currency": "UC"
+                },
+                {
+                    "code": "codm",
+                    "name": "Call of Duty Mobile",
+                    "image": "/assets/img/games/codm.webp",
+                    "publisher": "Activision",
+                    "currency": "CP"
+                },
+                {
+                    "code": "lolwr",
+                    "name": "League of Legends: Wild Rift",
+                    "image": "/assets/img/games/lolwr.png",
+                    "publisher": "Riot Games",
+                    "currency": "Wild Cores"
+                },
+                {
+                    "code": "aov",
+                    "name": "Arena of Valor",
+                    "image": "/assets/img/games/aov.webp",
+                    "publisher": "Garena",
+                    "currency": "Voucher"
+                },
+                {
+                    "code": "hok",
+                    "name": "Honor of Kings",
+                    "image": "/assets/img/games/hok.png",
+                    "publisher": "TiMi Studio",
+                    "currency": "Tokens"
+                },
+                {
+                    "code": "honkaisr",
+                    "name": "Honkai: Star Rail",
+                    "image": "/assets/img/games/honkaisr.png",
+                    "publisher": "miHoYo",
+                    "currency": "Oneiric Shard"
+                },
+                {
+                    "code": "nikke",
+                    "name": "Nikke: Goddess of Victory",
+                    "image": "/assets/img/games/nikke.webp",
+                    "publisher": "Shift Up",
+                    "currency": "Gems"
+                },
+                {
+                    "code": "clash",
+                    "name": "Clash of Clans",
+                    "image": "/assets/img/games/clash.jpg",
+                    "publisher": "Supercell",
+                    "currency": "Gems"
+                },
+                {
+                    "code": "clashroyale",
+                    "name": "Clash Royale",
+                    "image": "/assets/img/games/clashroyale.webp",
+                    "publisher": "Supercell",
+                    "currency": "Gems"
+                },
+                {
+                    "code": "brawlstars",
+                    "name": "Brawl Stars",
+                    "image": "/assets/img/games/brawlstars.webp",
+                    "publisher": "Supercell",
+                    "currency": "Gems"
+                },
+                {
+                    "code": "dragonball",
+                    "name": "Dragon Ball Legends",
+                    "image": "/assets/img/games/dragonball.svg",
+                    "publisher": "Bandai Namco",
+                    "currency": "Chrono Crystal"
+                },
+                {
+                    "code": "ragnarokm",
+                    "name": "Ragnarok M",
+                    "image": "/assets/img/games/ragnarokm.webp",
+                    "publisher": "Gravity",
+                    "currency": "BCC"
+                },
+                {
+                    "code": "sausageman",
+                    "name": "Sausage Man",
+                    "image": "/assets/img/games/sausageman.svg",
+                    "publisher": "XD Inc",
+                    "currency": "Candy"
+                },
+                {
+                    "code": "blockman",
+                    "name": "Blockman Go",
+                    "image": "/assets/img/games/blockman.svg",
+                    "publisher": "Blockman GO",
+                    "currency": "GCubes"
+                },
+                {
+                    "code": "pointblank",
+                    "name": "Point Blank Strike",
+                    "image": "/assets/img/games/pointblank.svg",
+                    "publisher": "Zepetto",
+                    "currency": "PB Cash"
+                },
+                {
+                    "code": "zenless",
+                    "name": "Zenless Zone Zero",
+                    "image": "/assets/img/games/zenless.png",
+                    "publisher": "miHoYo",
+                    "currency": "Polychrome"
+                }
+            ]
+        },
+        {
+            "id": "pc-games",
+            "name": "PC / Console Games",
+            "icon": "🖥️",
+            "games": [
+                {
+                    "code": "valorant",
+                    "name": "Valorant",
+                    "image": "/assets/img/games/valorant.png",
+                    "publisher": "Riot Games",
+                    "currency": "VP"
+                },
+                {
+                    "code": "steam",
+                    "name": "Steam Wallet",
+                    "image": "/assets/img/games/steam.webp",
+                    "publisher": "Valve",
+                    "currency": "IDR Code"
+                },
+                {
+                    "code": "fortnite",
+                    "name": "Fortnite",
+                    "image": "/assets/img/games/fortnite.webp",
+                    "publisher": "Epic Games",
+                    "currency": "V-Bucks"
+                },
+                {
+                    "code": "roblox",
+                    "name": "Roblox",
+                    "image": "/assets/img/games/roblox.jpg",
+                    "publisher": "Roblox Corp",
+                    "currency": "Robux"
+                },
+                {
+                    "code": "minecraft",
+                    "name": "Minecraft",
+                    "image": "/assets/img/games/minecraft.webp",
+                    "publisher": "Mojang",
+                    "currency": "Minecoins"
+                },
+                {
+                    "code": "dota2",
+                    "name": "Dota 2",
+                    "image": "/assets/img/games/dota2.svg",
+                    "publisher": "Valve",
+                    "currency": "Steam Wallet"
+                },
+                {
+                    "code": "apexpc",
+                    "name": "Apex Legends",
+                    "image": "/assets/img/games/apexpc.webp",
+                    "publisher": "EA",
+                    "currency": "Apex Coins"
+                },
+                {
+                    "code": "lolpc",
+                    "name": "League of Legends PC",
+                    "image": "/assets/img/games/lolpc.webp",
+                    "publisher": "Riot Games",
+                    "currency": "RP"
+                }
+            ]
+        },
+        {
+            "id": "voucher",
+            "name": "Voucher & Gift Card",
+            "icon": "🎁",
+            "games": [
+                {
+                    "code": "gplay",
+                    "name": "Google Play",
+                    "image": "/assets/img/games/gplay.png",
+                    "publisher": "Google",
+                    "currency": "Gift Card"
+                },
+                {
+                    "code": "garena",
+                    "name": "Garena Shells",
+                    "image": "/assets/img/games/garena.svg",
+                    "publisher": "Garena",
+                    "currency": "Shells"
+                },
+                {
+                    "code": "unipin",
+                    "name": "UniPin Credits",
+                    "image": "/assets/img/games/unipin.svg",
+                    "publisher": "UniPin",
+                    "currency": "Credits"
+                },
+                {
+                    "code": "razer",
+                    "name": "Razer Gold",
+                    "image": "/assets/img/games/razer.svg",
+                    "publisher": "Razer",
+                    "currency": "Gold"
+                },
+                {
+                    "code": "itunes",
+                    "name": "iTunes / Apple",
+                    "image": "/assets/img/games/itunes.svg",
+                    "publisher": "Apple",
+                    "currency": "Gift Card"
+                },
+                {
+                    "code": "psn",
+                    "name": "PlayStation Store",
+                    "image": "/assets/img/games/psn.svg",
+                    "publisher": "Sony",
+                    "currency": "PSN Card"
+                },
+                {
+                    "code": "xbox",
+                    "name": "Xbox Live",
+                    "image": "/assets/img/games/xbox.svg",
+                    "publisher": "Microsoft",
+                    "currency": "Gift Card"
+                },
+                {
+                    "code": "nintendo",
+                    "name": "Nintendo eShop",
+                    "image": "/assets/img/games/nintendo.webp",
+                    "publisher": "Nintendo",
+                    "currency": "Gift Card"
+                },
+                {
+                    "code": "spotify",
+                    "name": "Spotify Premium",
+                    "image": "/assets/img/games/spotify.jpg",
+                    "publisher": "Spotify",
+                    "currency": "Premium"
+                },
+                {
+                    "code": "netflix",
+                    "name": "Netflix",
+                    "image": "/assets/img/games/netflix.webp",
+                    "publisher": "Netflix",
+                    "currency": "Gift Card"
+                }
+            ]
+        },
+        {
+            "id": "e-wallet",
+            "name": "E-Wallet & Pulsa",
+            "icon": "💳",
+            "games": [
+                {
+                    "code": "dana",
+                    "name": "DANA",
+                    "image": "/assets/img/games/dana.webp",
+                    "publisher": "DANA Indonesia",
+                    "currency": "Saldo"
+                },
+                {
+                    "code": "gopay",
+                    "name": "GoPay",
+                    "image": "/assets/img/games/gopay.webp",
+                    "publisher": "GoTo",
+                    "currency": "Saldo"
+                },
+                {
+                    "code": "ovo",
+                    "name": "OVO",
+                    "image": "/assets/img/games/ovo.webp",
+                    "publisher": "OVO",
+                    "currency": "Saldo"
+                },
+                {
+                    "code": "shopeepay",
+                    "name": "ShopeePay",
+                    "image": "/assets/img/games/shopeepay.svg",
+                    "publisher": "Shopee",
+                    "currency": "Saldo"
+                },
+                {
+                    "code": "linkaja",
+                    "name": "LinkAja",
+                    "image": "/assets/img/games/linkaja.svg",
+                    "publisher": "LinkAja",
+                    "currency": "Saldo"
+                },
+                {
+                    "code": "telkomsel",
+                    "name": "Telkomsel Pulsa",
+                    "image": "/assets/img/games/telkomsel.webp",
+                    "publisher": "Telkomsel",
+                    "currency": "Pulsa"
+                },
+                {
+                    "code": "indosat",
+                    "name": "Indosat Pulsa",
+                    "image": "/assets/img/games/indosat.webp",
+                    "publisher": "Indosat",
+                    "currency": "Pulsa"
+                },
+                {
+                    "code": "xl",
+                    "name": "XL Pulsa",
+                    "image": "/assets/img/games/xl.webp",
+                    "publisher": "XL Axiata",
+                    "currency": "Pulsa"
+                },
+                {
+                    "code": "tri",
+                    "name": "Tri Pulsa",
+                    "image": "/assets/img/games/tri.svg",
+                    "publisher": "Tri Indonesia",
+                    "currency": "Pulsa"
+                },
+                {
+                    "code": "smartfren",
+                    "name": "Smartfren Pulsa",
+                    "image": "/assets/img/games/smartfren.svg",
+                    "publisher": "Smartfren",
+                    "currency": "Pulsa"
+                }
+            ]
+        }
+    ]
+}

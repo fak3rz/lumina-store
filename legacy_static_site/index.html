@@ -1,54 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumiastore Clone | Game Top-up</title>
+    <title>Lumiastore | Game Top-up Terpercaya</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body class="antialiased relative">
     <div class="blob blob-1 rounded-full"></div>
     <div class="blob blob-2 rounded-full"></div>
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 glass-nav">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+            <a href="#" class="text-2xl font-bold tracking-tighter text-slate-800"><span
+                    class="text-purple-600">Lumia</span>store</a>
             <div class="flex flex-1 mx-10 justify-center">
                 <div class="relative w-full max-w-md block">
-                    <input id="desktop-search-input" type="text" placeholder="Search games..." class="w-full bg-white/10 border border-white/10 rounded-full py-2 px-5 text-sm focus:outline-none focus:bg-white/20 transition text-white placeholder-gray-400" autocomplete="off" data-testid="search-input">
-                    <div id="search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-black/80 text-white rounded-lg shadow-lg overflow-hidden z-50"></div>
-                    <svg class="w-4 h-4 absolute right-4 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input id="desktop-search-input" type="text" placeholder="Cari game..."
+                        class="w-full rounded-full py-2 px-5 text-sm focus:outline-none transition placeholder-purple-300"
+                        autocomplete="off" data-testid="search-input">
+                    <div id="search-suggestions"
+                        class="hidden absolute left-0 right-0 mt-2 rounded-lg overflow-hidden z-50"></div>
+                    <svg class="w-4 h-4 absolute right-4 top-3 text-purple-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </div>
             </div>
             <div class="flex space-x-4 items-center">
-                <!-- Mobile search toggle -->
-                <button id="search-toggle" class="md:hidden text-gray-300 hover:text-white p-2 rounded-full" aria-label="Open search">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <!-- Mega Menu Trigger -->
+                <div id="mega-menu-trigger" class="hidden md:block relative">
+                    <button
+                        class="text-sm font-medium text-purple-400 hover:text-purple-600 transition flex items-center gap-1.5 py-2">
+                        Kategori
+                        <svg class="w-3.5 h-3.5 mega-chevron transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                </div>
+                <button id="search-toggle" class="md:hidden text-purple-400 hover:text-purple-600 p-2 rounded-full"
+                    aria-label="Open search">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </button>
-                <!-- Desktop search icon -->
-                <button id="search-toggle-desktop" class="hidden md:inline-flex text-gray-300 hover:text-white p-2 rounded-full" aria-label="Focus search">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <button id="search-toggle-desktop"
+                    class="hidden md:inline-flex text-purple-400 hover:text-purple-600 p-2 rounded-full"
+                    aria-label="Focus search">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </button>
                 <div id="nav-auth" class="flex space-x-4 items-center">
-                    <button class="text-sm font-medium text-gray-300 hover:text-white transition" onclick="window.location.href='pages/login.html'">Log In</button>
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full text-sm font-bold transition" onclick="window.location.href='pages/register.html'">Sign Up</button>
+                    <button class="text-sm font-medium text-purple-600 hover:text-purple-800 transition"
+                        onclick="window.location.href='pages/login.html'">Log In</button>
+                    <button
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-sm"
+                        onclick="window.location.href='pages/register.html'">Sign Up</button>
                 </div>
                 <div id="nav-profile" class="relative hidden">
-                    <button id="profile-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center select-none">
+                    <button id="profile-btn"
+                        class="w-9 h-9 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold flex items-center justify-center select-none transition">
                         <span id="profile-letter">U</span>
                     </button>
-                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 glass rounded-xl overflow-hidden border border-white/10">
-                        <div class="px-4 py-3 text-sm text-gray-300">
-                            <div class="font-bold text-white">Akun</div>
+                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 rounded-xl overflow-hidden">
+                        <div class="px-4 py-3 text-sm text-purple-400">
+                            <div class="font-bold text-slate-800">Akun</div>
                             <div id="profile-email" class="truncate"></div>
                         </div>
-                        <div class="border-t border-white/10">
-                            <a href="pages/profile.html" class="block px-4 py-2 text-sm hover:bg-white/10">Profil</a>
-                            <a href="pages/topup.html" class="block px-4 py-2 text-sm hover:bg-white/10">Top Up</a>
-                            <a href="pages/faq.html" class="block px-4 py-2 text-sm hover:bg-white/10">FAQ</a>
-                            <button id="logout-btn" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10">Keluar</button>
+                        <div class="border-t border-purple-100">
+                            <a href="pages/profile.html"
+                                class="block px-4 py-2 text-sm text-slate-600 hover:bg-purple-50">Profil</a>
+                            <a href="pages/topup.html"
+                                class="block px-4 py-2 text-sm text-slate-600 hover:bg-purple-50">Top Up</a>
+                            <a href="pages/faq.html"
+                                class="block px-4 py-2 text-sm text-slate-600 hover:bg-purple-50">FAQ</a>
+                            <button id="logout-btn"
+                                class="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-purple-50">Keluar</button>
                         </div>
                     </div>
                 </div>
@@ -56,199 +95,734 @@
         </div>
     </nav>
 
+    <!-- Mega Menu Dropdown -->
+    <div id="mega-menu-overlay" class="mega-menu-overlay"></div>
+    <div id="mega-menu-panel" class="mega-menu-panel">
+        <div class="container mx-auto px-6">
+            <div class="mega-menu-inner">
+                <!-- Category Tabs (Left) -->
+                <div class="mega-menu-categories">
+                    <div class="mega-cat-tab active" data-cat="mobile-games">
+                        <span class="mega-cat-icon">📱</span>
+                        <div class="mega-cat-info">
+                            <span class="mega-cat-name">Mobile Games</span>
+                            <span class="mega-cat-count">18 produk</span>
+                        </div>
+                        <svg class="mega-cat-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="mega-cat-tab" data-cat="pc-games">
+                        <span class="mega-cat-icon">🖥️</span>
+                        <div class="mega-cat-info">
+                            <span class="mega-cat-name">PC / Console</span>
+                            <span class="mega-cat-count">8 produk</span>
+                        </div>
+                        <svg class="mega-cat-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="mega-cat-tab" data-cat="voucher">
+                        <span class="mega-cat-icon">🎁</span>
+                        <div class="mega-cat-info">
+                            <span class="mega-cat-name">Voucher & Gift</span>
+                            <span class="mega-cat-count">10 produk</span>
+                        </div>
+                        <svg class="mega-cat-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="mega-cat-tab" data-cat="e-wallet">
+                        <span class="mega-cat-icon">💳</span>
+                        <div class="mega-cat-info">
+                            <span class="mega-cat-name">E-Wallet & Pulsa</span>
+                            <span class="mega-cat-count">10 produk</span>
+                        </div>
+                        <svg class="mega-cat-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <a href="pages/category.html" class="mega-cat-viewall">
+                        Lihat Semua Kategori →
+                    </a>
+                </div>
+                <!-- Game Cards (Right) -->
+                <div class="mega-menu-games" id="mega-games-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Mega Menu Styles */
+        .mega-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .mega-menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mega-menu-panel {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            right: 0;
+            z-index: 45;
+            background: #fff;
+            border-bottom: 1px solid #ede9fe;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.08);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease;
+        }
+
+        .mega-menu-panel.active {
+            max-height: 480px;
+            opacity: 1;
+        }
+
+        .mega-menu-inner {
+            display: flex;
+            gap: 0;
+            padding: 24px 0;
+            min-height: 380px;
+        }
+
+        /* Left: Category Tabs */
+        .mega-menu-categories {
+            width: 260px;
+            min-width: 260px;
+            border-right: 1px solid #f3f0ff;
+            padding-right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mega-cat-tab {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .mega-cat-tab:hover,
+        .mega-cat-tab.active {
+            background: #f5f3ff;
+        }
+
+        .mega-cat-tab.active {
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.08);
+        }
+
+        .mega-cat-tab.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 3px;
+            background: #7c3aed;
+            border-radius: 2px;
+        }
+
+        .mega-cat-icon {
+            font-size: 1.5rem;
+            width: 36px;
+            text-align: center;
+        }
+
+        .mega-cat-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .mega-cat-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .mega-cat-count {
+            font-size: 0.7rem;
+            color: #a78bfa;
+            margin-top: 1px;
+        }
+
+        .mega-cat-arrow {
+            width: 16px;
+            height: 16px;
+            color: #c4b5fd;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        .mega-cat-tab.active .mega-cat-arrow {
+            color: #7c3aed;
+            transform: translateX(2px);
+        }
+
+        .mega-cat-viewall {
+            margin-top: auto;
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #7c3aed;
+            text-decoration: none;
+            transition: color 0.2s;
+            border-top: 1px solid #f3f0ff;
+        }
+
+        .mega-cat-viewall:hover {
+            color: #5b21b6;
+        }
+
+        /* Right: Game Cards Grid */
+        .mega-menu-games {
+            flex: 1;
+            padding-left: 24px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .mega-menu-games::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .mega-menu-games::-webkit-scrollbar-thumb {
+            background: #e9d5ff;
+            border-radius: 4px;
+        }
+
+        .mega-games-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .mega-game-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 12px 8px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .mega-game-card:hover {
+            background: #faf5ff;
+            border-color: #ede9fe;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.08);
+        }
+
+        .mega-game-card .mega-game-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.25s ease;
+        }
+
+        .mega-game-card:hover .mega-game-img {
+            transform: scale(1.08);
+        }
+
+        .mega-game-card .mega-game-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #334155;
+            line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .mega-game-card .mega-game-currency {
+            font-size: 0.65rem;
+            color: #a78bfa;
+            margin-top: 2px;
+        }
+
+        /* Chevron rotation when open */
+        #mega-menu-trigger.open .mega-chevron {
+            transform: rotate(180deg);
+        }
+
+        #mega-menu-trigger.open>button {
+            color: #7c3aed;
+        }
+
+        /* Responsive: hide on mobile */
+        @media (max-width: 767px) {
+
+            .mega-menu-panel,
+            .mega-menu-overlay {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .mega-games-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+
     <!-- Mobile search overlay -->
-    <div id="mobile-search" class="fixed top-20 left-0 right-0 px-6 py-3 bg-black/60 backdrop-blur z-50 hidden md:hidden">
+    <div id="mobile-search"
+        class="fixed top-20 left-0 right-0 px-6 py-3 bg-white/90 backdrop-blur z-50 hidden md:hidden border-b border-purple-100">
         <div class="relative max-w-md mx-auto">
-            <input id="mobile-search-input" type="text" placeholder="Search games..." class="w-full bg-white/10 border border-white/10 rounded-full py-2 px-5 text-sm focus:outline-none focus:bg-white/20 transition text-white placeholder-gray-400" autocomplete="off" data-testid="search-input">
-            <div id="mobile-search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-black/80 text-white rounded-lg shadow-lg overflow-hidden z-50"></div>
-            <button id="mobile-search-close" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition" aria-label="Close search">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <input id="mobile-search-input" type="text" placeholder="Cari game..."
+                class="w-full rounded-full py-2 px-5 text-sm focus:outline-none transition placeholder-purple-300"
+                autocomplete="off" data-testid="search-input">
+            <div id="mobile-search-suggestions"
+                class="hidden absolute left-0 right-0 mt-2 rounded-lg overflow-hidden z-50"></div>
+            <button id="mobile-search-close"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-purple-300 hover:text-purple-600 p-2 rounded-full hover:bg-purple-50 transition"
+                aria-label="Close search">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
         </div>
     </div>
-    
+
     <!-- Hero / Banner Section -->
-    <section id="home" class="pt-32 pb-10 relative overflow-hidden">
-        <div class="blob blob-3 rounded-full"></div>
+    <section id="home" class="pt-28 pb-8 relative overflow-hidden">
         <div class="container mx-auto px-6 z-10 relative">
-            <div class="glass rounded-2xl p-1 overflow-hidden relative" data-aos="fade-up">
-                <!-- Slider Track -->
+            <div class="rounded-2xl p-1 overflow-hidden relative border border-purple-100 shadow-sm" data-aos="fade-up">
                 <div id="slider-track" class="flex transition-transform duration-500 ease-out h-64 md:h-80 rounded-xl">
                     <!-- Slide 1 -->
-                    <div class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-purple-900 to-blue-900 overflow-hidden">
-                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-40"></div>
-                        <div class="relative z-10 text-center">
+                    <div
+                        class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-purple-700 to-violet-600 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-20">
+                        </div>
+                        <div class="relative z-10 text-center text-white">
                             <h2 class="text-4xl md:text-5xl font-bold mb-4">Top Up Games Instantly</h2>
-                            <p class="text-xl text-gray-200">Fast, Safe, and Secure payment options.</p>
+                            <p class="text-xl text-purple-100">Fast, Safe, and Secure payment options.</p>
                         </div>
                     </div>
                     <!-- Slide 2 -->
-                    <div class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-red-900 to-orange-900 overflow-hidden">
-                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-40"></div>
-                        <div class="relative z-10 text-center">
+                    <div
+                        class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-purple-800 to-indigo-700 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-20">
+                        </div>
+                        <div class="relative z-10 text-center text-white">
                             <h2 class="text-4xl md:text-5xl font-bold mb-4">Exclusive Promos</h2>
-                            <p class="text-xl text-gray-200">Get up to 50% bonus diamonds today!</p>
+                            <p class="text-xl text-purple-100">Get up to 50% bonus diamonds today!</p>
                         </div>
                     </div>
                     <!-- Slide 3 -->
-                    <div class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-green-900 to-teal-900 overflow-hidden">
-                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-40"></div>
-                        <div class="relative z-10 text-center">
+                    <div
+                        class="w-full flex-shrink-0 relative flex items-center justify-center bg-gradient-to-r from-violet-700 to-purple-600 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-20">
+                        </div>
+                        <div class="relative z-10 text-center text-white">
                             <h2 class="text-4xl md:text-5xl font-bold mb-4">New Games Added</h2>
-                            <p class="text-xl text-gray-200">Explore the latest titles in our catalog.</p>
+                            <p class="text-xl text-purple-100">Explore the latest titles in our catalog.</p>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Navigation Bullets -->
-            <div class="vueperslides__bullets vueperslides__bullets--outside flex justify-center mt-4" role="tablist" aria-label="Slideshow navigation">
-                <button class="vueperslides__bullet vueperslides__bullet--active" type="button" role="tab" aria-label="Slide 1" onclick="goToSlide(0)">
+            <div class="vueperslides__bullets vueperslides__bullets--outside flex justify-center mt-4" role="tablist"
+                aria-label="Slideshow navigation">
+                <button class="vueperslides__bullet vueperslides__bullet--active" type="button" role="tab"
+                    aria-label="Slide 1" onclick="goToSlide(0)">
                     <div class="default"><span>1</span></div>
                 </button>
-                <button class="vueperslides__bullet" type="button" role="tab" aria-label="Slide 2" onclick="goToSlide(1)">
+                <button class="vueperslides__bullet" type="button" role="tab" aria-label="Slide 2"
+                    onclick="goToSlide(1)">
                     <div class="default"><span>2</span></div>
                 </button>
-                <button class="vueperslides__bullet" type="button" role="tab" aria-label="Slide 3" onclick="goToSlide(2)">
+                <button class="vueperslides__bullet" type="button" role="tab" aria-label="Slide 3"
+                    onclick="goToSlide(2)">
                     <div class="default"><span>3</span></div>
                 </button>
             </div>
         </div>
     </section>
 
+    <!-- Section Divider -->
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- Category Section -->
+    <section id="categories" class="py-10 relative">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-end mb-8" data-aos="fade-right">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2 text-slate-800">Kategori</h2>
+                    <p class="text-purple-400">Jelajahi berdasarkan kategori produk</p>
+                </div>
+                <a href="pages/category.html"
+                    class="text-sm font-medium text-purple-600 hover:text-purple-800 transition flex items-center gap-1">
+                    Lihat Semua
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            <div id="category-cards" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Loaded dynamically via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider -->
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line"></div>
+    </div>
+
     <!-- Game Grid Section -->
     <section id="products" class="py-10 relative">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-end mb-12" data-aos="fade-right">
-                <div><h2 class="text-3xl font-bold mb-2">Popular Games</h2><p class="text-gray-400">Select a game to top up.</p></div>
+                <div>
+                    <h2 class="text-3xl font-bold mb-2 text-slate-800">Popular Games</h2>
+                    <p class="text-purple-400">Select a game to top up.</p>
+                </div>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 <!-- Game 1 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="mlbb" data-aos="fade-up" data-aos-delay="100" onclick="window.location.href='pages/topup.html?game=mlbb'">
-                    <div class="aspect-square bg-yellow-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">⚔️</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="mlbb"
+                    data-aos="fade-up" data-aos-delay="100" onclick="window.location.href='pages/topup.html?game=mlbb'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/mobilelegend.png" alt="Mobile Legends"
+                            class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Mobile Legends</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Direct Top-up</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Mobile Legends</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Direct Top-up</p>
                 </div>
                 <!-- Game 2 -->
-                    <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="freefire" data-aos="fade-up" data-aos-delay="200" onclick="window.location.href='pages/topup.html?game=freefire'">
-                    <div class="absolute top-2 right-2 bg-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full z-10">PROMO</div>
-                    <div class="aspect-square bg-orange-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">🔥</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="freefire"
+                    data-aos="fade-up" data-aos-delay="200"
+                    onclick="window.location.href='pages/topup.html?game=freefire'">
+                    <div
+                        class="absolute top-2 right-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
+                        PROMO</div>
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/freefire.png" alt="Free Fire" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Free Fire</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Direct Top-up</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Free Fire</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Direct Top-up</p>
                 </div>
                 <!-- Game 3 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="genshin" data-aos="fade-up" data-aos-delay="300" onclick="window.location.href='pages/topup.html?game=genshin'">
-                    <div class="aspect-square bg-purple-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">✨</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="genshin"
+                    data-aos="fade-up" data-aos-delay="300"
+                    onclick="window.location.href='pages/topup.html?game=genshin'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/genshin.png" alt="Genshin Impact" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Genshin Impact</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Crystals</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Genshin Impact</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Crystals</p>
                 </div>
                 <!-- Game 4 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="pubg" data-aos="fade-up" data-aos-delay="400" onclick="window.location.href='pages/topup.html?game=pubg'">
-                    <div class="aspect-square bg-green-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">🔫</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="pubg"
+                    data-aos="fade-up" data-aos-delay="400" onclick="window.location.href='pages/topup.html?game=pubg'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/pubgm.png" alt="PUBG Mobile" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">PUBG Mobile</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">UC Top-up</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">PUBG Mobile</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">UC Top-up</p>
                 </div>
                 <!-- Game 5 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="valorant" data-aos="fade-up" data-aos-delay="500" onclick="window.location.href='pages/topup.html?game=valorant'">
-                    <div class="aspect-square bg-red-600/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">🎯</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="valorant"
+                    data-aos="fade-up" data-aos-delay="500"
+                    onclick="window.location.href='pages/topup.html?game=valorant'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/valorant.png" alt="Valorant" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Valorant</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Points</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Valorant</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Points</p>
                 </div>
                 <!-- Game 6 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="codm" data-aos="fade-up" data-aos-delay="600" onclick="window.location.href='pages/topup.html?game=codm'">
-                    <div class="aspect-square bg-gray-700/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">🎖️</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="codm"
+                    data-aos="fade-up" data-aos-delay="600" onclick="window.location.href='pages/topup.html?game=codm'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/codm.webp" alt="Call of Duty Mobile"
+                            class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Call of Duty</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">CP Top-up</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Call of Duty</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">CP Top-up</p>
                 </div>
                 <!-- Game 7 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="lol" data-aos="fade-up" data-aos-delay="700" onclick="window.location.href='pages/topup.html?game=lol'">
-                    <div class="aspect-square bg-blue-600/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">⚔️</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="lol"
+                    data-aos="fade-up" data-aos-delay="700" onclick="window.location.href='pages/topup.html?game=lol'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/lolwr.png" alt="League of Legends"
+                            class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">League of Legends</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Wild Cores</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">League of Legends</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Wild Cores</p>
                 </div>
                 <!-- Game 8 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="steam" data-aos="fade-up" data-aos-delay="800" onclick="window.location.href='pages/topup.html?game=steam'">
-                    <div class="aspect-square bg-blue-900/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">🎮</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="steam"
+                    data-aos="fade-up" data-aos-delay="800"
+                    onclick="window.location.href='pages/topup.html?game=steam'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/steam.webp" alt="Steam Wallet" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Steam Wallet</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Voucher Code</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Steam Wallet</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Voucher Code</p>
                 </div>
                 <!-- Game 9 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="roblox" data-aos="fade-up" data-aos-delay="900" onclick="window.location.href='pages/topup.html?game=roblox'">
-                    <div class="aspect-square bg-red-500/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">🟥</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="roblox"
+                    data-aos="fade-up" data-aos-delay="900"
+                    onclick="window.location.href='pages/topup.html?game=roblox'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/roblox.jpg" alt="Roblox" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Roblox</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Robux</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Roblox</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Robux</p>
                 </div>
                 <!-- Game 10 -->
-                <div class="glass product-card rounded-2xl p-4 relative group cursor-pointer hover:bg-white/10" data-game="gplay" data-aos="fade-up" data-aos-delay="1000" onclick="window.location.href='pages/topup.html?game=gplay'">
-                    <div class="aspect-square bg-green-400/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="text-4xl">▶️</span>
+                <div class="product-card rounded-2xl p-4 relative group cursor-pointer" data-game="gplay"
+                    data-aos="fade-up" data-aos-delay="1000"
+                    onclick="window.location.href='pages/topup.html?game=gplay'">
+                    <div class="aspect-square rounded-xl mb-3 overflow-hidden">
+                        <img src="assets/img/games/gplay.png" alt="Google Play" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-lg font-bold text-center">Google Play</h3>
-                    <p class="text-xs text-center text-blue-400 mt-1">Gift Card</p>
+                    <h3 class="text-lg font-bold text-center text-slate-800">Google Play</h3>
+                    <p class="text-xs text-center text-purple-500 mt-1">Gift Card</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Section Divider -->
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line"></div>
+    </div>
+
     <!-- Info Section -->
-    <section class="py-10 relative border-t border-white/5">
+    <section class="py-10 relative">
         <div class="container mx-auto px-6">
-            <div class="glass rounded-2xl p-8 md:p-12" data-aos="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-orange-500">Lumiastore: Website Top-up Game & Voucher Terpercaya</h2>
-                <div class="space-y-4 text-gray-300 leading-relaxed">
-                    <p>Jutaan gamer menggunakan Lumiastore setiap bulannya untuk melakukan pembelian kredit game secara lancar: tanpa registrasi ataupun log-in, dan kredit permainan akan ditambahkan secara instan. Top-up Mobile Legends, Free Fire, Ragnarok M, dan berbagai game lainnya!</p>
+            <div class="rounded-2xl p-8 md:p-12 bg-purple-50 border border-purple-100" data-aos="fade-up">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-purple-700">Lumiastore: Website Top-up Game &
+                    Voucher Terpercaya</h2>
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>Jutaan gamer menggunakan Lumiastore setiap bulannya untuk melakukan pembelian kredit game secara
+                        lancar: tanpa registrasi ataupun log-in, dan kredit permainan akan ditambahkan secara instan.
+                        Top-up Mobile Legends, Free Fire, Ragnarok M, dan berbagai game lainnya!</p>
                     <div class="grid md:grid-cols-3 gap-6 mt-8">
                         <div>
-                            <h3 class="text-white font-bold text-lg mb-2">Bayar dalam hitungan detik</h3>
-                            <p class="text-sm">Hanya dibutuhkan beberapa detik saja untuk menyelesaikan pembayaran di Lumiastore karena situs kami berfungsi dengan baik dan mudah untuk digunakan.</p>
+                            <h3 class="text-purple-800 font-bold text-lg mb-2">Bayar dalam hitungan detik</h3>
+                            <p class="text-sm">Hanya dibutuhkan beberapa detik saja untuk menyelesaikan pembayaran di
+                                Lumiastore karena situs kami berfungsi dengan baik dan mudah untuk digunakan.</p>
                         </div>
                         <div>
-                            <h3 class="text-white font-bold text-lg mb-2">Pengiriman Instan</h3>
-                            <p class="text-sm">Ketika Anda melakukan top-up di Lumiastore, item atau barang yang Anda beli akan selalu dikirim ke akun Anda secara instan dan cepat.</p>
+                            <h3 class="text-purple-800 font-bold text-lg mb-2">Pengiriman Instan</h3>
+                            <p class="text-sm">Ketika Anda melakukan top-up di Lumiastore, item atau barang yang Anda
+                                beli akan selalu dikirim ke akun Anda secara instan dan cepat.</p>
                         </div>
                         <div>
-                            <h3 class="text-white font-bold text-lg mb-2">Metode Pembayaran Terbaik</h3>
-                            <p class="text-sm">Kami menawarkan begitu banyak pilihan pembayaran mulai dari potong pulsa, E-Wallet, Transfer Bank, dan pembayaran di mini market terdekat.</p>
+                            <h3 class="text-purple-800 font-bold text-lg mb-2">Metode Pembayaran Terbaik</h3>
+                            <p class="text-sm">Kami menawarkan begitu banyak pilihan pembayaran mulai dari potong pulsa,
+                                E-Wallet, Transfer Bank, dan pembayaran di mini market terdekat.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <footer class="border-t border-white/10 bg-black/20 pt-10 pb-6 mt-10">
+
+    <!-- Section Divider -->
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line"></div>
+    </div>
+
+    <footer class="pt-10 pb-6 mt-2">
         <div class="container mx-auto px-6 text-center">
-            <p class="text-gray-500 text-sm">&copy; 2024 Lumiastore Clone. All rights reserved.</p>
+            <p class="text-purple-300 text-sm">&copy; 2024 Lumiastore. All rights reserved.</p>
         </div>
     </footer>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        (async function loadCategories() {
+            try {
+                const resp = await fetch('/api/games');
+                const json = await resp.json();
+                if (json.status !== 1) return;
+                const container = document.getElementById('category-cards');
+                if (!container) return;
+                const styles = [
+                    { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', badge: 'bg-purple-100 text-purple-600' },
+                    { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700', badge: 'bg-violet-100 text-violet-600' },
+                    { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', badge: 'bg-purple-100 text-purple-600' },
+                    { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700', badge: 'bg-violet-100 text-violet-600' }
+                ];
+                container.innerHTML = json.data.categories.map((cat, i) => {
+                    const s = styles[i % styles.length];
+                    const topGames = cat.games.slice(0, 3).map(g => g.name).join(', ');
+                    return '<a href="pages/category.html#' + cat.id + '" class="group ' + s.bg + ' ' + s.border + ' border rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer block" data-aos="fade-up" data-aos-delay="' + (i * 100) + '">'
+                        + '<div class="flex items-center gap-3 mb-3">'
+                        + '<span class="text-3xl">' + cat.icon + '</span>'
+                        + '<div>'
+                        + '<h3 class="font-bold ' + s.text + ' text-lg">' + cat.name + '</h3>'
+                        + '<span class="text-xs ' + s.badge + ' px-2 py-0.5 rounded-full font-semibold">' + cat.games.length + ' produk</span>'
+                        + '</div></div>'
+                        + '<p class="text-xs text-slate-400" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + topGames + '...</p>'
+                        + '</a>';
+                }).join('');
+                if (typeof AOS !== 'undefined') AOS.refresh();
+            } catch (e) { /* silent */ }
+        })();
+    </script>
+
+    <!-- Mega Menu JS -->
+    <script>
+        (function () {
+            const trigger = document.getElementById('mega-menu-trigger');
+            const panel = document.getElementById('mega-menu-panel');
+            const overlay = document.getElementById('mega-menu-overlay');
+            const gamesContainer = document.getElementById('mega-games-container');
+            const catTabs = document.querySelectorAll('.mega-cat-tab');
+
+            if (!trigger || !panel) return;
+
+            let gameData = null;
+            let menuOpen = false;
+            let hoverTimeout = null;
+
+            // Fetch game data
+            async function loadGameData() {
+                if (gameData) return gameData;
+                try {
+                    const res = await fetch('/api/games');
+                    const json = await res.json();
+                    gameData = json.data ? json.data.categories : json.categories;
+                    return gameData;
+                } catch (e) {
+                    console.error('Failed to load game data', e);
+                    return [];
+                }
+            }
+
+            // Render game cards for a category
+            function renderGames(categoryId) {
+                if (!gameData) return;
+                const cat = gameData.find(c => c.id === categoryId);
+                if (!cat) return;
+
+                gamesContainer.innerHTML = '<div class="mega-games-grid">' + cat.games.map(g =>
+                    `<a href="pages/topup.html?game=${g.code}" class="mega-game-card">
+                    <img class="mega-game-img" src="${g.image}" alt="${g.name}" loading="lazy" onerror="this.style.display='none'">
+                    <span class="mega-game-name">${g.name}</span>
+                    <span class="mega-game-currency">${g.currency}</span>
+                </a>`
+                ).join('') + '</div>';
+            }
+
+            // Open/Close mega menu
+            function openMenu() {
+                if (menuOpen) return;
+                menuOpen = true;
+                trigger.classList.add('open');
+                panel.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                // Load & render default category
+                loadGameData().then(() => {
+                    const activeTab = document.querySelector('.mega-cat-tab.active');
+                    if (activeTab) renderGames(activeTab.dataset.cat);
+                });
+            }
+
+            function closeMenu() {
+                if (!menuOpen) return;
+                menuOpen = false;
+                trigger.classList.remove('open');
+                panel.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Hover behavior with delay (like Webtoon)
+            trigger.addEventListener('mouseenter', () => {
+                clearTimeout(hoverTimeout);
+                openMenu();
+            });
+            trigger.addEventListener('mouseleave', () => {
+                hoverTimeout = setTimeout(() => {
+                    if (!panel.matches(':hover')) closeMenu();
+                }, 200);
+            });
+            panel.addEventListener('mouseenter', () => {
+                clearTimeout(hoverTimeout);
+            });
+            panel.addEventListener('mouseleave', () => {
+                hoverTimeout = setTimeout(closeMenu, 200);
+            });
+
+            // Also support click toggle
+            trigger.querySelector('button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                menuOpen ? closeMenu() : openMenu();
+            });
+
+            // Overlay closes menu
+            overlay.addEventListener('click', closeMenu);
+
+            // Escape key closes menu
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeMenu();
+            });
+
+            // Category tab switching
+            catTabs.forEach(tab => {
+                tab.addEventListener('mouseenter', () => {
+                    catTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    if (gameData) renderGames(tab.dataset.cat);
+                });
+                tab.addEventListener('click', () => {
+                    window.location.href = 'pages/category.html#' + tab.dataset.cat;
+                });
+            });
+        })();
+    </script>
 </body>
+
 </html>

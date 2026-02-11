@@ -2,6 +2,9 @@ require('dotenv').config();
 
 module.exports = {
   port: process.env.PORT || 3000,
+  mongodb: {
+    uri: process.env.MONGODB_URI || ''
+  },
   mlbb: {
     apiUrl: process.env.MLBB_API_URL || '',
     apiKey: process.env.MLBB_API_KEY || '',

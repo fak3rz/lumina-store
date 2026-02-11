@@ -1,0 +1,210 @@
+# Struktur Database Lumina Store
+
+Dokumen ini menjelaskan struktur database yang dibutuhkan oleh website **Lumina Store** (platform top up game), berdasarkan analisis kode yang sudah ada.
+
+---
+
+## ERD (Entity Relationship Diagram)
+
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : "membuat"
+    USERS ||--o{ OTP_CODES : "memiliki"
+    ORDERS ||--o| PAYMENTS : "memiliki"
+    PRODUCTS }o--o{ ORDERS : "dipesan dalam"
+
+    USERS {
+        string id PK "usr_xxx (Primary Key)"
+        string email UK "Unique, lowercase"
+        string password_hash "scrypt hash (64 bytes)"
+        string password_salt "random 16 bytes hex"
+        boolean verified "Status verifikasi email"
+        datetime created_at "Timestamp dibuat"
+        datetime updated_at "Timestamp diperbarui"
+    }
+
+    OTP_CODES {
+        string id PK "Auto-generated"
+        string email FK "→ USERS.email"
+        string code "6-digit OTP code"
+        string purpose "verify | reset | login"
+        bigint expires_at "Unix timestamp (ms)"
+        datetime created_at "Timestamp dibuat"
+    }
+
+    ORDERS {
+        string id PK "ord_xxx (Primary Key)"
+        string user_id FK "→ USERS.id (Game User ID)"
+        string zone_id "Zone/Server ID game"
+        string sku FK "→ PRODUCTS.sku"
+        integer amount "Jumlah item"
+        decimal price "Total harga"
+        string payment_method "QRIS, Bank, E-Wallet, dll"
+        string status "created | pending | paid | failed | expired"
+        string fulfillment_status "pending | processing | completed | failed"
+        string payment_url "URL halaman pembayaran"
+        datetime created_at "Timestamp dibuat"
+        datetime updated_at "Timestamp diperbarui"
+    }
+
+    PAYMENTS {
+        string id PK "pay_xxx (Primary Key)"
+        string order_id FK "→ ORDERS.id"
+        string status "pending | success | failed"
+        string method "QRIS, Bank Transfer, dll"
+        decimal amount "Jumlah pembayaran"
+        string provider_ref "Referensi dari payment gateway"
+        json webhook_data "Raw data dari webhook"
+        datetime paid_at "Waktu pembayaran berhasil"
+        datetime created_at "Timestamp dibuat"
+    }
+
+    PRODUCTS {
+        string sku PK "Kode produk unik"
+        string game_code "mlbb, ff, genshin, dll"
+        string name "Nama produk (86 Diamonds)"
+        string category "diamonds | weekly_pass | skin"
+        decimal price "Harga jual"
+        decimal cost_price "Harga modal (dari supplier)"
+        boolean is_active "Aktif/tidak dijual"
+        integer sort_order "Urutan tampilan"
+        datetime created_at "Timestamp dibuat"
+        datetime updated_at "Timestamp diperbarui"
+    }
+```
+
+---
+
+## Detail Tabel
+
+### 1. `USERS` — Data Pengguna
+
+Menyimpan akun pengguna yang terdaftar di Lumina Store.
+
+| Kolom | Tipe | Constraint | Deskripsi |
+|-------|------|-----------|-----------|
+| [id](file:///d:/lumina-store/server/repositories/OtpRepository.js#50-78) | `VARCHAR(20)` | **PK** | ID unik, format `usr_xxxxx` |
+| `email` | `VARCHAR(255)` | **UNIQUE, NOT NULL** | Email pengguna (lowercase) |
+| `password_hash` | `VARCHAR(128)` | NOT NULL | Hash password (scrypt) |
+| `password_salt` | `VARCHAR(32)` | NOT NULL | Salt untuk hashing |
+| `verified` | `BOOLEAN` | DEFAULT `false` | Status verifikasi email |
+| `created_at` | `TIMESTAMP` | NOT NULL | Waktu pendaftaran |
+| `updated_at` | `TIMESTAMP` | NOT NULL | Waktu update terakhir |
+
+> [!NOTE]
+> Saat ini menggunakan `crypto.scryptSync` untuk hashing. Jika migrasi ke MongoDB, bisa tetap menggunakan pendekatan yang sama atau beralih ke `bcrypt`.
+
+---
+
+### 2. `OTP_CODES` — Kode OTP
+
+Menyimpan kode OTP sementara untuk verifikasi dan reset password.
+
+| Kolom | Tipe | Constraint | Deskripsi |
+|-------|------|-----------|-----------|
+| [id](file:///d:/lumina-store/server/repositories/OtpRepository.js#50-78) | `VARCHAR(20)` | **PK** | ID unik auto-generated |
+| `email` | `VARCHAR(255)` | **FK → USERS**, INDEX | Email pengguna |
+| `code` | `VARCHAR(6)` | NOT NULL | Kode OTP 6-digit |
+| `purpose` | `ENUM` | NOT NULL | [verify](file:///d:/lumina-store/server/controllers/authController.js#64-72), [reset](file:///d:/lumina-store/server/controllers/authController.js#72-80), atau [login](file:///d:/lumina-store/server/controllers/authController.js#12-22) |
+| `expires_at` | `BIGINT` | NOT NULL | Unix timestamp kedaluwarsa |
+| `created_at` | `TIMESTAMP` | NOT NULL | Waktu pembuatan OTP |
+
+> [!TIP]
+> Di MongoDB, gunakan **TTL Index** pada `expires_at` untuk otomatis menghapus OTP yang kedaluwarsa.
+
+---
+
+### 3. `ORDERS` — Data Pesanan
+
+Menyimpan semua transaksi top up game.
+
+| Kolom | Tipe | Constraint | Deskripsi |
+|-------|------|-----------|-----------|
+| [id](file:///d:/lumina-store/server/repositories/OtpRepository.js#50-78) | `VARCHAR(20)` | **PK** | ID unik, format `ord_xxxxx` |
+| `user_id` | `VARCHAR(50)` | NOT NULL, INDEX | Game User ID (bukan akun Lumina) |
+| `zone_id` | `VARCHAR(20)` | NOT NULL | Zone/Server ID game |
+| `sku` | `VARCHAR(50)` | NOT NULL | Kode produk yang dibeli |
+| `amount` | `INTEGER` | NOT NULL | Jumlah item |
+| `price` | `DECIMAL(12,2)` | NOT NULL | Total harga (Rupiah) |
+| `payment_method` | `VARCHAR(50)` | | Metode pembayaran |
+| `status` | `ENUM` | DEFAULT `created` | `created → pending → paid → failed/expired` |
+| `fulfillment_status` | `ENUM` | DEFAULT `pending` | `pending → processing → completed → failed` |
+| `payment_url` | `TEXT` | | URL halaman pembayaran |
+| `created_at` | `TIMESTAMP` | NOT NULL | Waktu order dibuat |
+| `updated_at` | `TIMESTAMP` | NOT NULL | Waktu update terakhir |
+
+---
+
+### 4. `PAYMENTS` — Data Pembayaran *(Baru — belum ada)*
+
+> [!IMPORTANT]
+> Tabel ini **belum diimplementasikan** di kode saat ini. Payment controller masih menggunakan mock. Tabel ini diperlukan saat integrasi payment gateway sesungguhnya (Midtrans, Xendit, dll).
+
+| Kolom | Tipe | Constraint | Deskripsi |
+|-------|------|-----------|-----------|
+| [id](file:///d:/lumina-store/server/repositories/OtpRepository.js#50-78) | `VARCHAR(20)` | **PK** | ID unik, format `pay_xxxxx` |
+| `order_id` | `VARCHAR(20)` | **FK → ORDERS**, UNIQUE | Referensi ke order |
+| `status` | `ENUM` | DEFAULT `pending` | `pending`, `success`, `failed` |
+| `method` | `VARCHAR(50)` | | Metode: QRIS, Bank, E-Wallet |
+| `amount` | `DECIMAL(12,2)` | NOT NULL | Jumlah dibayar |
+| `provider_ref` | `VARCHAR(100)` | | ID referensi dari gateway |
+| `webhook_data` | `JSON/TEXT` | | Raw payload webhook |
+| `paid_at` | `TIMESTAMP` | | Waktu sukses bayar |
+| `created_at` | `TIMESTAMP` | NOT NULL | Timestamp dibuat |
+
+---
+
+### 5. `PRODUCTS` — Katalog Produk *(Baru — belum ada)*
+
+> [!IMPORTANT]
+> Tabel ini **belum diimplementasikan**. Saat ini SKU dan harga kemungkinan di-hardcode di frontend. Tabel ini dibutuhkan untuk manajemen produk yang dinamis.
+
+| Kolom | Tipe | Constraint | Deskripsi |
+|-------|------|-----------|-----------|
+| `sku` | `VARCHAR(50)` | **PK** | Kode produk unik |
+| `game_code` | `VARCHAR(20)` | NOT NULL, INDEX | Kode game: `mlbb`, `ff`, `genshin` |
+| `name` | `VARCHAR(100)` | NOT NULL | Nama produk: "86 Diamonds" |
+| `category` | `VARCHAR(30)` | | Kategori: diamonds, pass, skin |
+| `price` | `DECIMAL(12,2)` | NOT NULL | Harga jual ke user |
+| `cost_price` | `DECIMAL(12,2)` | | Harga modal dari supplier |
+| `is_active` | `BOOLEAN` | DEFAULT `true` | Produk masih dijual? |
+| `sort_order` | `INTEGER` | DEFAULT `0` | Urutan tampilan |
+| `created_at` | `TIMESTAMP` | NOT NULL | Timestamp dibuat |
+| `updated_at` | `TIMESTAMP` | NOT NULL | Timestamp diperbarui |
+
+---
+
+## Ringkasan Relasi
+
+```mermaid
+flowchart LR
+    A["👤 USERS"] -->|1:N| B["🔑 OTP_CODES"]
+    A -->|1:N| C["📦 ORDERS"]
+    C -->|1:1| D["💳 PAYMENTS"]
+    E["🎮 PRODUCTS"] -->|1:N| C
+
+    style A fill:#3b82f6,color:#fff
+    style B fill:#f59e0b,color:#fff
+    style C fill:#10b981,color:#fff
+    style D fill:#8b5cf6,color:#fff
+    style E fill:#ef4444,color:#fff
+```
+
+| Relasi | Tipe | Penjelasan |
+|--------|------|------------|
+| USERS → OTP_CODES | 1 : N | Satu user bisa punya banyak OTP (verify, login, reset) |
+| USERS → ORDERS | 1 : N | Satu user bisa buat banyak pesanan |
+| ORDERS → PAYMENTS | 1 : 1 | Satu order punya satu record pembayaran |
+| PRODUCTS → ORDERS | 1 : N | Satu produk bisa dibeli di banyak order |
+
+---
+
+## Status Implementasi
+
+| Tabel | Status | Keterangan |
+|-------|--------|------------|
+| ✅ USERS | Sudah ada | Tersimpan di `data/users.json` |
+| ✅ OTP_CODES | Sudah ada | Tersimpan di `data/otps.json` |
+| ✅ ORDERS | Sudah ada | Tersimpan di `data/orders.json` |
+| ⚠️ PAYMENTS | Belum ada | Perlu dibuat saat integrasi payment gateway |
+| ⚠️ PRODUCTS | Belum ada | Perlu dibuat untuk katalog produk dinamis |

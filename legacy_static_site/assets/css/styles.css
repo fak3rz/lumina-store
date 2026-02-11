@@ -1,39 +1,340 @@
-/* Shared styles extracted from index.html */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; overflow-x: hidden; line-height: 1.6; }
-.glass { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35); border-radius: 1rem; }
-.glass-nav { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
-.blob { position: absolute; filter: blur(70px); z-index: -1; opacity: 0.45; animation: float 12s infinite ease-in-out; }
-.blob-1 { top: 0; left: 0; width: 500px; height: 500px; background: #7c3aed; }
-.blob-2 { bottom: 0; right: 0; width: 400px; height: 400px; background: #2563eb; }
-.blob-3 { top: 50%; left: 50%; width: 300px; height: 300px; background: #db2777; transform: translate(-50%, -50%); }
-@keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, -20px); } }
-.nav-link { position: relative; }
-.nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #38bdf8; transition: width 0.3s ease; }
-.nav-link:hover::after { width: 100%; }
-.product-card { transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease; border: 1px solid rgba(255,255,255,0.08); }
-.product-card:hover { transform: translateY(-6px); box-shadow: 0 18px 36px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
-.game-icon { transition: transform 0.3s ease; }
-/* Slider Bullets Styles */
-.vueperslides__bullet .default { width: 10px; height: 10px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: all 0.3s; margin: 0 4px; display: flex; align-items: center; justify-content: center; }
-.vueperslides__bullet--active .default { background: #f97316; width: 30px; border-radius: 10px; }
-.vueperslides__bullet span { display: none; }
-/* Small utilities */
-.hidden { display:none !important; }
-input::placeholder { color: rgba(255,255,255,0.6); }
-.suggestion-item { transition: background 0.2s ease, color 0.2s ease; }
-.suggestion-item:hover, .suggestion-item.suggestion-active { background: rgba(255,255,255,0.08) !important; }
-.auth-wrap { min-height: 100vh; display: grid; grid-template-columns: 1fr; }
-.auth-hero { background: radial-gradient(600px circle at 20% 20%, rgba(139,92,246,0.35), transparent 40%), linear-gradient(135deg, #7c3aed 0%, #6d28d9 35%, #4c1d95 100%); }
-.auth-hero-inner { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem; }
-.auth-card { background: #0b1220; border-left: 1px solid rgba(255,255,255,0.06); }
-.auth-title { font-size: 1.75rem; font-weight: 700; }
-.auth-sub { color: #9aa3b2; font-size: 0.9rem; }
-.auth-btn { background: #8b5cf6; }
-.auth-btn:hover { background: #7c3aed; }
-@media (max-width: 768px) {
-  .auth-card { padding-bottom: calc(env(safe-area-inset-bottom) + 1rem); }
+/* Shared styles — White & Purple Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #ffffff;
+  color: #1e293b;
+  overflow-x: hidden;
+  line-height: 1.6;
 }
-@media (max-width: 768px) {
-  .auth-card { padding-top: calc(env(safe-area-inset-top) + 1rem); }
+
+/* Glass cards */
+.glass {
+  background: #ffffff;
+  border: 1px solid #e9e0f7;
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.04), 0 4px 16px rgba(124, 58, 237, 0.03);
+  border-radius: 1rem;
+}
+
+/* Navigation */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid #f3ecfc;
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.04);
+}
+
+/* Blobs — soft purple */
+.blob {
+  position: absolute;
+  filter: blur(80px);
+  z-index: -1;
+  opacity: 0.18;
+  animation: float 12s infinite ease-in-out;
+}
+
+.blob-1 {
+  top: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: #c4b5fd;
+}
+
+.blob-2 {
+  bottom: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: #a78bfa;
+}
+
+.blob-3 {
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  background: #ddd6fe;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(20px, -20px);
+  }
+}
+
+/* Nav links */
+.nav-link {
+  position: relative;
+  color: #64748b;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: #7c3aed;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #7c3aed;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Product cards — interactive */
+.product-card {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  border: 1px solid #ede9fe;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.product-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg,
+      transparent 0%,
+      rgba(124, 58, 237, 0.04) 40%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(124, 58, 237, 0.04) 60%,
+      transparent 100%);
+  transition: left 0.6s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.product-card:hover::after {
+  left: 130%;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(124, 58, 237, 0.15),
+    0 0 0 1px rgba(124, 58, 237, 0.1);
+  border-color: #a78bfa;
+}
+
+.product-card:active {
+  transform: translateY(-2px) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* Image zoom on hover */
+.product-card .aspect-square {
+  position: relative;
+}
+
+.product-card .aspect-square img {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.3s ease;
+}
+
+.product-card:hover .aspect-square img {
+  transform: scale(1.1);
+}
+
+/* Play icon overlay */
+.product-card .aspect-square::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.product-card:hover .aspect-square::after {
+  opacity: 1;
+}
+
+/* Title color change */
+.product-card h3 {
+  transition: color 0.25s ease;
+}
+
+.product-card:hover h3 {
+  color: #7c3aed;
+}
+
+/* Currency badge pulse */
+.product-card p {
+  transition: color 0.25s ease, letter-spacing 0.25s ease;
+}
+
+.product-card:hover p {
+  color: #6d28d9;
+  letter-spacing: 0.5px;
+}
+
+.game-icon {
+  transition: transform 0.3s ease;
+}
+
+/* Slider Bullets */
+.vueperslides__bullet .default {
+  width: 10px;
+  height: 10px;
+  background: #ddd6fe;
+  border-radius: 50%;
+  transition: all 0.3s;
+  margin: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vueperslides__bullet--active .default {
+  background: #7c3aed;
+  width: 30px;
+  border-radius: 10px;
+}
+
+.vueperslides__bullet span {
+  display: none;
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+input::placeholder {
+  color: #a5a0c0;
+}
+
+.suggestion-item {
+  transition: background 0.2s ease;
+}
+
+.suggestion-item:hover,
+.suggestion-item.suggestion-active {
+  background: #f5f3ff !important;
+}
+
+/* Section Divider — simple */
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  margin: 0.5rem 0;
+}
+
+.section-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background: #ede9fe;
+}
+
+.section-divider .divider-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c4b5fd;
+  margin: 0 12px;
+}
+
+/* Footer */
+footer {
+  background: #faf8ff;
+}
+
+/* Search inputs */
+#desktop-search-input,
+#mobile-search-input {
+  background: #f5f3ff;
+  border: 1px solid #ede9fe;
+  color: #1e293b;
+}
+
+#desktop-search-input:focus,
+#mobile-search-input:focus {
+  background: #fff;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+#search-suggestions,
+#mobile-search-suggestions {
+  background: #fff;
+  color: #1e293b;
+  border: 1px solid #ede9fe;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.08);
+}
+
+/* Profile menu */
+#profile-menu {
+  background: #fff;
+  border: 1px solid #ede9fe;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.08);
+}
+
+#profile-menu a:hover,
+#profile-menu button:hover {
+  background: #f5f3ff;
+}
+
+/* Auth legacy compat */
+.auth-wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.auth-card {
+  background: #fff;
+}
+
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.auth-sub {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.auth-btn {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-btn:hover {
+  background: #6d28d9;
 }

@@ -2,7 +2,7 @@
 AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubic' });
 
 // Navbar shrink on scroll
-(function(){
+(function () {
     const navbar = document.getElementById('navbar') || document.querySelector('nav');
     if (!navbar) return;
     window.addEventListener('scroll', () => {
@@ -12,7 +12,7 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
 })();
 
 // Auth UI toggle: replace login/signup with profile menu when logged in
-(function(){
+(function () {
     function initProfileUI() {
         const token = localStorage.getItem('lumi_token');
         const navAuth = document.getElementById('nav-auth');
@@ -32,7 +32,7 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
                     if (letterEl) letterEl.textContent = String(u.email).trim().charAt(0).toUpperCase() || 'U';
                     if (emailEl) emailEl.textContent = u.email;
                 }
-            } catch (_) {}
+            } catch (_) { }
         } else {
             if (navAuth) navAuth.classList.remove('hidden');
             navProfile.classList.add('hidden');
@@ -56,7 +56,7 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
 })();
 
 // Search input navigation and suggestions (desktop + mobile)
-(function(){
+(function () {
     const desktopInput = document.getElementById('desktop-search-input');
     const desktopSuggestions = document.getElementById('search-suggestions');
     const mobileToggle = document.getElementById('search-toggle');
@@ -64,36 +64,68 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
     const mobileInput = document.getElementById('mobile-search-input');
     const mobileSuggestions = document.getElementById('mobile-search-suggestions');
 
-    function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-    function flash(el) { if (!el) return; el.classList.add('ring','ring-red-500'); setTimeout(()=>el.classList.remove('ring','ring-red-500'),800); }
+    function escapeHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function flash(el) { if (!el) return; el.classList.add('ring', 'ring-red-500'); setTimeout(() => el.classList.remove('ring', 'ring-red-500'), 800); }
 
     // Build product index
-    const products = Array.from(document.querySelectorAll('.product-card')).map(c => {
+    let products = Array.from(document.querySelectorAll('.product-card')).map(c => {
         const title = c.querySelector('h3')?.innerText?.trim() || '';
-        const icon = c.querySelector('.aspect-square span')?.innerText?.trim() || c.querySelector('img')?.getAttribute('src') || '';
+        const emojiIcon = c.querySelector('.aspect-square span')?.innerText?.trim() || '';
+        const imgSrc = c.querySelector('img')?.getAttribute('src') || '';
         const slug = c.dataset.game || (c.getAttribute('onclick')?.match(/game=([^'"\)]+)/) || [])[1] || '';
         const url = slug ? `pages/topup.html?game=${slug}` : null;
-        return { title, icon, slug, url, el: c };
+        return { title, emojiIcon, imgSrc, slug, url, el: c };
     });
+
+    // Validasi & enrich data dari API (agar game yang tidak ada di home tetap bisa dicari)
+    fetch('/api/games')
+        .then(r => r.json())
+        .then(json => {
+            const categories = json.data ? json.data.categories : json.categories;
+            if (!categories) return;
+
+            const existingSlugs = new Set(products.map(p => p.slug));
+
+            categories.forEach(cat => {
+                cat.games.forEach(g => {
+                    if (!existingSlugs.has(g.code)) {
+                        products.push({
+                            title: g.name,
+                            emojiIcon: cat.icon,
+                            imgSrc: g.image,
+                            slug: g.code,
+                            url: `pages/topup.html?game=${g.code}`,
+                            el: null // No DOM element for off-screen games
+                        });
+                        existingSlugs.add(g.code);
+                    }
+                });
+            });
+        })
+        .catch(console.error);
+
 
     function showSuggestions(container, list) {
         if (!container) return;
         if (!list || !list.length) { container.classList.add('hidden'); container.innerHTML = ''; return; }
         container.innerHTML = '';
-        list.slice(0,6).forEach((p, i) => {
+        list.slice(0, 6).forEach((p, i) => {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'w-full text-left px-3 py-2 flex items-center hover:bg-white/10 focus:bg-white/10 suggestion-item';
             btn.setAttribute('data-slug', p.slug);
             btn.setAttribute('data-url', p.url || '');
-            btn.innerHTML = `<div class="w-10 h-10 flex items-center justify-center text-2xl mr-3">${escapeHtml(p.icon)}</div><div class="truncate">${escapeHtml(p.title)}</div>`;
+            const iconHtml = p.imgSrc
+                ? `<img src="${escapeHtml(p.imgSrc)}" alt="" class="w-10 h-10 rounded-lg object-cover mr-3" onerror="this.style.display='none'">`
+                : `<div class="w-10 h-10 flex items-center justify-center text-2xl mr-3">${escapeHtml(p.emojiIcon)}</div>`;
+            btn.innerHTML = `${iconHtml}<div class="truncate font-medium text-slate-700">${escapeHtml(p.title)}</div>`;
             btn.addEventListener('click', () => { if (p.url) window.location.href = p.url; else p.el && p.el.click(); });
             container.appendChild(btn);
         });
         container.classList.remove('hidden');
     }
 
-    function hideSuggestions(container){ if (!container) return; setTimeout(()=>container.classList.add('hidden'), 120); }
+    function hideSuggestions(container) { if (!container) return; setTimeout(() => container.classList.add('hidden'), 120); }
 
     function handleInputEvent(inputEl, suggEl) {
         inputEl.addEventListener('input', (e) => {
@@ -106,13 +138,13 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
             const visible = !suggEl.classList.contains('hidden');
             const items = visible ? Array.from(suggEl.querySelectorAll('.suggestion-item')) : [];
             let idx = items.findIndex(it => it.classList.contains('suggestion-active'));
-            if (e.key === 'ArrowDown') { e.preventDefault(); if (items.length) { if (idx >= 0) items[idx].classList.remove('suggestion-active'); idx = (idx + 1) % items.length; items[idx].classList.add('suggestion-active'); items[idx].scrollIntoView({block:'nearest'}); } }
-            else if (e.key === 'ArrowUp') { e.preventDefault(); if (items.length) { if (idx >= 0) items[idx].classList.remove('suggestion-active'); idx = (idx - 1 + items.length) % items.length; items[idx].classList.add('suggestion-active'); items[idx].scrollIntoView({block:'nearest'}); } }
+            if (e.key === 'ArrowDown') { e.preventDefault(); if (items.length) { if (idx >= 0) items[idx].classList.remove('suggestion-active'); idx = (idx + 1) % items.length; items[idx].classList.add('suggestion-active'); items[idx].scrollIntoView({ block: 'nearest' }); } }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); if (items.length) { if (idx >= 0) items[idx].classList.remove('suggestion-active'); idx = (idx - 1 + items.length) % items.length; items[idx].classList.add('suggestion-active'); items[idx].scrollIntoView({ block: 'nearest' }); } }
             else if (e.key === 'Enter') {
-                if (items.length && typeof idx === 'number' && idx >=0) { items[idx].click(); e.preventDefault(); }
+                if (items.length && typeof idx === 'number' && idx >= 0) { items[idx].click(); e.preventDefault(); }
                 else { // fallback to first match
                     const q = (inputEl.value || '').trim().toLowerCase();
-                    if (!q) { document.getElementById('products')?.scrollIntoView({behavior:'smooth'}); return; }
+                    if (!q) { document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }); return; }
                     const found = products.find(p => p.title.toLowerCase().includes(q));
                     if (found) { if (found.url) window.location.href = found.url; else found.el && found.el.click(); }
                     else flash(inputEl);
@@ -129,9 +161,9 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
     if (mobileToggle && mobileSearch && mobileInput) {
         mobileToggle.addEventListener('click', () => {
             mobileSearch.classList.toggle('hidden');
-            if (!mobileSearch.classList.contains('hidden')) setTimeout(()=> mobileInput.focus(), 50);
+            if (!mobileSearch.classList.contains('hidden')) setTimeout(() => mobileInput.focus(), 50);
         });
-        document.getElementById('mobile-search-close')?.addEventListener('click', (e)=> { mobileSearch.classList.add('hidden'); mobileToggle.focus(); });
+        document.getElementById('mobile-search-close')?.addEventListener('click', (e) => { mobileSearch.classList.add('hidden'); mobileToggle.focus(); });
     }
     const desktopToggle = document.getElementById('search-toggle-desktop');
     if (desktopToggle && desktopInput) {
@@ -143,7 +175,7 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
 })();
 
 // Slider logic (if slider exists) 
-(function(){
+(function () {
     const track = document.getElementById('slider-track');
     const bullets = document.querySelectorAll('.vueperslides__bullet');
     if (!track || !bullets.length) return;
@@ -188,7 +220,7 @@ AOS && AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubi
             el._swipeMoved = false; // reset flag used by click handler
             // stop autoplay while interaction
             clearInterval(autoTimer);
-            try { if (e.pointerId) el.setPointerCapture(e.pointerId); } catch (err) {}
+            try { if (e.pointerId) el.setPointerCapture(e.pointerId); } catch (err) { }
         }
         function onMove(e) {
             if (!pointerDown) return;
