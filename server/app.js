@@ -30,8 +30,8 @@ app.use(async (req, res, next) => {
 // Debug endpoint to verify deployment & DB
 app.get('/api/version', (req, res) => {
   res.json({
-    version: '1.0.2',
-    description: 'React Auth Switch',
+    version: '1.0.3',
+    description: 'React Auth Switch + Static Homepage',
     timestamp: new Date().toISOString(),
     dbState: mongoose.connection.readyState, // 0: disconnected, 1: connected, 2: connecting, 3: disconnecting
     envCheck: {
@@ -41,25 +41,9 @@ app.get('/api/version', (req, res) => {
   });
 });
 
-// TEMPORARY DEBUG: Check file structure on Vercel
-app.get('/debug-paths', (req, res) => {
-  const fs = require('fs');
-  const root = path.join(__dirname, '..');
-
-  let layout = {};
-  try {
-    layout['root'] = fs.readdirSync(root);
-    layout['legacy'] = fs.readdirSync(path.join(root, 'legacy_static_site'));
-  } catch (e) {
-    layout['error'] = e.message;
-  }
-
-  res.json({
-    __dirname,
-    cwd: process.cwd(),
-    resolvedStatic: path.join(__dirname, '..', 'legacy_static_site'),
-    layout
-  });
+// Explicitly serve homepage from legacy site
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'legacy_static_site', 'index.html'));
 });
 
 // API Routes
