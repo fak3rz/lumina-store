@@ -9,7 +9,7 @@
     ],
     "functions": {
         "api/index.js": {
-            "includeFiles": "legacy_static_site/**"
+            "includeFiles": "legacy_static_site/**, frontend/dist/**"
         }
     }
 }
