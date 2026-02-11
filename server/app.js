@@ -52,7 +52,7 @@ const distDir = path.join(__dirname, '..', 'frontend', 'dist');
 app.use('/assets', express.static(path.join(distDir, 'assets')));
 
 // SPA fallback for client-side routing on website paths
-app.get(/^\/(login|register|forgot)(\/.*)?$/, (req, res) => {
+app.get(/^\/(login|register|forgot|verify-otp)(\/.*)?$/, (req, res) => {
   res.sendFile(path.join(distDir, 'index.html'));
 });
 
