@@ -1,62 +1,62 @@
-# Security Testing Guide
+# Panduan Pengujian Keamanan
 
-Comprehensive security testing guide for Lumia Store application.
+Panduan pengujian keamanan komprehensif untuk aplikasi Lumia Store.
 
-## 🔒 Security Checklist
+## 🔒 Daftar Periksa Keamanan
 
-### Authentication & Authorization
-- [ ] Password strength validation
-- [ ] Email format validation
-- [ ] Rate limiting on authentication endpoints
-- [ ] Account lockout after failed attempts
-- [ ] Secure session/token management
-- [ ] Password reset token expiration
-- [ ] OTP rate limiting
-- [ ] OTP brute force protection
+### Autentikasi & Otorisasi
+- [ ] Validasi kekuatan password
+- [ ] Validasi format email
+- [ ] Rate limiting pada endpoint autentikasi
+- [ ] Penguncian akun setelah percobaan gagal
+- [ ] Manajemen sesi/token yang aman
+- [ ] Kedaluwarsa token reset password
+- [ ] Rate limiting OTP
+- [ ] Proteksi brute force OTP
 
-### Input Validation
-- [ ] Email sanitization and validation
-- [ ] User ID validation (numeric, length)
-- [ ] Zone ID validation
-- [ ] Password validation (length, complexity)
-- [ ] Order ID validation
-- [ ] Input length limits
-- [ ] Special character handling
+### Validasi Input
+- [ ] Sanitasi dan validasi email
+- [ ] Validasi User ID (numerik, panjang)
+- [ ] Validasi Zone ID
+- [ ] Validasi Password (panjang, kompleksitas)
+- [ ] Validasi Order ID
+- [ ] Batas panjang input
+- [ ] Penanganan karakter khusus
 
-### Data Protection
-- [ ] Password hashing (scrypt with salt) ✅
-- [ ] Sensitive data encryption
-- [ ] Secure token generation
-- [ ] OTP expiration ✅
-- [ ] Data sanitization before storage
+### Perlindungan Data
+- [ ] Hashing password (scrypt dengan salt) ✅
+- [ ] Enkripsi data sensitif
+- [ ] Pembuatan token yang aman
+- [ ] Kedaluwarsa OTP ✅
+- [ ] Sanitasi data sebelum penyimpanan
 
-### API Security
-- [ ] CAPTCHA protection ✅
+### Keamanan API
+- [ ] Proteksi CAPTCHA ✅
 - [ ] Rate limiting
-- [ ] CORS configuration
-- [ ] Request size limits
-- [ ] HTTPS enforcement
-- [ ] API key protection
+- [ ] Konfigurasi CORS
+- [ ] Batas ukuran request (Request size limits)
+- [ ] Penegakan HTTPS
+- [ ] Proteksi API key
 
-### Error Handling
-- [ ] Generic error messages
-- [ ] No information leakage in errors
-- [ ] Proper error logging
-- [ ] Stack trace hiding in production
+### Penanganan Error
+- [ ] Pesan error generik
+- [ ] Tidak ada kebocoran informasi dalam error
+- [ ] Logging error yang tepat
+- [ ] Menyembunyikan stack trace di produksi
 
-### File System Security
-- [ ] File path validation
-- [ ] File access restrictions
-- [ ] JSON injection prevention
-- [ ] Data file permissions
+### Keamanan Sistem File
+- [ ] Validasi path file
+- [ ] Pembatasan akses file
+- [ ] Pencegahan injeksi JSON
+- [ ] Izin (permissions) file data
 
-## 🧪 Security Test Cases
+## 🧪 Kasus Uji Keamanan
 
-### 1. Authentication Tests
+### 1. Pengujian Autentikasi
 
-#### Test: Weak Password
+#### Uji: Password Lemah
 ```bash
-# Should reject weak passwords
+# Seharusnya menolak password lemah
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -65,11 +65,11 @@ curl -X POST http://localhost:3000/api/auth/register \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should validate minimum password length (8+ characters)
+**Harapan:** Harus memvalidasi panjang minimal password (8+ karakter)
 
-#### Test: Invalid Email Format
+#### Uji: Format Email Tidak Valid
 ```bash
-# Should reject invalid email formats
+# Seharusnya menolak format email yang salah
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -78,11 +78,11 @@ curl -X POST http://localhost:3000/api/auth/register \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should validate email format
+**Harapan:** Harus memvalidasi format email
 
-#### Test: SQL Injection Attempt (Email)
+#### Uji: Percobaan SQL Injection (Email)
 ```bash
-# Should sanitize email input
+# Seharusnya sanitasi input email
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -91,11 +91,11 @@ curl -X POST http://localhost:3000/api/auth/login \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should handle safely (using JSON, but should validate)
+**Harapan:** Harus menangani dengan aman (menggunakan JSON, tapi tetap harus divalidasi)
 
-#### Test: XSS Attempt (Email)
+#### Uji: Percobaan XSS (Email)
 ```bash
-# Should sanitize email to prevent XSS
+# Seharusnya sanitasi email untuk mencegah XSS
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -104,11 +104,11 @@ curl -X POST http://localhost:3000/api/auth/register \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should sanitize or reject
+**Harapan:** Harus disanitasi atau ditolak
 
-#### Test: Brute Force Attack
+#### Uji: Serangan Brute Force
 ```bash
-# Should rate limit after multiple failed attempts
+# Seharusnya membatasi laju (rate limit) setelah beberapa kali gagal
 for i in {1..20}; do
   curl -X POST http://localhost:3000/api/auth/login \
     -H "Content-Type: application/json" \
@@ -119,11 +119,11 @@ for i in {1..20}; do
     }'
 done
 ```
-**Expected:** Should implement rate limiting (currently not implemented)
+**Harapan:** Harus mengimplementasikan rate limiting (saat ini belum diimplementasikan)
 
-#### Test: Account Enumeration
+#### Uji: Enumerasi Akun
 ```bash
-# Test if system reveals whether email exists
+# Uji apakah sistem mengungkapkan email yang terdaftar
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -132,13 +132,13 @@ curl -X POST http://localhost:3000/api/auth/login \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should return generic error (not "Email tidak ditemukan")
+**Harapan:** Harus mengembalikan error generik (bukan "Email tidak ditemukan")
 
-### 2. OTP Security Tests
+### 2. Pengujian Keamanan OTP
 
-#### Test: OTP Brute Force
+#### Uji: Brute Force OTP
 ```bash
-# Should limit OTP attempts
+# Seharusnya membatasi percobaan OTP
 for i in {1..100}; do
   curl -X POST http://localhost:3000/api/auth/verify-otp \
     -H "Content-Type: application/json" \
@@ -149,11 +149,11 @@ for i in {1..100}; do
     }'
 done
 ```
-**Expected:** Should limit attempts or lock account
+**Harapan:** Harus membatasi percobaan atau mengunci akun
 
-#### Test: OTP Replay Attack
+#### Uji: Serangan Replay OTP
 ```bash
-# Should prevent reuse of consumed OTP
+# Seharusnya mencegah penggunaan ulang OTP yang sudah dipakai
 curl -X POST http://localhost:3000/api/auth/verify-otp \
   -H "Content-Type: application/json" \
   -d '{
@@ -161,13 +161,13 @@ curl -X POST http://localhost:3000/api/auth/verify-otp \
     "code": "123456",
     "captchaToken": "test"
   }'
-# Repeat same request
+# Ulangi request yang sama
 ```
-**Expected:** Should reject consumed OTP (currently handled ✅)
+**Harapan:** Harus menolak OTP yang sudah dikonsumsi (saat ini sudah ditangani ✅)
 
-#### Test: OTP Rate Limiting
+#### Uji: Rate Limiting Permintaan OTP
 ```bash
-# Should limit OTP request frequency
+# Seharusnya membatasi frekuensi permintaan OTP
 for i in {1..10}; do
   curl -X POST http://localhost:3000/api/auth/request-otp \
     -H "Content-Type: application/json" \
@@ -179,34 +179,34 @@ for i in {1..10}; do
   sleep 1
 done
 ```
-**Expected:** Should implement rate limiting (currently not implemented)
+**Harapan:** Harus mengimplementasikan rate limiting (saat ini belum diimplementasikan)
 
-### 3. Order Security Tests
+### 3. Pengujian Keamanan Pesanan
 
-#### Test: Invalid Order ID Format
+#### Uji: Format Order ID Tidak Valid
 ```bash
-# Should validate order ID format
+# Seharusnya memvalidasi format order ID
 curl http://localhost:3000/api/orders/../../../etc/passwd
 ```
-**Expected:** Should validate format and reject invalid IDs
+**Harapan:** Harus memvalidasi format dan menolak ID yang tidak valid
 
-#### Test: Order ID Injection
+#### Uji: Injeksi Order ID
 ```bash
-# Should sanitize order ID
+# Seharusnya sanitasi order ID
 curl http://localhost:3000/api/orders/ord_123'; DROP TABLE orders; --
 ```
-**Expected:** Should handle safely
+**Harapan:** Harus ditangani dengan aman
 
-#### Test: Unauthorized Order Access
+#### Uji: Akses Pesanan Tidak Sah
 ```bash
-# Should verify ownership (if implemented)
+# Seharusnya memverifikasi kepemilikan (jika diimplementasikan)
 curl http://localhost:3000/api/orders/ord_another_users_order
 ```
-**Expected:** Should verify ownership (currently not implemented)
+**Harapan:** Harus memverifikasi kepemilikan (saat ini belum diimplementasikan)
 
-#### Test: Negative Price
+#### Uji: Harga Negatif
 ```bash
-# Should validate order price
+# Seharusnya memvalidasi harga pesanan
 curl -X POST http://localhost:3000/api/orders \
   -H "Content-Type: application/json" \
   -d '{
@@ -219,36 +219,36 @@ curl -X POST http://localhost:3000/api/orders \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should validate price > 0
+**Harapan:** Harus memvalidasi harga > 0
 
-### 4. Game Lookup Security Tests
+### 4. Pengujian Keamanan Pencarian Game
 
-#### Test: Invalid User ID
+#### Uji: User ID Tidak Valid
 ```bash
-# Should validate user ID format
+# Seharusnya memvalidasi format User ID
 curl "http://localhost:3000/api/mlbb/lookup?userId=<script>alert('XSS')</script>&zoneId=1234"
 ```
-**Expected:** Should sanitize and validate numeric input
+**Harapan:** Harus sanitasi dan validasi input numerik
 
-#### Test: SQL Injection (User ID)
+#### Uji: SQL Injection (User ID)
 ```bash
-# Should handle safely
+# Seharusnya ditangani dengan aman
 curl "http://localhost:3000/api/mlbb/lookup?userId=123456'; DROP TABLE orders; --&zoneId=1234"
 ```
-**Expected:** Should validate format (numeric only)
+**Harapan:** Harus memvalidasi format (hanya angka)
 
-#### Test: Extremely Long Input
+#### Uji: Input Sangat Panjang
 ```bash
-# Should limit input length
+# Seharusnya membatasi panjang input
 curl "http://localhost:3000/api/mlbb/lookup?userId=$(python3 -c 'print("1"*10000)')&zoneId=1234"
 ```
-**Expected:** Should enforce length limits
+**Harapan:** Harus menegakkan batas panjang karakter
 
-### 5. CAPTCHA Security Tests
+### 5. Pengujian Keamanan CAPTCHA
 
-#### Test: Missing CAPTCHA Token
+#### Uji: Token CAPTCHA Hilang
 ```bash
-# Should require CAPTCHA
+# Seharusnya mewajibkan CAPTCHA
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -256,11 +256,11 @@ curl -X POST http://localhost:3000/api/auth/register \
     "password": "password123"
   }'
 ```
-**Expected:** Should reject without CAPTCHA ✅ (implemented)
+**Harapan:** Harus menolak tanpa CAPTCHA ✅ (sudah diimplementasikan)
 
-#### Test: Invalid CAPTCHA Token
+#### Uji: Token CAPTCHA Tidak Valid
 ```bash
-# Should validate CAPTCHA
+# Seharusnya memvalidasi CAPTCHA
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -269,13 +269,13 @@ curl -X POST http://localhost:3000/api/auth/register \
     "captchaToken": "invalid_token"
   }'
 ```
-**Expected:** Should reject invalid CAPTCHA ✅ (implemented)
+**Harapan:** Harus menolak CAPTCHA tidak valid ✅ (sudah diimplementasikan)
 
-### 6. CORS Security Tests
+### 6. Pengujian Keamanan CORS
 
-#### Test: Cross-Origin Request
+#### Uji: Permintaan Lintas Origin (Cross-Origin)
 ```javascript
-// Test from browser console on different origin
+// Uji dari browser console pada origin berbeda
 fetch('http://localhost:3000/api/auth/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -286,20 +286,20 @@ fetch('http://localhost:3000/api/auth/login', {
   })
 })
 ```
-**Expected:** Should configure CORS properly (currently allows all ✅)
+**Harapan:** Harus mengkonfigurasi CORS dengan benar (saat ini mengizinkan semua ✅)
 
-### 7. File System Security Tests
+### 7. Pengujian Keamanan Sistem File
 
-#### Test: Path Traversal
+#### Uji: Path Traversal
 ```bash
-# Should prevent directory traversal
+# Seharusnya mencegah directory traversal
 curl http://localhost:3000/api/orders/../../../etc/passwd
 ```
-**Expected:** Should validate order ID format
+**Harapan:** Harus memvalidasi format order ID
 
-#### Test: JSON Injection
+#### Uji: Injeksi JSON
 ```bash
-# Should prevent JSON injection in data files
+# Seharusnya mencegah injeksi JSON di file data
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -308,13 +308,13 @@ curl -X POST http://localhost:3000/api/auth/register \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should handle JSON parsing safely
+**Harapan:** Harus menangani parsing JSON dengan aman
 
-### 8. Information Disclosure Tests
+### 8. Pengujian Pengungkapan Informasi
 
-#### Test: Error Message Information Leakage
+#### Uji: Kebocoran Informasi Pesan Error
 ```bash
-# Should not reveal sensitive information
+# Seharusnya tidak mengungkapkan informasi sensitif
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -323,20 +323,20 @@ curl -X POST http://localhost:3000/api/auth/login \
     "captchaToken": "test"
   }'
 ```
-**Expected:** Should return generic error (not reveal if email exists)
+**Harapan:** Harus mengembalikan error generik (tidak mengungkapkan jika email ada)
 
-#### Test: Stack Trace Exposure
+#### Uji: Paparan Stack Trace
 ```bash
-# Trigger internal error
+# Memicu error internal
 curl http://localhost:3000/api/orders/invalid_id_that_causes_error
 ```
-**Expected:** Should not expose stack traces in production
+**Harapan:** Seharusnya tidak mengekspos stack traces di produksi
 
-### 9. Session/Token Security Tests
+### 9. Pengujian Keamanan Sesi/Token
 
-#### Test: Token Predictability
+#### Uji: Prediktabilitas Token
 ```bash
-# Get multiple tokens and check patterns
+# Dapatkan beberapa token dan cek polanya
 for i in {1..5}; do
   curl -X POST http://localhost:3000/api/auth/login \
     -H "Content-Type: application/json" \
@@ -347,140 +347,140 @@ for i in {1..5}; do
     }' | jq -r '.token'
 done
 ```
-**Expected:** Tokens should be unpredictable (currently using timestamp ✅)
+**Harapan:** Token harus tidak dapat diprediksi (saat ini menggunakan timestamp ✅)
 
-#### Test: Token Expiration
+#### Uji: Kedaluwarsa Token
 ```bash
-# Use old token and verify expiration
-# (Requires token expiration implementation)
+# Gunakan token lama dan verifikasi kedaluwarsa
+# (Memerlukan implementasi kedaluwarsa token)
 ```
-**Expected:** Tokens should expire after inactivity
+**Harapan:** Token harus kedaluwarsa setelah tidak aktif
 
-## 🛠 Security Testing Tools
+## 🛠 Alat Pengujian Keamanan
 
-### Automated Scanning
+### Pemindaian Otomatis
 ```bash
-# Install security tools
+# Instal alat keamanan
 npm install --save-dev eslint-plugin-security
 
-# Run security audit
+# Jalankan audit keamanan
 npm audit
 
-# Check for vulnerabilities
+# Cek kerentanan
 npm audit fix
 ```
 
-### Manual Testing Checklist
-1. **Authentication**
-   - [ ] Test weak passwords
-   - [ ] Test email validation
-   - [ ] Test brute force protection
-   - [ ] Test account lockout
+### Daftar Periksa Pengujian Manual
+1. **Autentikasi**
+   - [ ] Uji password lemah
+   - [ ] Uji validasi email
+   - [ ] Uji proteksi brute force
+   - [ ] Uji penguncian akun
 
-2. **Authorization**
-   - [ ] Test unauthorized access
-   - [ ] Test privilege escalation
-   - [ ] Test resource ownership
+2. **Otorisasi**
+   - [ ] Uji akses tidak sah
+   - [ ] Uji eskalasi hak akses
+   - [ ] Uji kepemilikan sumber daya
 
-3. **Input Validation**
-   - [ ] Test SQL injection
-   - [ ] Test XSS attempts
-   - [ ] Test command injection
-   - [ ] Test path traversal
+3. **Validasi Input**
+   - [ ] Uji SQL injection
+   - [ ] Uji upaya XSS
+   - [ ] Uji command injection
+   - [ ] Uji path traversal
 
-4. **Data Protection**
-   - [ ] Verify password hashing
-   - [ ] Check sensitive data exposure
-   - [ ] Verify encryption in transit
+4. **Perlindungan Data**
+   - [ ] Verifikasi hashing password
+   - [ ] Cek paparan data sensitif
+   - [ ] Verifikasi enkripsi saat transit
 
-5. **Error Handling**
-   - [ ] Check error message leakage
-   - [ ] Verify stack trace hiding
-   - [ ] Check error logging
+5. **Penanganan Error**
+   - [ ] Cek kebocoran pesan error
+   - [ ] Verifikasi penyembunyian stack trace
+   - [ ] Cek logging error
 
-## 🚨 Known Security Issues
+## 🚨 Isu Keamanan yang Diketahui
 
-### Current Vulnerabilities
+### Kerentanan Saat Ini
 
-1. **❌ No Password Strength Validation**
-   - **Risk:** Users can set weak passwords
-   - **Impact:** Medium
-   - **Recommendation:** Add minimum length and complexity requirements
+1. **❌ Tidak Ada Validasi Kekuatan Password**
+   - **Risiko:** Pengguna bisa mengatur password lemah
+   - **Dampak:** Menengah
+   - **Rekomendasi:** Tambahkan syarat panjang dan kompleksitas minimal
 
-2. **❌ No Email Format Validation**
-   - **Risk:** Invalid emails can be stored
-   - **Impact:** Low
-   - **Recommendation:** Add email regex validation
+2. **❌ Tidak Ada Validasi Format Email**
+   - **Risiko:** Email tidak valid bisa tersimpan
+   - **Dampak:** Rendah
+   - **Rekomendasi:** Tambahkan validasi regex email
 
-3. **❌ No Rate Limiting**
-   - **Risk:** Brute force attacks possible
-   - **Impact:** High
-   - **Recommendation:** Implement rate limiting middleware
+3. **❌ Tidak Ada Rate Limiting**
+   - **Risiko:** Serangan brute force dimungkinkan
+   - **Dampak:** Tinggi
+   - **Rekomendasi:** Implementasikan middleware rate limiting
 
-4. **❌ Account Enumeration**
-   - **Risk:** Attackers can discover valid emails
-   - **Impact:** Medium
-   - **Recommendation:** Return generic error messages
+4. **❌ Enumerasi Akun**
+   - **Risiko:** Penyerang bisa menemukan email valid
+   - **Dampak:** Menengah
+   - **Rekomendasi:** Kembalikan pesan error generik
 
-5. **❌ No Input Sanitization**
-   - **Risk:** XSS and injection attacks
-   - **Impact:** High
-   - **Recommendation:** Sanitize all user inputs
+5. **❌ Tidak Ada Sanitasi Input**
+   - **Risiko:** Serangan XSS dan injeksi
+   - **Dampak:** Tinggi
+   - **Rekomendasi:** Sanitasi semua input pengguna
 
-6. **❌ CORS Too Permissive**
-   - **Risk:** CSRF attacks
-   - **Impact:** Medium
-   - **Recommendation:** Configure specific origins
+6. **❌ CORS Terlalu Longgar**
+   - **Risiko:** Serangan CSRF
+   - **Dampak:** Menengah
+   - **Rekomendasi:** Konfigurasikan origin spesifik
 
-7. **❌ No Request Size Limits**
-   - **Risk:** DoS via large payloads
-   - **Impact:** Medium
-   - **Recommendation:** Add body parser limits
+7. **❌ Tidak Ada Batas Ukuran Request**
+   - **Risiko:** DoS melalui payload besar
+   - **Dampak:** Menengah
+   - **Rekomendasi:** Tambahkan batas (limits) pada body parser
 
-8. **❌ No Order Ownership Verification**
-   - **Risk:** Users can access other users' orders
-   - **Impact:** High
-   - **Recommendation:** Add ownership checks
+8. **❌ Tidak Ada Verifikasi Kepemilikan Pesanan**
+   - **Risiko:** Pengguna bisa mengakses pesanan pengguna lain
+   - **Dampak:** Tinggi
+   - **Rekomendasi:** Tambahkan pengecekan kepemilikan
 
-## ✅ Security Best Practices Implemented
+## ✅ Praktik Terbaik Keamanan yang Diimplementasikan
 
-1. **✅ Password Hashing** - Using scrypt with salt
-2. **✅ OTP Expiration** - 10 minute TTL
-3. **✅ CAPTCHA Protection** - On sensitive endpoints
-4. **✅ OTP One-Time Use** - Consumed after verification
-5. **✅ CORS Enabled** - For cross-origin support
-6. **✅ Error Handling** - Try-catch blocks
-7. **✅ Input Validation** - Basic required field checks
+1. **✅ Hashing Password** - Menggunakan scrypt dengan salt
+2. **✅ Kedaluwarsa OTP** - TTL 10 menit
+3. **✅ Proteksi CAPTCHA** - Pada endpoint sensitif
+4. **✅ OTP Sekali Pakai** - Dikonsumsi setelah verifikasi
+5. **✅ CORS Diaktifkan** - Untuk dukungan lintas origin
+6. **✅ Penanganan Error** - Blok try-catch
+7. **✅ Validasi Input** - Pengecekan field wajib dasar
 
-## 📋 Priority Fixes
+## 📋 Perbaikan Prioritas
 
-### High Priority
-1. Implement rate limiting
-2. Add input sanitization
-3. Add password strength validation
-4. Verify order ownership
+### Prioritas Tinggi
+1. Implementasi rate limiting
+2. Tambahkan sanitasi input
+3. Tambahkan validasi kekuatan password
+4. Verifikasi kepemilikan pesanan
 
-### Medium Priority
-1. Add email format validation
-2. Generic error messages
-3. CORS configuration
-4. Request size limits
+### Prioritas Menengah
+1. Tambahkan validasi format email
+2. Pesan error generik
+3. Konfigurasi CORS
+4. Batas ukuran request
 
-### Low Priority
-1. Token expiration
-2. Account lockout
-3. Enhanced logging
-4. Security headers
+### Prioritas Rendah
+1. Kedaluwarsa token
+2. Penguncian akun
+3. Logging yang ditingkatkan
+4. Header keamanan
 
-## 🔄 Continuous Security
+## 🔄 Keamanan Berkelanjutan
 
-- Run `npm audit` regularly
-- Review dependencies for vulnerabilities
-- Monitor error logs for suspicious activity
-- Keep dependencies updated
-- Regular security audits
-- Penetration testing
+- Jalankan `npm audit` secara berkala
+- Tinjau dependensi untuk kerentanan
+- Pantau log error untuk aktivitas mencurigakan
+- Jaga dependensi tetap mutakhir
+- Audit keamanan rutin
+- Tes penetrasi (Penetration testing)
 
 ---
 
-**Note:** This document should be updated regularly as security improvements are made.
+**Catatan:** Dokumen ini harus diperbarui secara berkala seiring dengan peningkatan keamanan yang dilakukan.

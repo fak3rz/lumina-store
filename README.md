@@ -2,154 +2,139 @@
 
 Platform top-up game online yang modern dan user-friendly untuk berbagai game populer seperti Mobile Legends, Free Fire, Genshin Impact, dan lainnya.
 
-## 📋 Table of Contents
+## 📋 Daftar Isi
 
-- [Features](#features)
+- [Fitur](#fitur)
 - [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [API Documentation](#api-documentation)
-- [Development](#development)
-- [Architecture](#architecture)
+- [Struktur Proyek](#struktur-proyek)
+- [Instalasi](#instalasi)
+- [Konfigurasi](#konfigurasi)
+- [Dokumentasi API](#dokumentasi-api)
+- [Pengembangan](#pengembangan)
+- [Arsitektur](#arsitektur)
 
-## ✨ Features
+## ✨ Fitur
 
-- 🎮 **Multiple Games Support** - Top-up untuk berbagai game populer
-- 🔐 **User Authentication** - Sistem registrasi, login, dan verifikasi OTP
-- 💳 **Multiple Payment Methods** - E-Wallet, QRIS, Bank Transfer, Retail, Pulsa
-- 📦 **Instant Delivery** - Top-up dikirim langsung ke akun game
-- 🔍 **Game Account Lookup** - Verifikasi User ID dan Zone ID
-- 🛡️ **Security** - CAPTCHA protection, password hashing, SSL ready
-- 📱 **Responsive Design** - Mobile-friendly interface
-- 🎨 **Modern UI/UX** - Glassmorphism design dengan Tailwind CSS
+- 🎮 **Dukungan Banyak Game** - Top-up untuk berbagai game populer (Mobile Legends, PUBG, dll)
+- 🔐 **Autentikasi Pengguna** - Sistem registrasi, login, dan verifikasi OTP aman
+- 💳 **Metode Pembayaran Beragam** - E-Wallet, QRIS, Transfer Bank, Retail, Pulsa
+- 📦 **Pengiriman Instan** - Top-up dikirim langsung ke akun game secara real-time
+- 🔍 **Pencarian Akun Game** - Verifikasi User ID dan Zone ID otomatis
+- 🛡️ **Keamanan** - Proteksi CAPTCHA (reCAPTCHA v2), hashing password, siap SSL
+- 📱 **Desain Responsif** - Tampilan optimal di Mobile, Tablet, dan Desktop
+- 🎨 **UI/UX Modern** - Desain Glassmorphism dengan Tailwind CSS
 
 ## 🛠 Tech Stack
 
 ### Frontend
-- **HTML5 + Tailwind + Vanilla JS** untuk halaman utama
-- **React + Vite** untuk halaman autentikasi (login/register/forgot) di jalur website
-- **AOS** - Animate On Scroll
+- **HTML5 + Tailwind + Vanilla JS** untuk halaman utama (Landing Page, Katalog, Top-up) - *Berada di direktori `legacy_static_site`*
+- **React + Vite** untuk halaman autentikasi (Login, Register, Lupa Password) - *Berada di direktori `frontend`*
+- **AOS** - Animate On Scroll untuk animasi UI
 
 ### Backend
 - **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **Repository Pattern** - Clean architecture for data access
-- **JSON File Storage** - Simple file-based database (easy to migrate to real DB)
+- **Express.js** - Framework web
+- **Repository Pattern** - Arsitektur bersih untuk akses data
+- **JSON File Storage** - Database berbasis file sederhana (mudah dimigrasi ke DB sungguhan)
 
-### Security & Utilities
+### Keamanan & Utilitas
 - **CORS** - Cross-origin resource sharing
-- **dotenv** - Environment variables management
-- **node-fetch** - HTTP client for external APIs
+- **dotenv** - Manajemen variabel lingkungan
+- **node-fetch** - HTTP client untuk API eksternal
 
-## 📁 Project Structure
+## 📁 Struktur Proyek
 
 ```
 lumina-store/
-├── assets/
-│   ├── css/              # Stylesheets
-│   │   ├── styles.css    # Main styles
-│   │   └── payment.css   # Payment page styles
-│   └── js/               # JavaScript files
-│       ├── main.js       # Main frontend logic
-│       ├── auth.js       # Authentication logic
-│       └── payment.js    # Payment logic
-├── pages/                # HTML pages
-│   ├── login.html
-│   ├── register.html
-│   ├── verify-otp.html
-│   ├── forgot.html
-│   ├── profile.html
-│   ├── topup.html
-│   ├── faq.html
-│   └── ...
-├── server/
-│   ├── app.js            # Express app configuration
-│   ├── index.js          # Server entry point
-│   ├── config/           # Configuration files
-│   ├── controllers/      # Request handlers
-│   ├── services/         # Business logic
-│   ├── models/           # Data models (wrappers)
-│   ├── repositories/     # Data access layer
-│   │   ├── base/         # Base repository classes
-│   │   └── README.md     # Repository pattern docs
-│   ├── middleware/       # Express middleware
-│   ├── routes/           # API routes
-│   └── data/             # JSON data files
-│       ├── users.json
-│       ├── orders.json
-│       └── otps.json
-├── index.html            # Home page
-└── package.json          # Dependencies
+├── legacy_static_site/   # Situs Statis Utama (Halaman Landing, Katalog Game)
+│   ├── assets/
+│   │   ├── css/          # Stylesheets (styles.css, payment.css)
+│   │   └── js/           # JavaScript (main.js, payment.js)
+│   └── index.html        # Halaman Utama
+├── frontend/             # Aplikasi React (Halaman Autentikasi)
+│   ├── src/              # Source code React (Login, Register, Forgot Password)
+│   └── dist/             # Build output yang disajikan oleh server
+├── server/               # Backend API & Server
+│   ├── app.js            # Konfigurasi aplikasi Express
+│   ├── index.js          # Entry point server
+│   ├── controllers/      # Logika penanganan request
+│   ├── services/         # Logika bisnis
+│   ├── models/           # Wrapper data
+│   ├── repositories/     # Akses data (JSON/DB)
+│   ├── middleware/       # Middleware Express
+│   ├── routes/           # Rute API
+│   └── data/             # Penyimpanan data JSON
+├── index.html            # Redirect ke legacy_static_site/index.html (saat dev)
+└── package.json          # Dependensi proyek
 ```
 
-## 🚀 Installation
+## 🚀 Instalasi
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
+### Prasyarat
+- Node.js (v14 atau lebih baru)
+- npm atau yarn
 
-### Steps
+### Langkah-langkah
 
-1. **Clone the repository**
+1. **Clone repositori**
    ```bash
    git clone <repository-url>
    cd lumina-store
    ```
 
-2. **Install dependencies**
+2. **Instal dependensi**
    ```bash
    npm install
    ```
 
-3. **Configure environment variables**
+3. **Konfigurasi variabel lingkungan**
    ```bash
-   # Copy .env.example to .env (if exists)
-   # Or create .env file with required variables
+   # Salin .env.example ke .env (jika ada)
+   # Atau buat file .env dengan variabel yang diperlukan
    ```
 
-4. **Start the server**
+4. **Jalankan server**
    ```bash
    npm start
-   # Server will run on http://localhost:3000 (or PORT from env)
+   # Server akan berjalan di http://localhost:3000 (atau PORT dari env)
    ```
 
-5. **Open in browser**
+5. **Buka di browser**
    ```
    http://localhost:3000
    ```
 
-## ⚙️ Configuration
+## ⚙️ Konfigurasi
 
-### Environment Variables
+### Variabel Lingkungan
 
-Create a `.env` file in the root directory:
+Buat file `.env` di direktori root:
 
 ```env
-# Server Configuration
+# Konfigurasi Server
 PORT=3000
 
-# MLBB API (Optional - for game lookup)
+# API MLBB (Opsional - untuk pencarian game)
 MLBB_API_URL=https://api.example.com/mlbb/lookup
 MLBB_API_KEY=your-api-key
 MLBB_API_KEY_HEADER=x-api-key
 
-# APIGames Integration (Optional)
+# Integrasi APIGames (Opsional)
 APIGAMES_API_URL=https://api.apigames.com
 APIGAMES_API_KEY=your-apigames-key
 
-# Email Service (Optional - for OTP)
+# Layanan Email (Opsional - untuk OTP)
 EMAIL_SERVICE_API_KEY=your-email-service-key
 ```
 
-### Data Storage
+### Penyimpanan Data
 
-By default, the application uses JSON files for data storage:
-- `server/data/users.json` - User accounts
-- `server/data/orders.json` - Order records
-- `server/data/otps.json` - OTP codes
+Secara default, aplikasi menggunakan file JSON untuk penyimpanan data:
+- `server/data/users.json` - Akun pengguna
+- `server/data/orders.json` - Riwayat pesanan
+- `server/data/otps.json` - Kode OTP
 
-**Note:** For production, consider migrating to a proper database (MongoDB, PostgreSQL, etc.). The repository pattern makes this migration straightforward. See `server/repositories/README.md` for details.
+**Catatan:** Untuk produksi, pertimbangkan migrasi ke database yang tepat (MongoDB, PostgreSQL, dll). Pola repositori membuat migrasi ini mudah. Lihat `server/repositories/README.md` untuk detailnya.
 
 ## 📚 Dokumentasi API
 
@@ -168,7 +153,7 @@ Content-Type: application/json
   "recaptcha": "recaptcha-token"
 }
 ```
-Note: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
+Catatan: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
 
 #### Login
 ```http
@@ -181,7 +166,7 @@ Content-Type: application/json
   "recaptcha": "recaptcha-token"
 }
 ```
-Note: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
+Catatan: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
 
 #### Request OTP
 ```http
@@ -194,7 +179,7 @@ Content-Type: application/json
   "recaptcha": "recaptcha-token"
 }
 ```
-Note: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
+Catatan: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
 
 #### Verify OTP
 ```http
@@ -207,7 +192,7 @@ Content-Type: application/json
   "recaptcha": "recaptcha-token"
 }
 ```
-Note: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
+Catatan: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
 
 #### Reset Password
 ```http
@@ -221,28 +206,28 @@ Content-Type: application/json
   "recaptcha": "recaptcha-token"
 }
 ```
-Note: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
+Catatan: Alternatif dev/fallback gunakan `"captcha": "jawaban-captcha"`.
 
 ### Pencarian Akun Game
 
-#### MLBB Account Lookup
+#### Cek Akun MLBB
 ```http
 GET /api/mlbb/lookup?userId=123456&zoneId=1234
 ```
 
-#### APIGames Account Info
+#### Info Akun APIGames
 ```http
 GET /api/apigames/account
 ```
 
-#### Check Username (APIGames)
+#### Cek Username (APIGames)
 ```http
 GET /api/apigames/check-username?gameCode=mlbb&userId=123456&zoneId=1234
 ```
 
 ### Pesanan
 
-#### Create Order
+#### Buat Pesanan
 ```http
 POST /api/orders
 Content-Type: application/json
@@ -258,19 +243,19 @@ Content-Type: application/json
 }
 ```
 
-#### Get Order
+#### Ambil Pesanan
 ```http
 GET /api/orders/:id
 ```
 
 ### Pembayaran
 
-#### Mock Payment Page
+#### Halaman Pembayaran Mock
 ```http
 GET /api/mock/pay?orderId=ord_xxxxx
 ```
 
-#### Payment Webhook
+#### Webhook Pembayaran
 ```http
 POST /api/webhook/payment
 Content-Type: application/json
@@ -283,22 +268,22 @@ Content-Type: application/json
 
 ### Captcha
 
-#### Get New Captcha
+#### Dapatkan Captcha Baru
 ```http
 GET /api/captcha/new
 ```
 
-#### Get Captcha Site Key
+#### Dapatkan Site Key Captcha
 ```http
 GET /api/captcha/sitekey
 ```
 
 ## 🔗 Jalur Website (Auth SPA)
 
-Halaman autentikasi disajikan sebagai website:
+Halaman autentikasi disajikan sebagai aplikasi React SPA (Single Page Application):
 - `/login`, `/register`, `/forgot`
 
-Sementara halaman lain tetap berbasis HTML/JS di folder `pages/`.
+Sementara halaman lain tetap berbasis HTML/JS Statis di dalam folder `legacy_static_site` (atau `pages/` saat diakses melalu URL).
 
 ## 🏗 Arsitektur
 
@@ -327,11 +312,11 @@ Penyimpanan Data (File JSON / Database)
 
 ### Keuntungan
 
-- ✅ Separation of Concerns
-- ✅ Testability
-- ✅ Maintainability
-- ✅ Easy migration to database
-- ✅ Clean code structure
+- ✅ Pemisahan Tanggung Jawab (Separation of Concerns)
+- ✅ Mudah Diuji (Testability)
+- ✅ Mudah Dipelihara (Maintainability)
+- ✅ Migrasi mudah ke database
+- ✅ Struktur kode bersih
 
 ## 🧪 Pengembangan
 
@@ -351,11 +336,11 @@ npm start
 
 ### Menambahkan Fitur Baru
 
-1. Create repository (if new entity)
-2. Create model wrapper
-3. Create service with business logic
-4. Create controller for API endpoint
-5. Add route in `server/routes/index.js`
+1. Buat repository (jika entitas baru)
+2. Buat model wrapper
+3. Buat service dengan logika bisnis
+4. Buat controller untuk endpoint API
+5. Tambahkan rute di `server/routes/index.js`
 
 ## 📝 Catatan
 

@@ -1,91 +1,91 @@
-# Architecture Documentation
+# Dokumentasi Arsitektur
 
-Comprehensive documentation of the Lumia Store layered architecture.
+Dokumentasi komprehensif mengenai arsitektur berlapis (layered architecture) Lumia Store.
 
-## 📐 Current Architecture Overview
+## 📐 Gambaran Arsitektur Saat Ini
 
-The application follows a **layered architecture pattern** with clear separation of concerns:
+Aplikasi ini mengikuti **pola arsitektur berlapis** dengan pemisahan tanggung jawab yang jelas:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    HTTP Request                          │
+│                    Permintaan HTTP                      │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Layer 1: Routes (server/routes/)                        │
-│ - Route definitions                                     │
-│ - Middleware registration                               │
-│ - Request routing                                       │
+│ - Definisi Rute                                         │
+│ - Registrasi Middleware                                 │
+│ - Routing Permintaan                                    │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Layer 2: Controllers (server/controllers/)              │
-│ - HTTP request handling                                 │
-│ - Request validation (basic)                            │
-│ - Response formatting                                   │
-│ - Error handling                                        │
+│ - Penanganan Permintaan HTTP                            │
+│ - Validasi Permintaan (dasar)                           │
+│ - Pemformatan Respons                                   │
+│ - Penanganan Error                                      │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Layer 3: Services (server/services/)                    │
-│ - Business logic                                        │
-│ - Business rules                                        │
-│ - Orchestration                                         │
-│ - Cross-cutting concerns                                │
+│ - Logika Bisnis                                         │
+│ - Aturan Bisnis                                         │
+│ - Orkestrasi                                            │
+│ - Masalah Lintas Sektoral (Cross-cutting concerns)      │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Layer 4: Models (server/models/)                        │
-│ - Data access interface                                 │
-│ - Domain models                                         │
-│ - Data transformation                                   │
+│ - Antarmuka Akses Data                                  │
+│ - Model Domain                                          │
+│ - Transformasi Data                                     │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Layer 5: Repositories (server/repositories/)            │
-│ - Data access implementation                            │
-│ - CRUD operations                                       │
-│ - Data persistence                                      │
+│ - Implementasi Akses Data                               │
+│ - Operasi CRUD                                          │
+│ - Persistensi Data                                      │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
-│ Layer 6: Data Storage (server/data/)                    │
-│ - JSON files                                            │
-│ - Database (future)                                     │
+│ Layer 6: Penyimpanan Data (server/data/)                │
+│ - File JSON                                             │
+│ - Database (masa depan)                                 │
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 🏗 Layer Responsibilities
+## 🏗 Tanggung Jawab Layer
 
-### 1. Routes Layer (`server/routes/index.js`)
-**Responsibility**: Route definitions and middleware
+### 1. Layer Routes (`server/routes/index.js`)
+**Tanggung Jawab**: Definisi rute dan middleware
 
 ```javascript
-// ✅ Good: Routes only define endpoints and middleware
+// ✅ Bagus: Routes hanya mendefinisikan endpoint dan middleware
 router.post('/auth/register', captchaGuard, authController.register);
 router.get('/orders/:id', orderController.get);
 ```
 
-**Responsibilities:**
-- ✅ Define API endpoints
-- ✅ Register middleware (auth, validation, etc.)
-- ✅ Route requests to appropriate controllers
-- ❌ Should NOT contain business logic
-- ❌ Should NOT handle HTTP details (req/res manipulation)
+**Tanggung Jawab:**
+- ✅ Mendefinisikan endpoint API
+- ✅ Mendaftarkan middleware (auth, validasi, dll.)
+- ✅ Mengarahkan permintaan ke controller yang sesuai
+- ❌ TIDAK BOLEH mengandung logika bisnis
+- ❌ TIDAK BOLEH menangani detail HTTP (manipulasi req/res)
 
-**Current Status**: ✅ Good
+**Status Saat Ini**: ✅ Bagus
 
-### 2. Controllers Layer (`server/controllers/`)
-**Responsibility**: HTTP request/response handling
+### 2. Layer Controllers (`server/controllers/`)
+**Tanggung Jawab**: Penanganan permintaan/respons HTTP
 
 ```javascript
-// ✅ Good: Controller handles HTTP, delegates to service
+// ✅ Bagus: Controller menangani HTTP, mendelegasikan ke service
 async create(req, res) {
   try {
     const order = await orderService.createOrder(req.body);
@@ -96,26 +96,26 @@ async create(req, res) {
 }
 ```
 
-**Responsibilities:**
-- ✅ Extract data from `req` (body, params, query)
-- ✅ Call appropriate service methods
-- ✅ Format HTTP responses
-- ✅ Handle HTTP errors and status codes
-- ✅ Basic input validation (required fields)
-- ❌ Should NOT contain business logic
-- ❌ Should NOT access data directly (no models/repositories)
+**Tanggung Jawab:**
+- ✅ Mengekstrak data dari `req` (body, params, query)
+- ✅ Memanggil metode service yang sesuai
+- ✅ Memformat respons HTTP
+- ✅ Menangani error HTTP dan kode status
+- ✅ Validasi input dasar (field yang wajib diisi)
+- ❌ TIDAK BOLEH mengandung logika bisnis
+- ❌ TIDAK BOLEH mengakses data secara langsung (tidak ada model/repository)
 
-**Current Status**: ✅ Good (with minor improvements possible)
+**Status Saat Ini**: ✅ Bagus (dengan kemungkinan peningkatan kecil)
 
-**Issues Found:**
-- ⚠️ Basic input validation is OK, but could be extracted to validators/middleware
-- ⚠️ Error handling could be more consistent across controllers
+**Masalah yang Ditemukan:**
+- ⚠️ Validasi input dasar Oke, tetapi bisa diekstrak ke validator/middleware
+- ⚠️ Penanganan error bisa lebih konsisten di seluruh controller
 
-### 3. Services Layer (`server/services/`)
-**Responsibility**: Business logic and orchestration
+### 3. Layer Services (`server/services/`)
+**Tanggung Jawab**: Logika bisnis dan orkestrasi
 
 ```javascript
-// ✅ Good: Service contains business logic
+// ✅ Bagus: Service berisi logika bisnis
 async register(email, password) {
   const existing = await userModel.findByEmail(email);
   if (existing) throw new Error('Email sudah terdaftar');
@@ -127,52 +127,52 @@ async register(email, password) {
 }
 ```
 
-**Responsibilities:**
-- ✅ Implement business logic
-- ✅ Enforce business rules
-- ✅ Orchestrate multiple model operations
-- ✅ Coordinate with external services
-- ✅ Transform data between layers
-- ❌ Should NOT handle HTTP (req/res)
-- ❌ Should NOT know about routing
+**Tanggung Jawab:**
+- ✅ Mengimplementasikan logika bisnis
+- ✅ Menegakkan aturan bisnis
+- ✅ Mengorkestrasi beberapa operasi model
+- ✅ Berkoordinasi dengan layanan eksternal
+- ✅ Mentransformasi data antar layer
+- ❌ TIDAK BOLEH menangani HTTP (req/res)
+- ❌ TIDAK BOLEH mengetahui tentang routing
 
-**Current Status**: ✅ Excellent
+**Status Saat Ini**: ✅ Sangat Bagus
 
-**Strengths:**
-- ✅ Services correctly use models, not repositories
-- ✅ Business logic is properly encapsulated
-- ✅ Services orchestrate multiple operations correctly
+**Kekuatan:**
+- ✅ Services menggunakan model dengan benar, bukan repository
+- ✅ Logika bisnis terenkapsulasi dengan baik
+- ✅ Services mengorkestrasi beberapa operasi dengan benar
 
-### 4. Models Layer (`server/models/`)
-**Responsibility**: Data access interface (wrappers)
+### 4. Layer Models (`server/models/`)
+**Tanggung Jawab**: Antarmuka akses data (wrapper)
 
 ```javascript
-// ✅ Good: Model wraps repository, maintains interface
+// ✅ Bagus: Model membungkus repository, mempertahankan antarmuka
 async create(data) {
   return await OrderRepository.create(data);
 }
 ```
 
-**Responsibilities:**
-- ✅ Provide domain-specific data access interface
-- ✅ Abstract data access implementation
-- ✅ Maintain backward compatibility
-- ✅ Domain model representation
-- ❌ Should NOT contain business logic
-- ❌ Should NOT handle HTTP
+**Tanggung Jawab:**
+- ✅ Menyediakan antarmuka akses data spesifik domain
+- ✅ Mengabstraksi implementasi akses data
+- ✅ Mempertahankan kompatibilitas ke belakang
+- ✅ Representasi model domain
+- ❌ TIDAK BOLEH mengandung logika bisnis
+- ❌ TIDAK BOLEH menangani HTTP
 
-**Current Status**: ✅ Good
+**Status Saat Ini**: ✅ Bagus
 
-**Notes:**
-- Models act as thin wrappers around repositories
-- Maintains existing API while using repositories internally
-- Allows easy migration from models to direct repository usage
+**Catatan:**
+- Model bertindak sebagai wrapper tipis di sekitar repository
+- Mempertahankan API yang ada sambil menggunakan repository secara internal
+- Memungkinkan migrasi mudah dari model ke penggunaan repository langsung
 
-### 5. Repositories Layer (`server/repositories/`)
-**Responsibility**: Data persistence and access
+### 5. Layer Repositories (`server/repositories/`)
+**Tanggung Jawab**: Persistensi dan akses data
 
 ```javascript
-// ✅ Good: Repository handles data operations
+// ✅ Bagus: Repository menangani operasi data
 async create(data) {
   const id = this._generateId('ord');
   const order = { id, ...data, createdAt: this._getTimestamp() };
@@ -183,136 +183,136 @@ async create(data) {
 }
 ```
 
-**Responsibilities:**
-- ✅ Perform CRUD operations
-- ✅ Handle data persistence
-- ✅ Implement data access logic
-- ✅ Manage transactions (when using DB)
-- ❌ Should NOT contain business logic
-- ❌ Should NOT know about HTTP or services
+**Tanggung Jawab:**
+- ✅ Melakukan operasi CRUD
+- ✅ Menangani persistensi data
+- ✅ Mengimplementasikan logika akses data
+- ✅ Mengelola transaksi (jika menggunakan DB)
+- ❌ TIDAK BOLEH mengandung logika bisnis
+- ❌ TIDAK BOLEH mengetahui tentang HTTP atau services
 
-**Current Status**: ✅ Excellent
+**Status Saat Ini**: ✅ Sangat Bagus
 
-**Strengths:**
-- ✅ Repository Pattern properly implemented
-- ✅ Clean separation from business logic
-- ✅ Easy to migrate to database
+**Kekuatan:**
+- ✅ Pola Repository diimplementasikan dengan benar
+- ✅ Pemisahan bersih dari logika bisnis
+- ✅ Mudah dimigrasi ke database
 
-### 6. Data Storage (`server/data/`)
-**Responsibility**: Physical data storage
+### 6. Penyimpanan Data (`server/data/`)
+**Tanggung Jawab**: Penyimpanan data fisik
 
 ```
 server/data/
-├── users.json   - User accounts
-├── orders.json  - Order records
-└── otps.json    - OTP codes
+├── users.json   - Akun pengguna
+├── orders.json  - Riwayat pesanan
+└── otps.json    - Kode OTP
 ```
 
-**Current Status**: ✅ Good (JSON files for development)
+**Status Saat Ini**: ✅ Bagus (File JSON untuk pengembangan)
 
-**Future**: Can easily migrate to database using repository pattern
+**Masa Depan**: Dapat dengan mudah dimigrasi ke database menggunakan pola repository
 
-## ✅ Architecture Assessment
+## ✅ Penilaian Arsitektur
 
-### What's Working Well ✅
+### Apa yang Berjalan dengan Baik ✅
 
-1. **Clear Layer Separation**
-   - Each layer has distinct responsibilities
-   - Dependencies flow in one direction (top to bottom)
-   - No circular dependencies
+1. **Pemisahan Layer yang Jelas**
+   - Setiap layer memiliki tanggung jawab yang berbeda
+   - Ketergantungan mengalir satu arah (atas ke bawah)
+   - Tidak ada ketergantungan melingkar (circular dependencies)
 
-2. **Repository Pattern**
-   - Properly implemented
-   - Easy to migrate to database
-   - Clean data access abstraction
+2. **Pola Repository**
+   - Diimplementasikan dengan benar
+   - Mudah dimigrasi ke database
+   - Abstraksi akses data yang bersih
 
-3. **Service Layer**
-   - Business logic properly encapsulated
-   - Services orchestrate operations correctly
-   - No business logic in controllers
+3. **Layer Service**
+   - Logika bisnis terenkapsulasi dengan baik
+   - Services mengorkestrasi operasi dengan benar
+   - Tidak ada logika bisnis di controller
 
-4. **Model Abstraction**
-   - Models provide clean interface
-   - Backward compatible
-   - Easy to evolve
+4. **Abstraksi Model**
+   - Model menyediakan antarmuka yang bersih
+   - Kompatibel ke belakang
+   - Mudah untuk dikembangkan
 
-5. **Dependency Flow**
+5. **Alur Ketergantungan**
    ```
    Routes → Controllers → Services → Models → Repositories → Data
    ```
-   All dependencies flow in correct direction ✅
+   Semua ketergantungan mengalir ke arah yang benar ✅
 
-### Areas for Improvement ⚠️
+### Area untuk Peningkatan ⚠️
 
-1. **Input Validation**
-   - Currently in controllers (acceptable)
-   - Could be extracted to validators/middleware
-   - **Priority**: Low
+1. **Validasi Input**
+   - Saat ini di controller (dapat diterima)
+   - Bisa diekstrak ke validator/middleware
+   - **Prioritas**: Rendah
 
-2. **Error Handling**
-   - Inconsistent error formats
-   - Could use error handling middleware
-   - **Priority**: Medium
+2. **Penanganan Error**
+   - Format error tidak konsisten
+   - Bisa menggunakan middleware penanganan error
+   - **Prioritas**: Sedang
 
-3. **Payment Logic**
-   - `PaymentController.handleWebhook` has some logic
-   - Could extract to `PaymentService`
-   - **Priority**: Low
+3. **Logika Pembayaran**
+   - `PaymentController.handleWebhook` memiliki beberapa logika
+   - Bisa diekstrak ke `PaymentService`
+   - **Prioritas**: Rendah
 
-4. **DTOs (Data Transfer Objects)**
-   - No explicit DTOs for requests/responses
-   - Current approach works but could be more structured
-   - **Priority**: Low
+4. **DTO (Data Transfer Objects)**
+   - Tidak ada DTO eksplisit untuk request/response
+   - Pendekatan saat ini berfungsi tetapi bisa lebih terstruktur
+   - **Prioritas**: Rendah
 
-5. **Authentication Middleware**
-   - Token verification not implemented
-   - Could add auth middleware
-   - **Priority**: Medium
+5. **Middleware Autentikasi**
+   - Verifikasi token belum diimplementasikan
+   - Bisa menambahkan middleware auth
+   - **Prioritas**: Sedang
 
-## 📋 Architecture Principles Followed
+## 📋 Prinsip Arsitektur yang Diikuti
 
-### ✅ SOLID Principles
+### ✅ Prinsip SOLID
 
-1. **Single Responsibility**
-   - ✅ Each layer has one clear responsibility
-   - ✅ Classes are focused on their purpose
+1. **Single Responsibility (Tanggung Jawab Tunggal)**
+   - ✅ Setiap layer memiliki satu tanggung jawab yang jelas
+   - ✅ Kelas fokus pada tujuannya
 
-2. **Open/Closed**
-   - ✅ Repository pattern allows extension
-   - ✅ Easy to add new repositories without changing existing code
+2. **Open/Closed (Terbuka/Tertutup)**
+   - ✅ Pola repository memungkinkan ekstensi
+   - ✅ Mudah menambahkan repository baru tanpa mengubah kode yang ada
 
 3. **Liskov Substitution**
-   - ✅ Repositories follow base interface
-   - ✅ Can swap implementations easily
+   - ✅ Repository mengikuti antarmuka dasar
+   - ✅ Dapat menukar implementasi dengan mudah
 
-4. **Interface Segregation**
-   - ✅ Clean interfaces at each layer
-   - ✅ No forced dependencies
+4. **Interface Segregation (Pemisahan Antarmuka)**
+   - ✅ Antarmuka bersih di setiap layer
+   - ✅ Tidak ada ketergantungan yang dipaksakan
 
-5. **Dependency Inversion**
-   - ✅ Services depend on models (abstraction)
-   - ✅ Models depend on repositories (abstraction)
+5. **Dependency Inversion (Inversi Ketergantungan)**
+   - ✅ Services bergantung pada model (abstraksi)
+   - ✅ Model bergantung pada repository (abstraksi)
 
-### ✅ Design Patterns
+### ✅ Pola Desain
 
-1. **Repository Pattern** ✅
-   - Properly implemented
-   - Clean data access abstraction
+1. **Pola Repository** ✅
+   - Diimplementasikan dengan benar
+   - Abstraksi akses data yang bersih
 
-2. **Service Layer Pattern** ✅
-   - Business logic encapsulated
-   - Clear separation of concerns
+2. **Pola Layer Service** ✅
+   - Logika bisnis terenkapsulasi
+   - Pemisahan tanggung jawab yang jelas
 
-3. **MVC-like Structure** ✅
-   - Controllers handle HTTP
-   - Services handle business logic
-   - Models handle data
+3. **Struktur mirip MVC** ✅
+   - Controller menangani HTTP
+   - Service menangani logika bisnis
+   - Model menangani data
 
-## 🎯 Recommended Improvements (Optional)
+## 🎯 Peningkatan yang Direkomendasikan (Opsional)
 
-### High Priority (Optional but Recommended)
+### Prioritas Tinggi (Opsional tapi Direkomendasikan)
 
-1. **Error Handling Middleware**
+1. **Middleware Penanganan Error**
    ```javascript
    // server/middleware/errorHandler.js
    function errorHandler(err, req, res, next) {
@@ -323,46 +323,46 @@ server/data/
    }
    ```
 
-2. **Input Validators**
+2. **Validator Input**
    ```javascript
    // server/validators/authValidator.js
    function validateRegister(req, res, next) {
      const { email, password } = req.body;
      if (!email || !validator.isEmail(email)) {
-       return res.status(400).json({ error: 'Invalid email' });
+       return res.status(400).json({ error: 'Email tidak valid' });
      }
      if (!password || password.length < 8) {
-       return res.status(400).json({ error: 'Password too short' });
+       return res.status(400).json({ error: 'Password terlalu pendek' });
      }
      next();
    }
    ```
 
-3. **Authentication Middleware**
+3. **Middleware Autentikasi**
    ```javascript
    // server/middleware/auth.js
    async function authenticateToken(req, res, next) {
      const token = req.headers.authorization;
      if (!token) return res.status(401).json({ error: 'Unauthorized' });
-     // Verify token and attach user to req
+     // Verifikasi token dan lampirkan user ke req
      req.user = await verifyToken(token);
      next();
    }
    ```
 
-### Medium Priority (Nice to Have)
+### Prioritas Sedang (Bagus untuk Dimiliki)
 
-4. **Payment Service**
+4. **Service Pembayaran**
    ```javascript
    // server/services/paymentService.js
    class PaymentService {
      async handleWebhook(orderId, status) {
-       // Webhook validation and processing logic
+       // Validasi webhook dan logika pemrosesan
      }
    }
    ```
 
-5. **DTOs (Data Transfer Objects)**
+5. **DTO (Data Transfer Objects)**
    ```javascript
    // server/dto/orderDTO.js
    class OrderDTO {
@@ -372,41 +372,41 @@ server/data/
    }
    ```
 
-## 📊 Architecture Score
+## 📊 Skor Arsitektur
 
-| Aspect | Score | Notes |
-|--------|-------|-------|
-| **Layer Separation** | ⭐⭐⭐⭐⭐ | Excellent separation |
-| **Dependency Flow** | ⭐⭐⭐⭐⭐ | One-way dependencies |
-| **Business Logic** | ⭐⭐⭐⭐⭐ | Properly in services |
-| **Data Access** | ⭐⭐⭐⭐⭐ | Repository pattern well implemented |
-| **Error Handling** | ⭐⭐⭐⭐ | Good, could be more consistent |
-| **Input Validation** | ⭐⭐⭐⭐ | Good, could extract to validators |
-| **Overall** | ⭐⭐⭐⭐⭐ | **Excellent architecture** |
+| Aspek | Skor | Catatan |
+|-------|------|---------|
+| **Pemisahan Layer** | ⭐⭐⭐⭐⭐ | Pemisahan yang sangat baik |
+| **Alur Ketergantungan** | ⭐⭐⭐⭐⭐ | Ketergantungan satu arah |
+| **Logika Bisnis** | ⭐⭐⭐⭐⭐ | Tersimpan dengan benar di layanan |
+| **Akses Data** | ⭐⭐⭐⭐⭐ | Pola repository diimplementasikan dengan baik |
+| **Penanganan Error** | ⭐⭐⭐⭐ | Bagus, bisa lebih konsisten |
+| **Validasi Input** | ⭐⭐⭐⭐ | Bagus, bisa diekstrak ke validator |
+| **Keseluruhan** | ⭐⭐⭐⭐⭐ | **Arsitektur Sangat Bagus** |
 
-## ✅ Conclusion
+## ✅ Kesimpulan
 
-**The layered architecture is well-structured and follows best practices.**
+**Arsitektur berlapis terstruktur dengan baik dan mengikuti praktik terbaik.**
 
-### Strengths:
-- ✅ Clear separation of concerns
-- ✅ Proper dependency flow
-- ✅ Repository pattern correctly implemented
-- ✅ Business logic properly encapsulated
-- ✅ Easy to maintain and extend
-- ✅ Easy to test
+### Kekuatan:
+- ✅ Pemisahan tanggung jawab yang jelas
+- ✅ Alur ketergantungan yang tepat
+- ✅ Pola repository diimplementasikan dengan benar
+- ✅ Logika bisnis terenkapsulasi dengan benar
+- ✅ Mudah dipelihara dan diperluas
+- ✅ Mudah diuji
 
-### Minor Improvements (Optional):
-- Input validation could be extracted to validators
-- Error handling could be more consistent
-- Authentication middleware could be added
-- Payment logic could be moved to service
+### Peningkatan Kecil (Opsional):
+- Validasi input bisa diekstrak ke validator
+- Penanganan error bisa lebih konsisten
+- Middleware autentikasi bisa ditambahkan
+- Logika pembayaran bisa dipindahkan ke service
 
-**Overall Assessment**: ⭐⭐⭐⭐⭐ **Excellent**
+**Penilaian Keseluruhan**: ⭐⭐⭐⭐⭐ **Sangat Bagus**
 
-The architecture is production-ready and follows industry best practices. The suggested improvements are enhancements, not fixes, as the current structure is solid and maintainable.
+Arsitektur ini siap produksi dan mengikuti praktik terbaik industri. Peningkatan yang disarankan adalah penyempurnaan, bukan perbaikan, karena struktur saat ini sudah solid dan mudah dipelihara.
 
 ---
 
-**Last Updated**: 2024
-**Architecture Version**: 1.0
+**Terakhir Diperbarui**: 2024
+**Versi Arsitektur**: 1.0

@@ -1,6 +1,6 @@
 # Implementasi Pola Repository
 
-Direktori ini berisi implementasi Pola Repository untuk abstraksi akses data pada aplikasi Lumiastore.
+Direktori ini berisi implementasi Pola Repository untuk abstraksi akses data pada aplikasi Lumia Store.
 
 ## Gambaran Umum
 
@@ -12,22 +12,22 @@ Pola Repository memisahkan logika bisnis dari akses data. Hal ini membuat basis 
 server/
 ├── repositories/
 │   ├── base/
-│   │   ├── BaseRepository.js       # Abstract base repository interface
-│   │   └── JsonFileRepository.js   # Base implementation for JSON file storage
-│   ├── UserRepository.js           # User data repository
-│   ├── OrderRepository.js          # Order data repository
-│   ├── OtpRepository.js            # OTP data repository
-│   ├── index.js                    # Central export point
-│   └── README.md                   # This file
+│   │   ├── BaseRepository.js       # Antarmuka dasar repository abstrak
+│   │   └── JsonFileRepository.js   # Implementasi dasar untuk penyimpanan file JSON
+│   ├── UserRepository.js           # Repository data pengguna
+│   ├── OrderRepository.js          # Repository data pesanan
+│   ├── OtpRepository.js            # Repository data OTP
+│   ├── index.js                    # Titik ekspor pusat
+│   └── README.md                   # File ini
 ├── models/
-│   ├── userModel.js                # Wrapper using UserRepository
-│   ├── orderModel.js               # Wrapper using OrderRepository
-│   └── otpModel.js                 # Wrapper using OtpRepository
+│   ├── userModel.js                # Wrapper menggunakan UserRepository
+│   ├── orderModel.js               # Wrapper menggunakan OrderRepository
+│   └── otpModel.js                 # Wrapper menggunakan OtpRepository
 └── services/
-    └── ...                         # Business logic using models
+    └── ...                         # Logika bisnis menggunakan model
 ```
 
-## Structure
+## Struktur
 
 ### Base Repository (`base/BaseRepository.js`)
 Kelas abstrak yang mendefinisikan antarmuka semua repository:
@@ -75,16 +75,16 @@ Implementasi dasar untuk penyimpanan berbasis file JSON:
 ```javascript
 const { UserRepository } = require('./repositories');
 
-// Create user
+// Buat pengguna
 const user = await UserRepository.create({ 
   email: 'user@example.com', 
   password: 'password123' 
 });
 
-// Find user
+// Cari pengguna
 const foundUser = await UserRepository.findByEmail('user@example.com');
 
-// Verify password
+// Verifikasi password
 const isValid = UserRepository.verifyPassword(foundUser, 'password123');
 ```
 
@@ -94,13 +94,13 @@ Model bertindak sebagai wrapper repository untuk menjaga kompatibilitas API:
 ```javascript
 const userModel = require('../models/userModel');
 
-// Create user (same API as before)
+// Buat pengguna (API sama seperti sebelumnya)
 const user = await userModel.createUser({ 
   email: 'user@example.com', 
   password: 'password123' 
 });
 
-// Find user
+// Cari pengguna
 const foundUser = await userModel.findByEmail('user@example.com');
 ```
 
@@ -137,14 +137,14 @@ class DatabaseRepository extends BaseRepository {
     return await this.db.findById(id);
   }
   
-  // ... implement other methods
+  // ... implementasi metode lain
 }
 ```
 
 ## Peningkatan Mendatang
 
 - [ ] Tambahkan implementasi repository database (PostgreSQL)
-- [ ] Tambahkan caching layer
+- [ ] Tambahkan layer caching
 - [ ] Dukungan transaksi
 - [ ] Query builder untuk filter kompleks
 - [ ] Dukungan pagination
