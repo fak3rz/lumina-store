@@ -1,9 +1,15 @@
 {
     "version": 2,
+    "outputDirectory": "frontend/dist",
     "rewrites": [
         {
             "source": "/(.*)",
             "destination": "/api/index.js"
         }
-    ]
+    ],
+    "functions": {
+        "api/index.js": {
+            "includeFiles": "legacy_static_site/**"
+        }
+    }
 }
