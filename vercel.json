@@ -12,7 +12,7 @@
         }
     },
     "env": {
-        "RECAPTCHA_SITE_KEY": "6Ld1zWcsAAAAACHZEV2bYZoxgwHCliQNfcLDPG2g",
-        "RECAPTCHA_SECRET": "6Ld1zWcsAAAAAH6G8scmOUrlNQfB55R31EdoUOO7"
+        "RECAPTCHA_SITE_KEY": "6Lete2gsAAAAAN9lpnamn2feLC9TrotZg7G-7dxO",
+        "RECAPTCHA_SECRET": "6Lete2gsAAAAAGIPrkuDxzHCl1fhJUpCmNRzYXfq"
     }
 }
