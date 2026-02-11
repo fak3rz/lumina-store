@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-
+// Hardcoded for zero-latency loading (Public Site Key)
+const SITE_KEY = '6Lete2gsAAAAAN9lpnamn2feLC9TrotZg7G-7dxO';
 
 export default function RecaptchaBox({ onToken, onFallbackReady }) {
   const containerRef = useRef(null);
@@ -13,37 +14,26 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
 
     async function init() {
       try {
-        const r = await fetch('/api/captcha/sitekey');
-        const j = await r.json().catch(() => ({}));
-        const siteKey = j && j.siteKey ? j.siteKey : '';
-
-        if (!siteKey) {
-          console.warn('Recaptcha siteKey missing, using fallback');
-          await initMath();
-          return;
-        }
-
-        // Define callback
+        // Optimistic loading: Run parallel execution
         const callbackName = 'onRecaptchaLoad_' + Math.random().toString(36).substring(7);
-        let scriptLoaded = false;
 
         window[callbackName] = () => {
           if (!mounted) return;
-          renderWidget(siteKey);
+          renderWidget();
         };
 
-        // Load script if not already present or global grecaptcha not ready
+        // Check availability strictly
         if (window.grecaptcha && window.grecaptcha.render) {
-          renderWidget(siteKey);
+          renderWidget();
         } else {
           await loadRecaptchaScript(callbackName);
-          // Fallback if callback never fires (timeout)
+          // Fallback safety timeout
           setTimeout(() => {
             if (mounted && mode === 'loading') {
               console.warn('Recaptcha timeout, using fallback');
               initMath();
             }
-          }, 10000);
+          }, 8000);
         }
 
       } catch (e) {
@@ -52,7 +42,7 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
       }
     }
 
-    function renderWidget(siteKey) {
+    function renderWidget() {
       if (!window.grecaptcha || !containerRef.current) return;
       window.grecaptcha.ready(() => {
         if (!mounted) return;
@@ -60,12 +50,12 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
           if (containerRef.current && containerRef.current.innerHTML === '') {
             setMode('recaptcha');
             widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
-              sitekey: siteKey,
+              sitekey: SITE_KEY,
               callback: (token) => {
                 if (typeof onToken === 'function') onToken(token);
               },
               'error-callback': () => {
-                console.error('Recaptcha service error');
+                // e.g. network error during check
                 initMath();
               }
             });
@@ -104,7 +94,7 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
         s.src = `https://www.google.com/recaptcha/api.js?onload=${cbName}&render=explicit`;
         s.async = true;
         s.defer = true;
-        s.onerror = () => resolve(); // Resolves but callback won't fire
+        s.onerror = () => resolve();
         document.head.appendChild(s);
         resolve();
       });
