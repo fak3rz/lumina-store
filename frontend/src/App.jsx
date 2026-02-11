@@ -22,9 +22,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Layout><Login /></Layout>} />
-        <Route path="/register" element={<Layout><Register /></Layout>} />
-        <Route path="/forgot" element={<Layout><Forgot /></Layout>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<Forgot />} />
         <Route path="*" element={<Layout><div className="panel"><h2>Halaman tidak ditemukan</h2></div></Layout>} />
       </Routes>
     </BrowserRouter>

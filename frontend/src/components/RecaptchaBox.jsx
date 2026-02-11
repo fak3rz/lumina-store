@@ -65,14 +65,14 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
     return () => { mounted = false; };
   }, [onToken, onFallbackReady]);
 
-  if (mode === 'loading') return <div className="captcha-box">Memuat captcha…</div>;
-  if (mode === 'recaptcha') return <div className="captcha-box"><div ref={containerRef} /></div>;
+  if (mode === 'loading') return <div className="mt-4 text-sm text-slate-400">Memuat captcha…</div>;
+  if (mode === 'recaptcha') return <div className="mt-4"><div ref={containerRef} /></div>;
   return (
-    <div className="captcha-box">
-      <label className="captcha-label">{challenge}</label>
+    <div className="mt-4">
+      <label className="block mb-2 text-sm text-slate-500">{challenge}</label>
       <input
         type="text"
-        className="captcha-input"
+        className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white focus:border-purple-600 focus:ring-1 focus:ring-purple-500 outline-none transition"
         placeholder="Jawaban captcha"
         onChange={(e) => onToken && onToken(e.target.value)}
       />
