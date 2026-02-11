@@ -11,30 +11,48 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
 
   useEffect(() => {
     let mounted = true;
+    const POLLING_INTERVAL = 100;
+    const MAX_POLLING_TIME = 10000;
 
     async function init() {
       try {
-        // Optimistic loading: Run parallel execution
-        const callbackName = 'onRecaptchaLoad_' + Math.random().toString(36).substring(7);
+        // Method 1: grecaptcha already exists
+        if (window.grecaptcha && window.grecaptcha.render) {
+          renderWidget();
+          return;
+        }
 
+        // Method 2: Script tag exists but grecaptcha not ready (Downloading)
+        if (document.getElementById('recaptcha-lib')) {
+          waitForGrecaptcha();
+          return;
+        }
+
+        // Method 3: Clean start, load script
+        const callbackName = 'onRecaptchaLoad_' + Math.random().toString(36).substring(7);
         window[callbackName] = () => {
           if (!mounted) return;
           renderWidget();
         };
 
-        // Check availability strictly
-        if (window.grecaptcha && window.grecaptcha.render) {
-          renderWidget();
-        } else {
-          await loadRecaptchaScript(callbackName);
-          // Fallback safety timeout
-          setTimeout(() => {
-            if (mounted && mode === 'loading') {
-              console.warn('Recaptcha timeout, using fallback');
-              initMath();
-            }
-          }, 8000);
-        }
+        const s = document.createElement('script');
+        s.id = 'recaptcha-lib';
+        s.src = `https://www.google.com/recaptcha/api.js?onload=${callbackName}&render=explicit`;
+        s.async = true;
+        s.defer = true;
+        s.onerror = () => {
+          console.error('Recaptcha script failed to load');
+          initMath();
+        };
+        document.head.appendChild(s);
+
+        // Fallback safety if network hangs
+        setTimeout(() => {
+          if (mounted && mode === 'loading') {
+            console.warn('Recaptcha initial load timeout');
+            initMath();
+          }
+        }, 10000);
 
       } catch (e) {
         console.error('Recaptcha init error:', e);
@@ -42,29 +60,54 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
       }
     }
 
-    function renderWidget() {
-      if (!window.grecaptcha || !containerRef.current) return;
-      window.grecaptcha.ready(() => {
-        if (!mounted) return;
-        try {
-          if (containerRef.current && containerRef.current.innerHTML === '') {
-            setMode('recaptcha');
-            widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
-              sitekey: SITE_KEY,
-              callback: (token) => {
-                if (typeof onToken === 'function') onToken(token);
-              },
-              'error-callback': () => {
-                // e.g. network error during check
-                initMath();
-              }
-            });
-          }
-        } catch (err) {
-          console.error('Render error:', err);
+    function waitForGrecaptcha() {
+      const startTime = Date.now();
+      const interval = setInterval(() => {
+        if (!mounted) {
+          clearInterval(interval);
+          return;
+        }
+        if (window.grecaptcha && window.grecaptcha.render) {
+          clearInterval(interval);
+          renderWidget();
+        } else if (Date.now() - startTime > MAX_POLLING_TIME) {
+          clearInterval(interval);
+          console.warn('Recaptcha polling timeout');
           initMath();
         }
-      });
+      }, POLLING_INTERVAL);
+    }
+
+    function renderWidget() {
+      if (!window.grecaptcha || !containerRef.current) return;
+
+      try {
+        window.grecaptcha.ready(() => {
+          if (!mounted) return;
+          if (containerRef.current && containerRef.current.innerHTML === '') {
+            setMode('recaptcha');
+            try {
+              widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
+                sitekey: SITE_KEY,
+                callback: (token) => {
+                  if (typeof onToken === 'function') onToken(token);
+                },
+                'error-callback': () => {
+                  console.error('Recaptcha execution error');
+                  initMath();
+                }
+              });
+            } catch (renderErr) {
+              console.error('Render call error:', renderErr);
+              // If render fails (e.g. duplicate), checking innerHTML usually prevents this,
+              // but as a fallback, we allow silent fail or math.
+            }
+          }
+        });
+      } catch (err) {
+        console.error('Ready callback error:', err);
+        initMath();
+      }
     }
 
     async function initMath() {
@@ -84,27 +127,11 @@ export default function RecaptchaBox({ onToken, onFallbackReady }) {
       }
     }
 
-    function loadRecaptchaScript(cbName) {
-      return new Promise((resolve) => {
-        if (document.getElementById('recaptcha-lib')) {
-          return resolve();
-        }
-        const s = document.createElement('script');
-        s.id = 'recaptcha-lib';
-        s.src = `https://www.google.com/recaptcha/api.js?onload=${cbName}&render=explicit`;
-        s.async = true;
-        s.defer = true;
-        s.onerror = () => resolve();
-        document.head.appendChild(s);
-        resolve();
-      });
-    }
-
     init();
     return () => { mounted = false; };
   }, [onToken, onFallbackReady]);
 
-  if (mode === 'loading') return <div className="mt-4 text-sm text-slate-400">Memuat captcha…</div>;
+  if (mode === 'loading') return <div className="mt-4 text-sm text-slate-400">Memuat captcha...</div>;
   if (mode === 'recaptcha') return <div className="mt-4 flex justify-center"><div ref={containerRef} /></div>;
 
   return (
