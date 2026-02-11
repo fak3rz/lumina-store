@@ -54,7 +54,10 @@ Pastikan Anda sudah punya akun di [Vercel.com](https://vercel.com) (bisa login p
         Copy isi dari file `.env` Anda ke sini. (Nama = Nilai).
         Contoh:
         *   `MLBB_API_KEY` = `abc123...`
-        *   `CAPTCHA_ENABLED` = `false`
+        *   `CAPTCHA_ENABLED` = `true`
+        *   `RECAPTCHA_SITE_KEY` = `...` (Key v2 baru)
+        *   `RECAPTCHA_SECRET` = `...` (Key v2 baru)
+
         (Jangan copy `.env` file langsung, tapi masukkan key-value nya satu per satu di dashboard Vercel).
 
 3.  **Deploy**

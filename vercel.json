@@ -10,5 +10,9 @@
         "api/index.js": {
             "includeFiles": "legacy_static_site/**, frontend/dist/**"
         }
+    },
+    "env": {
+        "RECAPTCHA_SITE_KEY": "6Ld1zWcsAAAAACHZEV2bYZoxgwHCliQNfcLDPG2g",
+        "RECAPTCHA_SECRET": "6Ld1zWcsAAAAAH6G8scmOUrlNQfB55R31EdoUOO7"
     }
 }
