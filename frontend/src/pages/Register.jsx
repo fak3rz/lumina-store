@@ -24,8 +24,9 @@ export default function Register() {
     try {
       const res = await authApi.register(email, password, { token: captchaToken, fallback: useFallback });
       if (!res || res.ok === false) throw new Error(res.error || 'Registrasi gagal');
-      alert('Registrasi berhasil, cek email untuk OTP');
-      window.location.href = '/login';
+      alert('Registrasi berhasil! Silakan cek kode OTP di email Anda (atau Console Log jika di dev).');
+      // Redirect to OTP page with email
+      window.location.href = `/verify-otp?email=${encodeURIComponent(email)}`;
     } catch (err) {
       setError(err.message || 'Terjadi kesalahan');
     } finally {
