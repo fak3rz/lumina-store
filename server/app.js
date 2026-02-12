@@ -41,9 +41,16 @@ app.get('/api/version', (req, res) => {
   });
 });
 
-// Explicitly serve homepage from legacy site
+// Explicitly serve homepage from legacy site (Read file directly to ensure it works)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'legacy_static_site', 'index.html'));
+  try {
+    const indexPath = path.join(__dirname, '..', 'legacy_static_site', 'index.html');
+    const html = require('fs').readFileSync(indexPath, 'utf8');
+    res.send(html);
+  } catch (err) {
+    console.error('Error serving homepage:', err);
+    res.status(500).send('Error loading homepage: ' + err.message);
+  }
 });
 
 // API Routes
