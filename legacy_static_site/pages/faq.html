@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
+
 <body class="antialiased relative min-h-screen">
     <div class="blob blob-1 rounded-full"></div>
     <div class="blob blob-2 rounded-full"></div>
@@ -15,30 +17,41 @@
     <!-- Navbar -->
     <nav class="fixed w-full z-50 glass-nav py-4">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="../index.html" class="text-2xl font-bold tracking-tighter text-white"><span class="text-orange-500">Lumia</span>store</a>
+            <a href="../index.html" class="text-2xl font-bold tracking-tighter text-slate-800"><span
+                    class="text-purple-600">Lumia</span>store</a>
             <div class="flex space-x-4 items-center">
-                <a href="../index.html" class="text-sm font-medium text-gray-300 hover:text-white transition flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                <a href="../index.html"
+                    class="text-sm font-medium text-slate-500 hover:text-purple-600 transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
                     Back
                 </a>
                 <div id="nav-auth" class="hidden md:flex space-x-4 items-center">
-                    <button class="text-sm font-medium text-gray-300 hover:text-white transition" onclick="window.location.href='./login.html'">Log In</button>
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full text-sm font-bold transition" onclick="window.location.href='./register.html'">Sign Up</button>
+                    <button class="text-sm font-medium text-slate-500 hover:text-purple-600 transition"
+                        onclick="window.location.href='./login.html'">Log In</button>
+                    <button
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full text-sm font-bold transition"
+                        onclick="window.location.href='./register.html'">Sign Up</button>
                 </div>
                 <div id="nav-profile" class="relative hidden">
-                    <button id="profile-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center select-none">
+                    <button id="profile-btn"
+                        class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center select-none">
                         <span id="profile-letter">U</span>
                     </button>
-                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 glass rounded-xl overflow-hidden border border-white/10">
-                        <div class="px-4 py-3 text-sm text-gray-300">
-                            <div class="font-bold text-white">Akun</div>
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-2 w-48 glass rounded-xl overflow-hidden border border-slate-100">
+                        <div class="px-4 py-3 text-sm text-slate-500">
+                            <div class="font-bold text-slate-800">Akun</div>
                             <div id="profile-email" class="truncate"></div>
                         </div>
                         <div class="border-t border-white/10">
                             <a href="./profile.html" class="block px-4 py-2 text-sm hover:bg-white/10">Profil</a>
                             <a href="./topup.html" class="block px-4 py-2 text-sm hover:bg-white/10">Top Up</a>
                             <a href="./faq.html" class="block px-4 py-2 text-sm hover:bg-white/10">FAQ</a>
-                            <button id="logout-btn" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10">Keluar</button>
+                            <button id="logout-btn"
+                                class="w-full text-left px-4 py-2 text-sm hover:bg-white/10">Keluar</button>
                         </div>
                     </div>
                 </div>
@@ -49,22 +62,28 @@
     <div class="container mx-auto px-6 pt-28 pb-10 max-w-5xl">
         <!-- Header Section -->
         <div class="text-center mb-16" data-aos="fade-down">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 rounded-full mb-6">
-                <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-6">
+                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
                 </svg>
             </div>
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">FAQ</h1>
-            <p class="text-gray-400 text-xl max-w-2xl mx-auto">Temukan jawaban cepat untuk pertanyaan yang sering diajukan tentang layanan kami</p>
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 text-slate-800">FAQ</h1>
+            <p class="text-slate-500 text-xl max-w-2xl mx-auto">Temukan jawaban cepat untuk pertanyaan yang sering
+                diajukan tentang layanan kami</p>
         </div>
 
         <!-- Search Bar -->
         <div class="mb-8" data-aos="fade-up" data-aos-delay="100">
             <div class="max-w-md mx-auto">
                 <div class="relative">
-                    <input type="text" id="faq-search" placeholder="Cari pertanyaan..." class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:bg-white/15 transition">
-                    <svg class="w-5 h-5 absolute left-4 top-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    <input type="text" id="faq-search" placeholder="Cari pertanyaan..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pl-12 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition">
+                    <svg class="w-5 h-5 absolute left-4 top-3.5 text-gray-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
             </div>
@@ -72,41 +91,64 @@
 
         <!-- FAQ Categories -->
         <div class="flex flex-wrap justify-center gap-3 mb-12" data-aos="fade-up" data-aos-delay="200">
-            <button class="faq-category category-active px-4 py-2 rounded-full bg-orange-500 text-white text-sm font-medium transition" data-category="all">Semua</button>
-            <button class="faq-category px-4 py-2 rounded-full bg-white/10 text-gray-300 hover:text-white hover:bg-white/20 text-sm font-medium transition" data-category="payment">Pembayaran</button>
-            <button class="faq-category px-4 py-2 rounded-full bg-white/10 text-gray-300 hover:text-white hover:bg-white/20 text-sm font-medium transition" data-category="delivery">Pengiriman</button>
-            <button class="faq-category px-4 py-2 rounded-full bg-white/10 text-gray-300 hover:text-white hover:bg-white/20 text-sm font-medium transition" data-category="account">Akun</button>
-            <button class="faq-category px-4 py-2 rounded-full bg-white/10 text-gray-300 hover:text-white hover:bg-white/20 text-sm font-medium transition" data-category="support">Support</button>
+            <button
+                class="faq-category category-active px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-medium transition"
+                data-category="all">Semua</button>
+            <button
+                class="faq-category px-4 py-2 rounded-full bg-slate-100 text-slate-500 hover:text-purple-600 hover:bg-purple-50 text-sm font-medium transition"
+                data-category="payment">Pembayaran</button>
+            <button
+                class="faq-category px-4 py-2 rounded-full bg-slate-100 text-slate-500 hover:text-purple-600 hover:bg-purple-50 text-sm font-medium transition"
+                data-category="delivery">Pengiriman</button>
+            <button
+                class="faq-category px-4 py-2 rounded-full bg-slate-100 text-slate-500 hover:text-purple-600 hover:bg-purple-50 text-sm font-medium transition"
+                data-category="account">Akun</button>
+            <button
+                class="faq-category px-4 py-2 rounded-full bg-slate-100 text-slate-500 hover:text-purple-600 hover:bg-purple-50 text-sm font-medium transition"
+                data-category="support">Support</button>
         </div>
 
         <div class="space-y-6 faq-container">
             <!-- FAQ Item 1 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="delivery" data-aos="fade-up" data-aos-delay="300">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300"
+                data-category="delivery" data-aos="fade-up" data-aos-delay="300">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-slate-50 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-blue-400 font-bold text-sm">1</span>
                         </div>
-                        <span class="font-semibold text-lg text-white">Bagaimana cara melakukan top-up di Lumiastore?</span>
+                        <span class="font-semibold text-lg text-slate-800">Bagaimana cara melakukan top-up di
+                            Lumiastore?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-purple-600 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Untuk melakukan top-up, pilih game yang ingin Anda top-up, masukkan User ID dan Zone ID (jika diperlukan), pilih nominal yang diinginkan, lalu pilih metode pembayaran. Setelah pembayaran berhasil, item akan langsung masuk ke akun game Anda secara instan.</p>
+                        <p class="text-slate-600 leading-relaxed">Untuk melakukan top-up, pilih game yang ingin Anda
+                            top-up, masukkan User ID dan Zone ID (jika diperlukan), pilih nominal yang diinginkan, lalu
+                            pilih metode pembayaran. Setelah pembayaran berhasil, item akan langsung masuk ke akun game
+                            Anda secara instan.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 2 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="delivery" data-aos="fade-up" data-aos-delay="400">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="delivery" data-aos="fade-up" data-aos-delay="400">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-green-400 font-bold text-sm">2</span>
@@ -114,23 +156,32 @@
                         <span class="font-semibold text-lg text-white">Berapa lama waktu pengiriman top-up?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Top-up di Lumiastore dikirim secara instan setelah pembayaran berhasil. Biasanya item akan masuk ke akun game Anda dalam waktu 1-5 menit setelah pembayaran selesai. Jika lebih dari 10 menit belum masuk, silakan hubungi customer service kami.</p>
+                        <p class="text-gray-300 leading-relaxed">Top-up di Lumiastore dikirim secara instan setelah
+                            pembayaran berhasil. Biasanya item akan masuk ke akun game Anda dalam waktu 1-5 menit
+                            setelah pembayaran selesai. Jika lebih dari 10 menit belum masuk, silakan hubungi customer
+                            service kami.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 3 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="payment" data-aos="fade-up" data-aos-delay="500">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="payment" data-aos="fade-up" data-aos-delay="500">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-purple-400 font-bold text-sm">3</span>
@@ -138,47 +189,66 @@
                         <span class="font-semibold text-lg text-white">Metode pembayaran apa saja yang tersedia?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Kami menyediakan berbagai metode pembayaran termasuk E-Wallet (GoPay, DANA, OVO, ShopeePay, LinkAja), QRIS, Transfer Bank, pembayaran di minimarket (Indomaret, Alfamart), dan pembayaran via pulsa (Telkomsel, Indosat, XL/Axis).</p>
+                        <p class="text-gray-300 leading-relaxed">Kami menyediakan berbagai metode pembayaran termasuk
+                            E-Wallet (GoPay, DANA, OVO, ShopeePay, LinkAja), QRIS, Transfer Bank, pembayaran di
+                            minimarket (Indomaret, Alfamart), dan pembayaran via pulsa (Telkomsel, Indosat, XL/Axis).
+                        </p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 4 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="account" data-aos="fade-up" data-aos-delay="600">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="account" data-aos="fade-up" data-aos-delay="600">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-yellow-400 font-bold text-sm">4</span>
                         </div>
-                        <span class="font-semibold text-lg text-white">Bagaimana cara menemukan User ID dan Zone ID?</span>
+                        <span class="font-semibold text-lg text-white">Bagaimana cara menemukan User ID dan Zone
+                            ID?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Untuk menemukan User ID dan Zone ID, buka game Anda dan masuk ke menu profil (biasanya di pojok kiri atas atau menu akun). User ID dan Zone ID akan terlihat di halaman profil Anda. Pastikan Anda memasukkan ID yang benar untuk menghindari kesalahan pengiriman.</p>
+                        <p class="text-gray-300 leading-relaxed">Untuk menemukan User ID dan Zone ID, buka game Anda dan
+                            masuk ke menu profil (biasanya di pojok kiri atas atau menu akun). User ID dan Zone ID akan
+                            terlihat di halaman profil Anda. Pastikan Anda memasukkan ID yang benar untuk menghindari
+                            kesalahan pengiriman.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 5 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="payment" data-aos="fade-up" data-aos-delay="700">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="payment" data-aos="fade-up" data-aos-delay="700">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-red-400 font-bold text-sm">5</span>
@@ -186,47 +256,66 @@
                         <span class="font-semibold text-lg text-white">Apakah top-up di Lumiastore aman?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Ya, Lumiastore menggunakan sistem pembayaran yang aman dan terpercaya. Semua transaksi dilindungi dengan enkripsi SSL dan kami bekerja sama dengan payment gateway terpercaya. Data pribadi Anda juga dijaga kerahasiaannya dan tidak akan dibagikan kepada pihak ketiga.</p>
+                        <p class="text-gray-300 leading-relaxed">Ya, Lumiastore menggunakan sistem pembayaran yang aman
+                            dan terpercaya. Semua transaksi dilindungi dengan enkripsi SSL dan kami bekerja sama dengan
+                            payment gateway terpercaya. Data pribadi Anda juga dijaga kerahasiaannya dan tidak akan
+                            dibagikan kepada pihak ketiga.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 6 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="delivery" data-aos="fade-up" data-aos-delay="800">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="delivery" data-aos="fade-up" data-aos-delay="800">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-indigo-400 font-bold text-sm">6</span>
                         </div>
-                        <span class="font-semibold text-lg text-white">Bagaimana jika top-up tidak masuk ke akun saya?</span>
+                        <span class="font-semibold text-lg text-white">Bagaimana jika top-up tidak masuk ke akun
+                            saya?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Jika top-up tidak masuk setelah 10 menit, silakan cek kembali User ID dan Zone ID yang Anda masukkan. Pastikan ID tersebut benar. Jika masih belum masuk, hubungi customer service kami dengan menyertakan bukti pembayaran dan detail transaksi. Tim kami akan membantu menyelesaikan masalah Anda.</p>
+                        <p class="text-gray-300 leading-relaxed">Jika top-up tidak masuk setelah 10 menit, silakan cek
+                            kembali User ID dan Zone ID yang Anda masukkan. Pastikan ID tersebut benar. Jika masih belum
+                            masuk, hubungi customer service kami dengan menyertakan bukti pembayaran dan detail
+                            transaksi. Tim kami akan membantu menyelesaikan masalah Anda.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 7 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="payment" data-aos="fade-up" data-aos-delay="900">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="payment" data-aos="fade-up" data-aos-delay="900">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-pink-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-pink-400 font-bold text-sm">7</span>
@@ -234,47 +323,66 @@
                         <span class="font-semibold text-lg text-white">Apakah ada biaya tambahan untuk top-up?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Harga yang tertera di website sudah termasuk semua biaya. Namun, beberapa metode pembayaran mungkin memiliki biaya admin yang akan ditampilkan sebelum Anda melakukan pembayaran. Pastikan untuk melihat total pembayaran sebelum menyelesaikan transaksi.</p>
+                        <p class="text-gray-300 leading-relaxed">Harga yang tertera di website sudah termasuk semua
+                            biaya. Namun, beberapa metode pembayaran mungkin memiliki biaya admin yang akan ditampilkan
+                            sebelum Anda melakukan pembayaran. Pastikan untuk melihat total pembayaran sebelum
+                            menyelesaikan transaksi.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 8 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="payment" data-aos="fade-up" data-aos-delay="1000">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="payment" data-aos="fade-up" data-aos-delay="1000">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-teal-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-teal-400 font-bold text-sm">8</span>
                         </div>
-                        <span class="font-semibold text-lg text-white">Bisakah saya membatalkan transaksi yang sudah dibayar?</span>
+                        <span class="font-semibold text-lg text-white">Bisakah saya membatalkan transaksi yang sudah
+                            dibayar?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Karena top-up dikirim secara instan setelah pembayaran berhasil, transaksi tidak dapat dibatalkan. Namun, jika terjadi kesalahan (misalnya User ID salah), silakan hubungi customer service kami dengan menyertakan bukti pembayaran. Tim kami akan meninjau kasus Anda dan memberikan solusi terbaik.</p>
+                        <p class="text-gray-300 leading-relaxed">Karena top-up dikirim secara instan setelah pembayaran
+                            berhasil, transaksi tidak dapat dibatalkan. Namun, jika terjadi kesalahan (misalnya User ID
+                            salah), silakan hubungi customer service kami dengan menyertakan bukti pembayaran. Tim kami
+                            akan meninjau kasus Anda dan memberikan solusi terbaik.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 9 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="account" data-aos="fade-up" data-aos-delay="1100">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="account" data-aos="fade-up" data-aos-delay="1100">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-cyan-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-cyan-400 font-bold text-sm">9</span>
@@ -282,40 +390,57 @@
                         <span class="font-semibold text-lg text-white">Game apa saja yang tersedia di Lumiastore?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Kami menyediakan top-up untuk berbagai game populer seperti Mobile Legends, Free Fire, Genshin Impact, PUBG Mobile, Valorant, Call of Duty Mobile, League of Legends, Steam Wallet, Roblox, dan Google Play. Kami terus menambahkan game baru secara berkala.</p>
+                        <p class="text-gray-300 leading-relaxed">Kami menyediakan top-up untuk berbagai game populer
+                            seperti Mobile Legends, Free Fire, Genshin Impact, PUBG Mobile, Valorant, Call of Duty
+                            Mobile, League of Legends, Steam Wallet, Roblox, dan Google Play. Kami terus menambahkan
+                            game baru secara berkala.</p>
                     </div>
                 </div>
             </div>
 
             <!-- FAQ Item 10 -->
-            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300" data-category="support" data-aos="fade-up" data-aos-delay="1200">
-                <button class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300" onclick="toggleFaq(this)">
+            <div class="faq-item glass rounded-2xl overflow-hidden group hover:bg-white/5 transition-all duration-300"
+                data-category="support" data-aos="fade-up" data-aos-delay="1200">
+                <button
+                    class="faq-question w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-all duration-300"
+                    onclick="toggleFaq(this)">
                     <div class="flex items-center gap-4">
-                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                        <div
+                            class="flex-shrink-0 w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
                             <span class="text-emerald-400 font-bold text-sm">10</span>
                         </div>
-                        <span class="font-semibold text-lg text-white">Bagaimana cara menghubungi customer service?</span>
+                        <span class="font-semibold text-lg text-white">Bagaimana cara menghubungi customer
+                            service?</span>
                     </div>
                     <div class="flex-shrink-0 ml-4">
-                        <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
-                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <div
+                            class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center transition-all duration-300">
+                            <svg class="w-4 h-4 text-orange-400 transform transition-transform duration-300 faq-icon"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
                     </div>
                 </button>
                 <div class="faq-answer hidden px-6 pb-6 pt-2">
                     <div class="pl-12">
-                        <p class="text-gray-300 leading-relaxed">Anda dapat menghubungi customer service kami melalui email atau chat support yang tersedia di website. Tim customer service kami siap membantu Anda 24/7. Pastikan untuk menyertakan detail transaksi dan bukti pembayaran saat menghubungi kami untuk mempermudah proses penanganan.</p>
+                        <p class="text-gray-300 leading-relaxed">Anda dapat menghubungi customer service kami melalui
+                            email atau chat support yang tersedia di website. Tim customer service kami siap membantu
+                            Anda 24/7. Pastikan untuk menyertakan detail transaksi dan bukti pembayaran saat menghubungi
+                            kami untuk mempermudah proses penanganan.</p>
                     </div>
                 </div>
             </div>
@@ -323,29 +448,41 @@
 
         <!-- Contact Section -->
         <div class="mt-16 glass rounded-2xl p-8 md:p-12 text-center relative overflow-hidden" data-aos="fade-up">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500">
+            </div>
 
             <div class="relative z-10">
-                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-full mb-6">
-                    <svg class="w-10 h-10 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <div
+                    class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
                     </svg>
                 </div>
 
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Masih ada pertanyaan?</h2>
-                <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">Jika pertanyaan Anda belum terjawab, tim customer service kami siap membantu Anda 24/7</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-slate-800">Masih ada pertanyaan?</h2>
+                <p class="text-slate-500 text-lg mb-8 max-w-2xl mx-auto">Jika pertanyaan Anda belum terjawab, tim
+                    customer service kami siap membantu Anda 24/7</p>
 
                 <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                    <a href="mailto:support@lumiastore.com" class="group bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25 inline-flex items-center justify-center gap-3">
-                        <svg class="w-5 h-5 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    <a href="mailto:support@lumiastore.com"
+                        class="group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 inline-flex items-center justify-center gap-3">
+                        <svg class="w-5 h-5 group-hover:animate-pulse" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
                         </svg>
                         <span>Email Support</span>
                     </a>
 
-                    <a href="../index.html" class="group bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 border border-white/20 hover:border-white/30 inline-flex items-center justify-center gap-3">
-                        <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    <a href="../index.html"
+                        class="group bg-slate-100 hover:bg-slate-200 text-slate-700 px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 border border-slate-200 hover:border-slate-300 inline-flex items-center justify-center gap-3">
+                        <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                         <span>Kembali ke Beranda</span>
                     </a>
@@ -406,10 +543,10 @@
                 // Update active category button
                 document.querySelectorAll('.faq-category').forEach(btn => {
                     btn.classList.remove('category-active');
-                    btn.classList.add('px-4', 'py-2', 'rounded-full', 'bg-white/10', 'text-gray-300', 'hover:text-white', 'hover:bg-white/20', 'text-sm', 'font-medium', 'transition');
+                    btn.classList.add('px-4', 'py-2', 'rounded-full', 'bg-slate-100', 'text-slate-500', 'hover:text-purple-600', 'hover:bg-purple-50', 'text-sm', 'font-medium', 'transition');
                 });
                 button.classList.add('category-active');
-                button.classList.remove('bg-white/10', 'text-gray-300', 'hover:text-white', 'hover:bg-white/20');
+                button.classList.remove('bg-slate-100', 'text-slate-500', 'hover:text-purple-600', 'hover:bg-purple-50');
 
                 // Filter FAQs
                 const faqItems = document.querySelectorAll('.faq-item');
@@ -428,7 +565,7 @@
         });
 
         // Search Functionality
-        document.getElementById('faq-search').addEventListener('input', function() {
+        document.getElementById('faq-search').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             const faqItems = document.querySelectorAll('.faq-item');
 
@@ -447,24 +584,24 @@
             // Reset category filter when searching
             document.querySelectorAll('.faq-category').forEach(btn => {
                 btn.classList.remove('category-active');
-                btn.classList.add('px-4', 'py-2', 'rounded-full', 'bg-white/10', 'text-gray-300', 'hover:text-white', 'hover:bg-white/20', 'text-sm', 'font-medium', 'transition');
+                btn.classList.add('px-4', 'py-2', 'rounded-full', 'bg-slate-100', 'text-slate-500', 'hover:text-purple-600', 'hover:bg-purple-50', 'text-sm', 'font-medium', 'transition');
             });
             const allBtn = document.querySelector('.faq-category[data-category="all"]');
             if (allBtn) {
                 allBtn.classList.add('category-active');
-                allBtn.classList.remove('bg-white/10', 'text-gray-300', 'hover:text-white', 'hover:bg-white/20');
+                allBtn.classList.remove('bg-slate-100', 'text-slate-500', 'hover:text-purple-600', 'hover:bg-purple-50');
             }
         });
 
         // FAQ Item Hover Effect
         document.querySelectorAll('.faq-item').forEach(item => {
-            item.addEventListener('mouseenter', function() {
+            item.addEventListener('mouseenter', function () {
                 if (!this.classList.contains('faq-active')) {
                     this.querySelector('.faq-icon').style.transform = 'rotate(15deg)';
                 }
             });
 
-            item.addEventListener('mouseleave', function() {
+            item.addEventListener('mouseleave', function () {
                 if (!this.classList.contains('faq-active')) {
                     this.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
                 }
@@ -478,7 +615,7 @@
 
         .faq-active {
             background: rgba(255, 255, 255, 0.08) !important;
-            border-left: 4px solid #f97316;
+            border-left: 4px solid #a855f7;
         }
 
         .faq-active .faq-icon {
@@ -486,7 +623,7 @@
         }
 
         .category-active {
-            background: #f97316 !important;
+            background: #a855f7 !important;
             color: white !important;
         }
 
@@ -496,6 +633,7 @@
                 transform: translateY(-15px);
                 max-height: 0;
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -508,6 +646,7 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -527,4 +666,5 @@
         }
     </style>
 </body>
+
 </html>
