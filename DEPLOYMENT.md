@@ -72,4 +72,23 @@ Pastikan Anda sudah punya akun di [Vercel.com](https://vercel.com) (bisa login p
     *   API: `domain-anda.vercel.app/api/...`
     *   React App (jika di-build): `domain-anda.vercel.app/assets/...`
 
-Selamat! Aplikasi Anda sekarang sudah online.
+## 4. Troubleshooting (Jika Error)
+
+### Error: `Operation users.findOne() buffering timed out`
+Ini berarti server Vercel **gagal terhubung** ke MongoDB Atlas.
+Penyebab & Solusi:
+
+1.  **IP Address Diblokir (Paling Sering terjadi)**:
+    *   MongoDB Atlas secara default menolak koneksi asing.
+    *   Buka MongoDB Atlas Dashboard -> **Network Access**.
+    *   Klik **Add IP Address**.
+    *   Pilih **Allow Access from Anywhere** (0.0.0.0/0).
+    *   Klik **Confirm**.
+    *   *Tunggu 1-2 menit, lalu coba register lagi.*
+
+2.  **Environment Variable Belum Diset**:
+    *   Pastikan di Vercel (Settings -> Environment Variables) sudah ada `MONGODB_URI`.
+    *   Pastikan nilainya sama persis dengan di file `.env` lokal Anda.
+
+### Error: `npm install failed`
+*   Sudah diperbaiki otomatis oleh sistem dengan menghapus lockfile yang bermasalah. Coba redeploy.

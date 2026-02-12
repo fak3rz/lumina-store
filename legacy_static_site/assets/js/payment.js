@@ -4,11 +4,11 @@ console.debug('[debug] assets/js/payment.js loaded');
 // Surface uncaught errors to the on-page debug banner to aid diagnosis
 window.addEventListener('error', (e) => {
     console.error('window.onerror', e);
-    try { setDebug('Runtime error: ' + (e && e.message ? e.message : String(e)), 'error'); } catch (_) {}
+    try { setDebug('Runtime error: ' + (e && e.message ? e.message : String(e)), 'error'); } catch (_) { }
 });
 window.addEventListener('unhandledrejection', (e) => {
     console.error('unhandledrejection', e);
-    try { setDebug('Unhandled promise rejection: ' + (e && e.reason && e.reason.message ? e.reason.message : JSON.stringify(e.reason)), 'error'); } catch (_) {}
+    try { setDebug('Unhandled promise rejection: ' + (e && e.reason && e.reason.message ? e.reason.message : JSON.stringify(e.reason)), 'error'); } catch (_) { }
 });
 // Small on-page debug helper (shows messages for users without opening DevTools)
 function setDebug(message, type = 'info') {
@@ -27,7 +27,7 @@ let selectedItemData = null;
 let selectedPaymentMethod = null;
 
 const games = {
-    'mlbb': { 
+    'mobilelegend': {
         name: 'Mobile Legends: Bang Bang', icon: '⚔️', currency: 'Diamonds',
         options: [
             { name: 'Weekly Diamond Pass', amount: '', bonus: 'Misi Harian', price: 'Rp 27.550', oldPrice: 'Rp 30.450', discount: '-10%', bestSeller: true, img: 'https://cdn1.codashop.com/images/106_5e7a01a7-89b9-4b13-a512-a3e72f63f0d1_product/1760334656140_193e31c0-9b16-4a9a-8df0-325d1c1db8de.png' },
@@ -69,10 +69,10 @@ function generateOptions(gameId, currency, count = 12) {
     const ppu = pricePerUnit[currency] || pricePerUnit['default'];
     // Some common tier seeds to mirror typical top-up bundles (falls back to incremental doubling)
     const seedAmounts = {
-        'Diamonds': [5,12,28,59,85,170,296,408,728,1450,2960,7290],
-        'Crystals': [10,30,60,120,240,480],
-        'UC': [40,85,170,340,680],
-        'default': [10,50,100,200,500,1000]
+        'Diamonds': [5, 12, 28, 59, 85, 170, 296, 408, 728, 1450, 2960, 7290],
+        'Crystals': [10, 30, 60, 120, 240, 480],
+        'UC': [40, 85, 170, 340, 680],
+        'default': [10, 50, 100, 200, 500, 1000]
     };
     const seeds = seedAmounts[currency] || seedAmounts['default'];
     const results = [];
@@ -84,11 +84,11 @@ function generateOptions(gameId, currency, count = 12) {
         const opt = {
             name: `${amount} ${currency}`,
             amount: String(amount),
-            bonus: (amount >= 100 ? `(Bonus ${Math.round(amount*0.05)} ${currency})` : ''),
+            bonus: (amount >= 100 ? `(Bonus ${Math.round(amount * 0.05)} ${currency})` : ''),
             price: `Rp ${priceNum.toLocaleString('id-ID')}`,
             oldPrice: `Rp ${oldPriceNum.toLocaleString('id-ID')}`,
             discount: `-${discountPercent}%`,
-            bestSeller: amount === seeds[Math.floor(seeds.length/2)] || (amount === 296),
+            bestSeller: amount === seeds[Math.floor(seeds.length / 2)] || (amount === 296),
             img: ''
         };
         results.push(opt);
@@ -100,9 +100,9 @@ function generateOptions(gameId, currency, count = 12) {
 // Grab options data from original file (for MLBB we re-add the array here) to keep behaviour identical.
 // For brevity in file content created here, we will load the full options on demand by copying from the original when needed.
 
-function initPaymentPage() {
+async function initPaymentPage() {
     const params = new URLSearchParams(window.location.search);
-    const gameId = params.get('game') || 'mlbb';
+    const gameId = params.get('game') || 'mobilelegend';
     const data = games[gameId];
     if (!data) return;
 
@@ -111,10 +111,46 @@ function initPaymentPage() {
     const iconEl = document.getElementById('game-icon'); if (iconEl) iconEl.textContent = data.icon;
     document.querySelectorAll('.currency-name').forEach(el => el.textContent = data.currency);
 
-    // Render Options (if data.options exists on the real file this will work)
     const container = document.getElementById('nominal-options');
     if (!container) return;
-    const options = (data.options && data.options.length) ? data.options : (data.options = generateOptions(gameId, data.currency, 12));
+    container.innerHTML = '<div class="col-span-full text-center text-white/50 py-8">Memuat harga...</div>';
+
+    let options = [];
+
+    // 1. Try fetching from backend API (APIGames v2 / Fallback JSON)
+    try {
+        const resp = await fetch(`/api/apigames/pricelist`);
+        const json = await resp.json();
+        if (json.ok && json.data && json.data[gameId]) {
+            // Map API data to UI format
+            // API Format: { code, name, price, price_basic }
+            options = json.data[gameId].map(item => {
+                const priceNum = parseInt(item.price);
+                const oldPriceNum = Math.round(priceNum * 1.15); // Fake old price for visual discount
+                const discount = Math.round((1 - (priceNum / oldPriceNum)) * 100);
+
+                return {
+                    name: item.name,
+                    amount: item.code.split('_')[1] || item.name.replace(/[^0-9]/g, ''),
+                    bonus: '',
+                    price: `Rp ${priceNum.toLocaleString('id-ID')}`,
+                    oldPrice: `Rp ${oldPriceNum.toLocaleString('id-ID')}`,
+                    discount: `-${discount}%`,
+                    bestSeller: false,
+                    img: ''
+                };
+            });
+            console.debug('[payment] Loaded prices from API/Backend for', gameId);
+        }
+    } catch (e) {
+        console.warn('[payment] Failed to fetch pricelist, using local fallback', e);
+    }
+
+    // 2. Fallback to local hardcoded data if API returned nothing
+    if (!options.length) {
+        options = (data.options && data.options.length) ? data.options : (data.options = generateOptions(gameId, data.currency, 12));
+        console.debug('[payment] Loaded prices from local fallback');
+    }
 
     container.innerHTML = '';
     options.forEach(opt => {
@@ -165,20 +201,28 @@ window.addEventListener('load', () => {
             setTimeout(() => { skeleton.classList.add('hidden'); content.classList.remove('hidden'); AOS.refresh(); }, 500);
         }
         try {
-            initPaymentPage();
-            const container = document.getElementById('nominal-options');
+            // initPaymentPage is async; we let it handle the container content.
+            // We set a safety timeout ONLY if it takes too long (> 5 seconds), not 50ms.
+            const p = initPaymentPage();
+
             setTimeout(() => {
-                const n = container ? container.children.length : 0;
-                console.debug('[debug] Rendered', n, 'options for', document.getElementById('game-title')?.textContent || 'unknown');
-                if (n === 0 && container) {
-                    // Inject a minimal fallback option so the page is not blank
+                const container = document.getElementById('nominal-options');
+                // Check if still loading or empty after 5 seconds
+                if (container && (container.children.length === 0 || container.textContent.includes('Memuat harga'))) {
                     const fallback = document.createElement('div');
                     fallback.className = 'option-card bg-white p-4 rounded shadow-sm text-center';
                     fallback.innerHTML = '<div class="text-lg font-semibold">Fallback: 50 Diamonds</div><div class="mt-2 text-sm text-gray-600">Rp 10.000</div><div class="mt-3"><button onclick="selectOption(0)" class="px-3 py-1 bg-blue-600 text-white rounded">Select</button></div>';
+                    container.innerHTML = ''; // Clear "Memuat harga..."
                     container.appendChild(fallback);
-                    setDebug('No options found — fallback injected', 'warning');
+                    setDebug('No options found (timeout) — fallback injected', 'warning');
                 }
-            }, 50);
+            }, 5000);
+
+            p.then(() => {
+                const container = document.getElementById('nominal-options');
+                const n = container ? container.children.length : 0;
+                console.debug('[debug] Rendered', n, 'options for', document.getElementById('game-title')?.textContent || 'unknown');
+            });
         } catch (err) {
             console.error(err);
             setDebug('Error initializing payment page: ' + (err && err.message ? err.message : err), 'error');
@@ -225,7 +269,7 @@ function updateBuyWidget() {
 }
 
 // USER ID lookup / validation (mocked with deterministic nickname suggestions)
-const _nicknames = [ 'Kyu.', 'Nova', 'Raven', 'Aether', 'Vex', 'Lyra', 'Kai', 'Zara', 'Orin', 'Mika', 'Echo', 'Jin', 'Sora', 'Rin', 'Taro' ];
+const _nicknames = ['Kyu.', 'Nova', 'Raven', 'Aether', 'Vex', 'Lyra', 'Kai', 'Zara', 'Orin', 'Mika', 'Echo', 'Jin', 'Sora', 'Rin', 'Taro'];
 // Manual overrides for known IDs (easy to edit)
 const KNOWN_NICKNAMES = { '453967075': 'Kyu.', '1037720261': 'sad+boy.' };
 
@@ -274,7 +318,7 @@ async function fetchMLBBNickname(userId, zoneId) {
                 'player', 'result', 'data',
             ];
             // direct fields
-            for (const key of ['nickname','nick','name','player_name']) if (obj[key]) return obj[key];
+            for (const key of ['nickname', 'nick', 'name', 'player_name']) if (obj[key]) return obj[key];
             // nested common shapes
             if (obj.player && (obj.player.nickname || obj.player.name)) return obj.player.nickname || obj.player.name;
             if (obj.data && (obj.data.nickname || obj.data.name || obj.data.player_name)) return obj.data.nickname || obj.data.name || obj.data.player_name;
@@ -400,7 +444,7 @@ function bindUserIdCheck() {
                 const url = `/api/apigames/check-username?gameCode=freefire&userId=${encodeURIComponent(uid)}`;
                 try {
                     const resp = await fetch(url);
-                    const j = await resp.json().catch(()=>null);
+                    const j = await resp.json().catch(() => null);
                     if (resp.ok && j && j.status === 1 && j.data && j.data.is_valid) {
                         showSuccess(j.data.username || deterministicNickname(uid));
                         localStorage.setItem('lumi_userId', uid);

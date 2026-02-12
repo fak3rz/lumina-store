@@ -4,7 +4,7 @@ class ApiGamesController {
   async getAccountInfo(req, res) {
     try {
       const result = await apiGamesService.getAccountInfo();
-      
+
       // Pass through the response from APIGames
       if (result.status === 1 || result.rc === 200) {
         res.json(result);
@@ -41,6 +41,20 @@ class ApiGamesController {
       res.status(500).json({
         success: false,
         message: error.message || 'Internal Server Error'
+      });
+    }
+  }
+
+  async getPricelist(req, res) {
+    try {
+      const result = await apiGamesService.getPricelist();
+      res.json({ ok: true, ...result });
+    } catch (error) {
+      res.status(500).json({
+        ok: false,
+        source: 'error',
+        message: error.message || 'Internal Server Error',
+        data: []
       });
     }
   }

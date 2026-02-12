@@ -10,7 +10,7 @@ function generateSignature(merchantId, secretKey) {
 function candidateHosts(baseUrl) {
   const u = String(baseUrl || '').trim();
   const list = [];
-  if (u) list.push(u.replace(/\/+$/,''));
+  if (u) list.push(u.replace(/\/+$/, ''));
   if (u.includes('v2.apigames.id')) list.push('https://v1.apigames.id');
   else if (u.includes('v1.apigames.id')) list.push('https://v2.apigames.id');
   else { list.push('https://v2.apigames.id'); list.push('https://v1.apigames.id'); }
@@ -53,7 +53,54 @@ async function checkUsername(gameCode, userId, zoneId = '') {
   return await resp.json();
 }
 
+const fs = require('fs');
+const path = require('path');
+const priceFallbackPath = path.join(__dirname, '../data/apigames_prices.json');
+
+async function getPricelist() {
+  const merchantId = config.apigames.merchantId;
+  const secretKey = config.apigames.secretKey;
+
+  // Try fetching from API first
+  try {
+    if (merchantId && secretKey) {
+      const signature = generateSignature(merchantId, secretKey);
+      // Try v2 endpoint then v1/others if needed (using candidateHosts logic or explicit v2)
+      // Per plan, we try the likely v2 endpoint
+      const hosts = candidateHosts(config.apigames.baseUrl);
+      // Prioritize v2 for products
+      const v2Hosts = hosts.filter(h => h.includes('v2'));
+      const otherHosts = hosts.filter(h => !h.includes('v2'));
+      const sortedHosts = [...v2Hosts, ...otherHosts];
+
+      const urls = sortedHosts.map(h => `${h}/merchant/${merchantId}/produk?signature=${signature}`);
+
+      const resp = await fetchFirstOk(urls);
+      const json = await resp.json();
+
+      if (json.status === 1 || json.rc === 200) {
+        return { source: 'api', data: json.data };
+      }
+    }
+  } catch (e) {
+    console.warn('APIGames pricelist fetch failed, using fallback:', e.message);
+  }
+
+  // Fallback to local JSON
+  try {
+    if (fs.existsSync(priceFallbackPath)) {
+      const data = fs.readFileSync(priceFallbackPath, 'utf8');
+      return { source: 'fallback', data: JSON.parse(data) };
+    }
+  } catch (e) {
+    console.error('Failed to read fallback pricelist:', e.message);
+  }
+
+  return { source: 'none', data: [] };
+}
+
 module.exports = {
   getAccountInfo,
-  checkUsername
+  checkUsername,
+  getPricelist
 };

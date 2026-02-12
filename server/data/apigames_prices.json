@@ -1,0 +1,54 @@
+{
+    "mobilelegend": [
+        {
+            "code": "ML_5",
+            "name": "5 Diamonds",
+            "price": 1500,
+            "price_basic": 1400
+        },
+        {
+            "code": "ML_12",
+            "name": "12 Diamonds",
+            "price": 3500,
+            "price_basic": 3300
+        },
+        {
+            "code": "ML_50",
+            "name": "50 Diamonds",
+            "price": 14000,
+            "price_basic": 13500
+        },
+        {
+            "code": "ML_70",
+            "name": "70 Diamonds",
+            "price": 19500,
+            "price_basic": 18900
+        }
+    ],
+    "freefire": [
+        {
+            "code": "FF_5",
+            "name": "5 Diamonds",
+            "price": 1000,
+            "price_basic": 900
+        },
+        {
+            "code": "FF_12",
+            "name": "12 Diamonds",
+            "price": 2400,
+            "price_basic": 2200
+        },
+        {
+            "code": "FF_50",
+            "name": "50 Diamonds",
+            "price": 9800,
+            "price_basic": 9500
+        },
+        {
+            "code": "FF_70",
+            "name": "70 Diamonds",
+            "price": 13500,
+            "price_basic": 13000
+        }
+    ]
+}

@@ -27,6 +27,7 @@ router.get('/games/:categoryId', (req, res) => {
 // APIGames Integration
 router.get('/apigames/account', (req, res) => apiGamesController.getAccountInfo(req, res));
 router.get('/apigames/check-username', (req, res) => apiGamesController.checkUsername(req, res));
+router.get('/apigames/pricelist', (req, res) => apiGamesController.getPricelist(req, res));
 
 // Captcha
 router.get('/captcha/new', (req, res) => captchaController.new(req, res));
