@@ -11,18 +11,28 @@ function Layout({ children }) {
       <nav className="app-nav">
         <div className="brand">Lumina Store</div>
         <div className="spacer" />
-        <Link className="back-btn" to="/">Home</Link>
+        {/* Use standard anchor tag to force full page reload for Home */}
+        <a className="back-btn" href="/">Home</a>
       </nav>
       <div className="content">{children}</div>
     </div>
   );
 }
 
+// Component to force reload if user lands on / inside React
+function ForceHomeRedirect() {
+  React.useEffect(() => {
+    window.location.href = '/';
+  }, []);
+  return <div style={{ padding: 20, textAlign: 'center' }}>Redirecting to Home...</div>;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* If React handles /, force reload to get static site */}
+        <Route path="/" element={<ForceHomeRedirect />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
