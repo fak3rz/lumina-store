@@ -24,7 +24,12 @@ export default function Login() {
     try {
       const res = await authApi.login(email, password, { token: captchaToken, fallback: useFallback });
       if (!res || res.ok === false) throw new Error(res.error || 'Login gagal');
-      // Redirect or handle success (usually window.location.reload or similar if session based)
+
+      // Save token and user data for legacy static site integration
+      if (res.token) localStorage.setItem('lumi_token', res.token);
+      if (res.user) localStorage.setItem('lumi_user', JSON.stringify(res.user));
+
+      // Redirect to homepage
       window.location.href = '/';
     } catch (err) {
       setError(err.message || 'Terjadi kesalahan');
