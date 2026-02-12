@@ -22,7 +22,8 @@ function Layout({ children }) {
 // Component to force reload if user lands on / inside React
 function ForceHomeRedirect() {
   React.useEffect(() => {
-    window.location.href = '/';
+    // Redirect to /home to bypass potential root shadowing by React build
+    window.location.href = '/home';
   }, []);
   return <div style={{ padding: 20, textAlign: 'center' }}>Redirecting to Home...</div>;
 }

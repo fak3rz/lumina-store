@@ -42,7 +42,7 @@ app.get('/api/version', (req, res) => {
 });
 
 // Explicitly serve homepage from legacy site (Read file directly to ensure it works)
-app.get('/', (req, res) => {
+const legacyHomeHandler = (req, res) => {
   try {
     const indexPath = path.join(__dirname, '..', 'legacy_static_site', 'index.html');
     const html = require('fs').readFileSync(indexPath, 'utf8');
@@ -51,7 +51,11 @@ app.get('/', (req, res) => {
     console.error('Error serving homepage:', err);
     res.status(500).send('Error loading homepage: ' + err.message);
   }
-});
+};
+
+app.get('/', legacyHomeHandler);
+app.get('/home', legacyHomeHandler); // Add alias to bypass shadowing
+app.get('/index.html', legacyHomeHandler); // Add alias for legacy links
 
 // API Routes
 app.use('/api', routes);

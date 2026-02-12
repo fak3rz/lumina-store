@@ -29,8 +29,8 @@ export default function Login() {
       if (res.token) localStorage.setItem('lumi_token', res.token);
       if (res.user) localStorage.setItem('lumi_user', JSON.stringify(res.user));
 
-      // Redirect to homepage
-      window.location.href = '/';
+      // Redirect to homepage (use /home to ensure legacy site loads)
+      window.location.href = '/home';
     } catch (err) {
       setError(err.message || 'Terjadi kesalahan');
     } finally {
