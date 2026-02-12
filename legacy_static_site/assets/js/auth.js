@@ -283,7 +283,8 @@ function bindLoginOtp() {
       localStorage.setItem('lumi_token', j.token);
       try { localStorage.setItem('lumi_user', JSON.stringify(j.user || {})); } catch (_) { }
       localStorage.removeItem('login_email');
-      location.href = '/index.html';
+      // Force reload with timestamp to bypass cache
+      window.location.href = '/home?t=' + new Date().getTime();
     } catch (e2) {
       if (err) {
         err.textContent = e2.message || 'Verifikasi gagal';

@@ -34,6 +34,8 @@ export default function App() {
       <Routes>
         {/* If React handles /, force reload to get static site */}
         <Route path="/" element={<ForceHomeRedirect />} />
+        <Route path="/index.html" element={<ForceHomeRedirect />} />
+        <Route path="/home" element={<ForceHomeRedirect />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
