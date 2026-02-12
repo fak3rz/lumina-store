@@ -8,7 +8,7 @@
     ],
     "functions": {
         "api/index.js": {
-            "includeFiles": "legacy_static_site/**, frontend/dist/**"
+            "includeFiles": "legacy_static_site/**, frontend/dist/**, server/data/**"
         }
     },
     "env": {
