@@ -15,6 +15,20 @@ router.get('/mlbb/lookup', (req, res) => gameController.lookup(req, res));
 
 // Games Catalog
 const gamesData = require('../data/games.json');
+
+// Products (All Games flattened)
+router.get('/products', (req, res) => {
+  const allGames = gamesData.categories.reduce((acc, cat) => {
+    return acc.concat(cat.games);
+  }, []);
+  res.json({ status: 1, data: allGames });
+});
+
+// Categories
+router.get('/categories', (req, res) => {
+  res.json({ status: 1, data: gamesData.categories });
+});
+
 router.get('/games', (req, res) => {
   res.json({ status: 1, data: gamesData });
 });
