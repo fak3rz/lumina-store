@@ -33,6 +33,14 @@ class OrderModel {
   async update(id, updates) {
     return await OrderRepository.update(id, updates);
   }
+
+  /**
+   * Find all orders
+   * @returns {Array} List of orders
+   */
+  async findAll() {
+    return await OrderRepository.findAll();
+  }
 }
 
 // Export singleton instance

@@ -6,15 +6,15 @@ class OrderService {
     if (!userId || !zoneId || !sku) {
       throw new Error('userId, zoneId and sku required');
     }
-    
+
     const order = await orderModel.create({
       userId, zoneId, sku, amount, price, paymentMethod
     });
-    
+
     // mock payment URL (local flow)
     order.paymentUrl = `/api/mock/pay?orderId=${encodeURIComponent(order.id)}`;
     await orderModel.update(order.id, { paymentUrl: order.paymentUrl });
-    
+
     return order;
   }
 
@@ -28,6 +28,10 @@ class OrderService {
 
   async updateStatus(id, status) {
     return await orderModel.update(id, { status });
+  }
+
+  async listOrders() {
+    return await orderModel.findAll();
   }
 }
 

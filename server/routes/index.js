@@ -58,6 +58,7 @@ router.post('/auth/reset-password', (req, res) => authController.resetPassword(r
 
 // Orders
 router.post('/orders', captchaGuard, (req, res) => orderController.create(req, res));
+router.get('/orders', (req, res) => orderController.list(req, res));
 router.get('/orders/:id', (req, res) => orderController.get(req, res));
 
 // Mock Payment

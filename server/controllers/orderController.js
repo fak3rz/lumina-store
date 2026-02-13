@@ -13,6 +13,15 @@ class OrderController {
     }
   }
 
+  async list(req, res) {
+    try {
+      const orders = await orderService.listOrders();
+      res.json({ ok: true, data: orders });
+    } catch (e) {
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  }
+
   async get(req, res) {
     try {
       const order = await orderService.getOrder(req.params.id);
